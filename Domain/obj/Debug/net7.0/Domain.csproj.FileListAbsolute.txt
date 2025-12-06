@@ -1,0 +1,14 @@
+F:\csharp\EngWebsite\MyDigikala\Domain\bin\Debug\net7.0\Domain.deps.json
+F:\csharp\EngWebsite\MyDigikala\Domain\bin\Debug\net7.0\Domain.runtimeconfig.json
+F:\csharp\EngWebsite\MyDigikala\Domain\bin\Debug\net7.0\Domain.dll
+F:\csharp\EngWebsite\MyDigikala\Domain\bin\Debug\net7.0\Domain.pdb
+F:\csharp\EngWebsite\MyDigikala\Domain\obj\Debug\net7.0\Domain.csproj.AssemblyReference.cache
+F:\csharp\EngWebsite\MyDigikala\Domain\obj\Debug\net7.0\Domain.GeneratedMSBuildEditorConfig.editorconfig
+F:\csharp\EngWebsite\MyDigikala\Domain\obj\Debug\net7.0\Domain.AssemblyInfoInputs.cache
+F:\csharp\EngWebsite\MyDigikala\Domain\obj\Debug\net7.0\Domain.AssemblyInfo.cs
+F:\csharp\EngWebsite\MyDigikala\Domain\obj\Debug\net7.0\Domain.csproj.CoreCompileInputs.cache
+F:\csharp\EngWebsite\MyDigikala\Domain\obj\Debug\net7.0\Domain.dll
+F:\csharp\EngWebsite\MyDigikala\Domain\obj\Debug\net7.0\refint\Domain.dll
+F:\csharp\EngWebsite\MyDigikala\Domain\obj\Debug\net7.0\Domain.pdb
+F:\csharp\EngWebsite\MyDigikala\Domain\obj\Debug\net7.0\Domain.genruntimeconfig.cache
+F:\csharp\EngWebsite\MyDigikala\Domain\obj\Debug\net7.0\ref\Domain.dll
