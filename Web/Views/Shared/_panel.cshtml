@@ -171,13 +171,13 @@
                         <svg class="w-6 h-6 ">
                             <use href="#squares"></use>
                         </svg>
-                        <a href="dashboard.html">داشبورد</a>
+                        <a href="@Url.Action("dashboard", "Panel")">داشبورد</a>
                     </li>
                     <li class="hover:bg-zinc-100 dark:hover:bg-zinc-600">
                         <svg class="w-6 h-6 ">
                             <use href="#shopping-bag"></use>
                         </svg>
-                        <a href="dashboard-orders.html">
+                        <a href="@Url.Action("sefaresh", "Panel")">
                             سفارش ها
                         </a>
                     </li>
@@ -185,7 +185,7 @@
                         <svg class="w-6 h-6 ">
                             <use href="#heart"></use>
                         </svg>
-                        <a href="dashboard-favorite.html">علاقه‌مندی ها</a>
+                        <a href="@Url.Action("alaghe_mandi", "Panel")">علاقه‌مندی ها</a>
                     </li>
                     <li class="hover:bg-zinc-100 dark:hover:bg-zinc-600">
                         <svg class="w-6 h-6 ">
@@ -237,13 +237,13 @@
                         <svg class="w-5 h-5 ">
                             <use href="#squares"></use>
                         </svg>
-                        <a href="dashboard.html">داشبورد</a>
+                        <a href="@Url.Action("dashboard", "Panel")">داشبورد</a>
                     </li>
                     <li class="hover:bg-zinc-100 dark:hover:bg-zinc-600">
                         <svg class="w-5 h-5 ">
                             <use href="#shopping-bag"></use>
                         </svg>
-                        <a href="dashboard-orders.html">
+                        <a href="@Url.Action("sefaresh", "Panel") ">
                             سفارش ها
                         </a>
                     </li>
@@ -251,7 +251,7 @@
                         <svg class="w-5 h-5 ">
                             <use href="#heart"></use>
                         </svg>
-                        <a href="dashboard-favorite.html">علاقه‌مندی ها</a>
+                        <a href="@Url.Action("alaghe_mandi", "Panel")">علاقه‌مندی ها</a>
                     </li>
                     <li class="hover:bg-zinc-100 dark:hover:bg-zinc-600">
                         <svg class="w-5 h-5 ">
@@ -309,7 +309,7 @@
                                 <span class="justify-between flex items-center border-b border-gray-200 pb-2">
                                     <p> اعلان ها</p>
                                     <p class="text-green-500 flex text-sm items-center gap-x-0.5">
-                                        همه
+                                        <a href="@Url.Action("sefaresh", "Panel")">همه</a>
                                         <svg class="w-3 h-3">
                                             <use href="#chevron-left"></use>
                                         </svg>

@@ -36,8 +36,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/pishrafteh/MyDigikala/Web/Views/Panel/alaghe_mandi.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFuZWxcYWxhZ2hlX21hbmRpLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/pishrafteh/MyDigikala/Web/Views/Panel/dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFuZWxcZGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/pishrafteh/MyDigikala/Web/Views/Panel/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFuZWxcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/pishrafteh/MyDigikala/Web/Views/Panel/sefaresh.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFuZWxcc2VmYXJlc2guY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/pishrafteh/MyDigikala/Web/Views/Shared/Error.cshtml]
