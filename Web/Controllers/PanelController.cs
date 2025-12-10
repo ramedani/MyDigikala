@@ -17,6 +17,20 @@ namespace Web.Controllers
             return View();
         }
 
+        public ActionResult dashboard()
+        {
+            return View();
+        }
+        public ActionResult sefaresh()
+        {
+            return View();
+        }
+        public ActionResult alaghe_mandi()
+        {
+            return View();
+        }
+
+
         // GET: PanelController/Create
         public ActionResult Create()
         {
