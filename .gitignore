@@ -1,4 +1,10 @@
 .vs/
 bin/
 obj/
+.idea/
+*.cache
+*.AssemblyInfo.cs
+*.AssemblyAttributes.cs
+*.nuget.g.props
+*.nuget.g.targets
 
