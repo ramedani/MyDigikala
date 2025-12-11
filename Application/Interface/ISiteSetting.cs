@@ -23,6 +23,7 @@ namespace Application.Interface
         {
             mydb = _mydb;
         }
+
         public async Task<int> CreatOrUpdate(SiteSettingDTO dto)
         {
             var result = mydb.SiteSettings.FirstOrDefault();
