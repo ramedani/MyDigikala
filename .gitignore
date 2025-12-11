@@ -7,4 +7,5 @@ obj/
 *.AssemblyAttributes.cs
 *.nuget.g.props
 *.nuget.g.targets
-
+*.dll
+*.pdb
