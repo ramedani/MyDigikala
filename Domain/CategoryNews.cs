@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    public class Category:BaseTabel
+    public class CategoryNews
     {
+        public int Id { get; set; }
         public string Name { get; set; }
-        public string Picture { get; set; }
-
-        public List<Product> Prd { get; set; }
-        
+        public List<News> Ne { get; set; }
     }
 }

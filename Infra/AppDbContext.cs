@@ -14,6 +14,8 @@ namespace Infra
         public DbSet<SlideShow> SlideShows { get; set; }
         public DbSet<ProductComment> productComments { get; set; }
 
+        public DbSet<SiteSetting> SiteSettings { get; set; }
+
 
 
 

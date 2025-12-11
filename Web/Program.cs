@@ -14,7 +14,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     .GetConnectionString("a")));
 
 builder.Services.AddScoped<ICategory , CategoryService>();
-
+builder.Services.AddScoped<ISiteSetting, SiteSettingService>();
 
 var app = builder.Build();
 

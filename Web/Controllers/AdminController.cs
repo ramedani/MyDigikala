@@ -1,14 +1,39 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Application.DTO;
+using Application.Interface;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers
 {
     public class AdminController : Controller
     {
+        ISiteSetting isetting;
+        public AdminController(ISiteSetting _isetting) {
+            isetting=_isetting;
+
+
+        }
+
+
+
         // GET: AdminController
         public ActionResult Index()
         {
             return View();
+        }
+
+
+        public ActionResult Setting()
+        {
+            return View(isetting.Get());
+        }
+
+        [HttpPost]
+        public async Task< ActionResult> Setting(SiteSettingDTO obj)
+        {
+          await isetting.CreatOrUpdate(obj);
+
+            return View(obj);
         }
 
         // GET: AdminController/Details/5
