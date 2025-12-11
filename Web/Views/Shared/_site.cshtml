@@ -143,7 +143,7 @@
                 <h1 class="font-DanaMedium">
                     اولین خرید از کافئین همراه با 50% تخفیف
                 </h1>
-                <a href="shop.html"
+                <a asp-controller="Home" asp-action="Shop"
                    class="items-center gap-x-1 px-2 py-1 text-xs md:text-sm bg-green-500 hover:bg-green-600 rounded-full cursor-pointer transition-colors hidden sm:flex">
                     <p>فروشگاه</p>
                     <svg class="w-3 h-3">
@@ -164,7 +164,7 @@
         <nav class="w-full hidden md:flex shadow py-5 bg-white dark:bg-zinc-700">
             <div class="container flex items-center justify-between">
                 <!-- LOGO -->
-                <a href="index.html"
+                <a asp-controller="Home" asp-action="Index"
                    class="flex items-center gap-x-1 dark:text-brown-300 text-brown-600 font-MorabbaMedium text-xl lg:text-3xl">
                     <img src="~/home/public/Images/logo.png" alt="logo" class="w-6 h-6 " />
                     <h1>کافئین</h1>
@@ -172,23 +172,23 @@
                 <!-- MENU -->
                 <ul class="mt-2 flex items-center gap-x-4 lg:gap-x-10 font-DanaMedium lg:mr-30 xl:mr-32 child:z-30">
                     <li class="nav-item">
-                        <a href="index.html">صفحه اصلی</a>
+                        <a asp-controller="Home" asp-action="Index">صفحه اصلی</a>
                     </li>
                     <!-- ITEM HASE SUBMENU -->
                     <li class="relative group">
                         <div class="flex items-center flex-row gap-x-1">
-                            <a href="shop.html">فروشگاه</a>
+                            <a asp-controller="Home" asp-action="Shop">فروشگاه</a>
                             <svg class="w-4 h-4 transition-transform duration-300 group-hover:rotate-180">
                                 <use href="#chevron-down"></use>
                             </svg>
                         </div>
                         <!-- SUBMENU -->
                         <div class="absolute bg-white flex flex-col gap-y-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:top-10 transition-all delay-100 dark:bg-zinc-700 top-20 w-52 rounded border-t-2 border-green-500 p-5 text-base shadow-md child-hover:text-green-500 child:transition-all">
-                            <a href="shop.html">اسپرسو</a>
-                            <a href="shop.html">قهوه ترک</a>
-                            <a href="shop.html">قهوه فرانسه</a>
-                            <a href="shop.html">کپسول اسپرسو</a>
-                            <a href="shop.html">لوازم و تجهیزات</a>
+                            <a asp-controller="Home" asp-action="Shop">اسپرسو</a>
+                            <a asp-controller="Home" asp-action="Shop">قهوه ترک</a>
+                            <a asp-controller="Home" asp-action="Shop">قهوه فرانسه</a>
+                            <a asp-controller="Home" asp-action="Shop">کپسول اسپرسو</a>
+                            <a asp-controller="Home" asp-action="Shop">لوازم و تجهیزات</a>
                         </div>
                     </li>
                     <!-- ITEM HASE SUBMENU -->
@@ -284,7 +284,7 @@
                         </div>
                     </button>
                     <!-- LOGIN BTN -->
-                    <a href="login.html"
+                    <a asp-controller="Account" asp-action="Login"
                        class="hidden relative px-2 lg:px-3 py-2 items-center justify-end gap-x-1 text-white transition-colors bg-green-500 hover:bg-green-600 rounded-lg">
                         <svg class="h-5 w-5 flex rotate-180">
                             <use href="#arrow-left-start-on-rectangle"></use>
@@ -381,7 +381,7 @@
             <div class="mobile-menu fixed -right-64 top-0 bottom-0 w-64 bg-white dark:bg-zinc-700 z-50 shadow transition-all duration-300 px-4">
                 <!-- HEAADER -->
                 <div class="mt-3 flex items-center justify-between">
-                    <a href="index.html"
+                    <a asp-controller="Home" asp-action="Index"
                        class="flex items-center gap-x-1 dark:text-brown-300 text-brown-600 font-MorabbaMedium text-xl">
                         <img src="~/home/public/Images/logo.png" alt="logo" class="w-6 h-6" />
                         <h1>کافئین</h1>
@@ -398,7 +398,7 @@
                 <!-- MENU  -->
                 <ul class="flex flex-col gap-y-6 text-zinc-700 dark:text-white">
                     <li>
-                        <a href="index.html" class="flex items-center gap-x-2">
+                        <a asp-controller="Home" asp-action="Index" class="flex items-center gap-x-2">
                             <svg class="w-5 h-5">
                                 <use href="#home"></use>
                             </svg>
@@ -407,7 +407,7 @@
                     </li>
                     <li class="">
                         <div class="open-submenu flex w-full items-center justify-between">
-                            <a href="shop.html" class="transition-all flex items-center gap-x-2">
+                            <a asp-controller="Home" asp-action="Shop" class="transition-all flex items-center gap-x-2">
                                 <svg class="w-5 h-5">
                                     <use href="#shopping-bag"></use>
                                 </svg>
@@ -418,11 +418,11 @@
                             </svg>
                         </div>
                         <div class="submenu hidden flex-col gap-y-3 mt-3 child:text-sm mr-7">
-                            <a href="shop.html">اسپرسو</a>
-                            <a href="shop.html">قهوه ترک</a>
-                            <a href="shop.html">قهوه فرانسه</a>
-                            <a href="shop.html">کپسول اسپرسو</a>
-                            <a href="shop.html">لوازم و تجهیزات</a>
+                            <a asp-controller="Home" asp-action="Shop">اسپرسو</a>
+                            <a asp-controller="Home" asp-action="Shop">قهوه ترک</a>
+                            <a asp-controller="Home" asp-action="Shop">قهوه فرانسه</a>
+                            <a asp-controller="Home" asp-action="Shop">کپسول اسپرسو</a>
+                            <a asp-controller="Home" asp-action="Shop">لوازم و تجهیزات</a>
                         </div>
                     </li>
                     <li>
@@ -460,12 +460,12 @@
                         </svg>
                         حساب کاربری
                     </a>
-                    <!-- <a href="login.html" class="">
+                    <a asp-controller="Account" asp-action="Login" class="">
                         <svg class="w-5 h-5">
                             <use href="#arrow-left-start-on-rectangle"></use>
                         </svg>
                         ورود | ثبت نام
-                    </a> -->
+                    </a>
                     <button class="toggle-theme">
                         <span class="flex dark:hidden gap-x-1 items-center">
                             <svg class="w-6 h-6">
@@ -482,7 +482,7 @@
                     </button>
                 </div>
             </div>
-            <a href="index.html"
+            <a asp-controller="Home" asp-action="Index"
                class="flex items-center gap-x-1 dark:text-brown-300 text-brown-600 font-MorabbaMedium text-xl">
                 <img src="~/home/public/Images/logo.png" alt="logo" class="w-6 h-6" />
                 <h1>کافئین</h1>
@@ -498,7 +498,7 @@
 
     <main class="container child:mt-8">
         @RenderBody()
-    </main>
+        </main>
 
     <footer class="relative mt-14 lg:mt-32 text-gray-300 bg-zinc-800 pt-8">
 
@@ -527,7 +527,7 @@
             <div class="flex mt-8 items-center justify-between flex-col lg:flex-row gap-y-10 lg:gap-x-20 flex-wrap">
                 <div class="flex flex-col gap-y-2 w-full lg:w-[30%]">
                     <!-- LOGO -->
-                    <a href="index.html" class="text-green-500 transition-colors w-fit block">
+                    <a asp-controller="Home" asp-action="Index" class="text-green-500 transition-colors w-fit block">
                         <p class="font-MorabbaBold text-3xl">کافئین</p>
                         <p class="tracking-tighter">حس نو با قهوه...</p>
                     </a>
@@ -544,10 +544,10 @@
                     <div class="flex gap-x-10 child:space-y-2">
                         <ul class="child-hover:text-green-500 child:transition-all">
                             <li>
-                                <a href="index.html">صفحه اصلی</a>
+                                <a asp-controller="Home" asp-action="Index">صفحه اصلی</a>
                             </li>
                             <li>
-                                <a href="shop.html">فروشگاه</a>
+                                <a asp-controller="Home" asp-action="Shop">فروشگاه</a>
                             </li>
                             <li>
                                 <a href="contact-us.html">تماس با ما </a>
@@ -558,7 +558,7 @@
                         </ul>
                         <ul class="child-hover:text-green-500 child:transition-colors">
                             <li>
-                                <a href="login.html"> ثبت نام | ورود </a>
+                                <a asp-controller="Account" asp-action="Login"> ثبت نام | ورود </a>
                             </li>
                             <li>
                                 <a href="articles.html">وبلاگ</a>
@@ -619,13 +619,14 @@
             <div class="container  mt-12 py-2 flex flex-col lg:flex-row gap-y-2 lg:items-center lg:justify-between">
                 <p class="text-sm lg:text-base">
                     تمام حقوق این سایت متعلق به
-                    <a href="index.html" class="text-green-500 font-DanaMedium">کافئین</a>
+                    <a asp-controller="Home" asp-action="Index" class="text-green-500 font-DanaMedium">کافئین</a>
                     میباشد
                 </p>
                 <p class="text-sm">Copyright © 2024 Coffee. All rights reserved.</p>
             </div>
         </div>
     </footer>
+
 
 
     <!-- OVERLAY -->

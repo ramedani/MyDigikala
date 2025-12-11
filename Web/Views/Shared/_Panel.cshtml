@@ -8,9 +8,9 @@
     <!-- ==========================  FAVICON ============================= -->
     <link rel="icon" type="image/x-icon" href="~/home/public/Images/svg/favicon.png" />
     <!-- ==========================  STYLE APP ============================= -->
-    <link rel="stylesheet" href="~/home/public/styles/app.css" />
+    <link rel="stylesheet" href="~/home/public/Styles/app.css" />
     <!-- ==========================  SLIDER ============================= -->
-    <link rel="stylesheet" href="~/home/public/styles/swiper.css" />
+    <link rel="stylesheet" href="~/home/public/Styles/swiper.css" />
     <!-- ==========================  DARK MODE SCRPT ============================= -->
     <script type="text/javascript">
         if (
@@ -235,7 +235,8 @@
                 <ul class="relative mt-4 space-y-2 child:duration-300 child:transition-all child:p-2 child:flex child:items-center child:gap-x-2  child:cursor-pointer child:rounded-lg">
                     <li class="hover:bg-zinc-100 dark:hover:bg-zinc-600">
                         <svg class="w-5 h-5 ">
-                            <use href="#squares"></use>
+                        <use href="#squares"></use>
+                        </svg>
                             <a href="@Url.Action("dashboard", "Panel")">داشبورد</a>
                     </li>
                     <li class="hover:bg-zinc-100 dark:hover:bg-zinc-600">
@@ -351,7 +352,8 @@
                     <p class="font-DanaMedium block lg:hidden"> پارسا وصالی عزیز؛ خوش اومدی 🙌 </p>
                     <div class="grid grid-cols-12 gap-6 mt-6">
                         <div class="col-span-12">
-                           @RenderBody()
+                          @RenderBody()
+                               
                         </div>
                     </div>
                 </div>
@@ -365,7 +367,7 @@
     </div>
 
     <!-- ==========================  APP JS ============================= -->
-    <script src="~/home/public/scripts/Panel.js"></script>
+    <script src="~/home/public/Scripts/Panel.js"></script>
 </body>
 
 </html>

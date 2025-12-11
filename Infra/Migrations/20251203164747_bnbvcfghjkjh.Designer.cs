@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251203163624_startagain")]
-    partial class startagain
+    [Migration("20251203164747_bnbvcfghjkjh")]
+    partial class bnbvcfghjkjh
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,7 +54,7 @@ namespace Infra.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -85,7 +85,7 @@ namespace Infra.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Addcomment")
+                    b.Property<DateTime>("AddComment")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Comment")
@@ -95,7 +95,7 @@ namespace Infra.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<bool?>("Suggestion")
+                    b.Property<bool>("Suggestion")
                         .HasColumnType("bit");
 
                     b.Property<string>("Title")
@@ -110,7 +110,7 @@ namespace Infra.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductComments");
+                    b.ToTable("productComments");
                 });
 
             modelBuilder.Entity("Domain.ProductImage", b =>
@@ -162,13 +162,9 @@ namespace Infra.Migrations
 
             modelBuilder.Entity("Domain.Product", b =>
                 {
-                    b.HasOne("Domain.Category", "cat")
+                    b.HasOne("Domain.Category", null)
                         .WithMany("Prd")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("cat");
+                        .HasForeignKey("CategoryId");
                 });
 
             modelBuilder.Entity("Domain.ProductComment", b =>

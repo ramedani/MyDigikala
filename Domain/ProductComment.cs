@@ -12,10 +12,9 @@ namespace Domain
         public int Id { get; set; }
         public string Title { get; set; }
         public string Comment { get; set; }
-        public bool? Suggestion { get; set; }
+        public bool Suggestion { get; set; }
         public string Username { get; set; }
-        public DateTime Addcomment { get; set; }
-
+        public DateTime AddComment { get; set; }
         [ForeignKey("prd")]
         public int ProductId { get; set; }
         public Product prd { get; set; }

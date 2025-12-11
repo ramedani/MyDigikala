@@ -11,9 +11,11 @@ namespace Infra
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
-
         public DbSet<SlideShow> SlideShows { get; set; }
+        public DbSet<ProductComment> productComments { get; set; }
 
-        public DbSet<ProductComment> ProductComments { get; set; }
+
+
+
     }
 }

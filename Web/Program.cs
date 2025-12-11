@@ -13,7 +13,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration
     .GetConnectionString("a")));
 
-builder.Services.AddScoped<ICategory, CategoryService>();
+builder.Services.AddScoped<ICategory , CategoryService>();
 
 
 var app = builder.Build();

@@ -7,15 +7,13 @@ using System.Threading.Tasks;
 
 namespace Application.DTO
 {
-    public class CreateCategoryDto
+    public class CreateCategoryDTO
     {
         [Required(ErrorMessage ="نام اجباری است")]
         [StringLength(100)]
         public string Name { get; set; }
-
-        [Required(ErrorMessage = "نام اجباری است")]
+        [Required(ErrorMessage ="تصویر اجباری است")]
         public string Picture { get; set; }
+       
     }
-
-
 }
