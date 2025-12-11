@@ -9,77 +9,105 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Web
 build_property.RootNamespace = Web
-build_property.ProjectDir = D:\pishrafteh\MyDigikala\Web\
+build_property.ProjectDir = /home/ramedani/0dibagran/project/MyDigikala/Web/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 7.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = D:\pishrafteh\MyDigikala\Web
+build_property.MSBuildProjectDirectory = /home/ramedani/0dibagran/project/MyDigikala/Web
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 7.0
 build_property.EnableCodeStyleSeverity = 
 
-[D:/pishrafteh/MyDigikala/Web/Views/Admin/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSW5kZXguY3NodG1s
+[/home/ramedani/0dibagran/project/MyDigikala/Web/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Mb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/pishrafteh/MyDigikala/Web/Views/Home/CrCt.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDckN0LmNzaHRtbA==
+[/home/ramedani/0dibagran/project/MyDigikala/Web/Views/Account/Signup.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9TaWdudXAuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/pishrafteh/MyDigikala/Web/Views/Home/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+[/home/ramedani/0dibagran/project/MyDigikala/Web/Views/Admin/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/pishrafteh/MyDigikala/Web/Views/Home/Privacy.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+[/home/ramedani/0dibagran/project/MyDigikala/Web/Views/Home/CrCt.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9DckN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/pishrafteh/MyDigikala/Web/Views/Panel/alaghe_mandi.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFuZWxcYWxhZ2hlX21hbmRpLmNzaHRtbA==
+[/home/ramedani/0dibagran/project/MyDigikala/Web/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/pishrafteh/MyDigikala/Web/Views/Panel/dashboard.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFuZWxcZGFzaGJvYXJkLmNzaHRtbA==
+[/home/ramedani/0dibagran/project/MyDigikala/Web/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/pishrafteh/MyDigikala/Web/Views/Panel/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFuZWxcSW5kZXguY3NodG1s
+[/home/ramedani/0dibagran/project/MyDigikala/Web/Views/Home/Shop.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9TaG9wLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/pishrafteh/MyDigikala/Web/Views/Panel/sefaresh.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFuZWxcc2VmYXJlc2guY3NodG1s
+[/home/ramedani/0dibagran/project/MyDigikala/Web/Views/Panel/alaghe_mandi.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGFuZWwvYWxhZ2hlX21hbmRpLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/pishrafteh/MyDigikala/Web/Views/Shared/Error.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+[/home/ramedani/0dibagran/project/MyDigikala/Web/Views/Panel/dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGFuZWwvZGFzaGJvYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/pishrafteh/MyDigikala/Web/Views/Shared/_admin.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9hZG1pbi5jc2h0bWw=
+[/home/ramedani/0dibagran/project/MyDigikala/Web/Views/Panel/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGFuZWwvSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/pishrafteh/MyDigikala/Web/Views/Shared/_panel.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9wYW5lbC5jc2h0bWw=
+[/home/ramedani/0dibagran/project/MyDigikala/Web/Views/Panel/sefaresh.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGFuZWwvc2VmYXJlc2guY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/pishrafteh/MyDigikala/Web/Views/Shared/_site.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9zaXRlLmNzaHRtbA==
+[/home/ramedani/0dibagran/project/MyDigikala/Web/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/pishrafteh/MyDigikala/Web/Views/Shared/_ValidationScriptsPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+[/home/ramedani/0dibagran/project/MyDigikala/Web/Views/Shared/_Admin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19BZG1pbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/pishrafteh/MyDigikala/Web/Views/_ViewImports.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+[/home/ramedani/0dibagran/project/MyDigikala/Web/Views/Shared/_Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/pishrafteh/MyDigikala/Web/Views/_ViewStart.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+[/home/ramedani/0dibagran/project/MyDigikala/Web/Views/Shared/_Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19Mb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/pishrafteh/MyDigikala/Web/Views/Shared/_Layout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = b-lzldzk1rll
+[/home/ramedani/0dibagran/project/MyDigikala/Web/Views/Shared/_Panel.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19QYW5lbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/ramedani/0dibagran/project/MyDigikala/Web/Views/Shared/_Shop.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19TaG9wLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/ramedani/0dibagran/project/MyDigikala/Web/Views/Shared/_signup.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19zaWdudXAuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/ramedani/0dibagran/project/MyDigikala/Web/Views/Shared/_site.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19zaXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/ramedani/0dibagran/project/MyDigikala/Web/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/ramedani/0dibagran/project/MyDigikala/Web/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/ramedani/0dibagran/project/MyDigikala/Web/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/ramedani/0dibagran/project/MyDigikala/Web/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-znl52p88st
