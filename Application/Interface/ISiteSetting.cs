@@ -31,11 +31,15 @@ namespace Application.Interface
             {
                 var Setting = new SiteSetting()
                 {
-                   Title= dto.Title,
-                   Description= dto.Description,
-                   KeyWord= dto.KeyWord,
-                   Tel=dto.Tel,
-                   icon=dto.icon
+                    Title = dto.Title,
+                    Description = dto.Description,
+                    KeyWord = dto.KeyWord,
+                    icon = dto.icon,
+                    Logo = dto.Logo,
+                    Address = dto.Address,
+                    Tel = dto.Tel,
+                    Mobile = dto.Mobile,
+                    Email = dto.Email,
                 };
 
                 mydb.Add(Setting);
@@ -47,6 +51,12 @@ namespace Application.Interface
                 result.Title = dto.Title;
                 result.Description = dto.Description;
                 result.KeyWord = dto.KeyWord;
+                result.icon = dto.icon;
+                result.Logo = dto.Logo;
+                result.Address = dto.Address;
+                result.Tel = dto.Tel;
+                result.Mobile = dto.Mobile;
+                result.Email = dto.Email;
                 await mydb.SaveChangesAsync();
                 return result.Id;
 
@@ -62,7 +72,12 @@ namespace Application.Interface
                 info.Title = result.Title;
                 info.Description = result.Description;
                 info.KeyWord = result.KeyWord;
+                info.icon = result.icon;
+                info.Logo = result.Logo;
+                info.Address = result.Address;
                 info.Tel = result.Tel;
+                info.Mobile = result.Mobile;
+                info.Email = result.Email;
 
             }
 

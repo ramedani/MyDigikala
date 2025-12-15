@@ -4,17 +4,19 @@ using Web.Models;
 using Application.DTO;
 using Application.Interface;
 using System.Threading.Tasks;
+using Infra;
 namespace Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private ICategory icat;
-
-        public HomeController(ILogger<HomeController> logger , ICategory _icat)
+        private AppDbContext mydb;
+        public HomeController(ILogger<HomeController> logger , ICategory _icat,AppDbContext _mydb)
         {
             _logger = logger;
             icat = _icat;
+            mydb = _mydb;
         }
 
         public IActionResult Index()
@@ -24,6 +26,11 @@ namespace Web.Controllers
         public IActionResult Shop()
         {
             return View();
+        }
+        public ActionResult aboutus()
+        {
+            var setting=mydb.SiteSettings.FirstOrDefault();
+            return View(setting);
         }
         public ActionResult CrCt()
         {
