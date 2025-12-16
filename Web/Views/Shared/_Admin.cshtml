@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="~/Admin/app-assets/css-rtl/custom-rtl.css">
     <link rel="stylesheet" type="text/css" href="~/Admin/assets/css/style-rtl.css">
     <!-- END: Custom CSS-->
-
+    @RenderSection("Scripts", required: false)
 </head>
 <!-- END: Head-->
 <!-- BEGIN: Body-->
@@ -782,6 +782,7 @@
     <!-- BEGIN: Page JS-->
     <!-- END: Page JS-->
 
+    @RenderSection("css", required: false)
 </body>
 <!-- END: Body-->
 

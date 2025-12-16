@@ -15,6 +15,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<ICategory , CategoryService>();
 builder.Services.AddScoped<ISiteSetting, SiteSettingService>();
+builder.Services.AddScoped<IProducts, ProductService>();
 
 var app = builder.Build();
 
