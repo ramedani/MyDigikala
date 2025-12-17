@@ -62,6 +62,17 @@ namespace Web.Controllers
                 return RedirectToAction(nameof(AddProduct), new { id = dto.Id });
             }
         }
+        public async Task<IActionResult> ProductList()
+        {
+            // سرویس لیست DTO برمی‌گرداند که بسیار سبک است
+            var products = await iproduct.GetAll();
+            return View(products);
+        }
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            await iproduct.Delete(id);
+            return RedirectToAction(nameof(ProductList));
+        }
 
 
         // GET: AdminController

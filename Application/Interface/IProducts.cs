@@ -17,10 +17,12 @@ namespace Application.Interface
 
     public interface IProducts
     {
-        // نام متد را یکسان کردیم
+ 
         Task<int> CreateProductAsync(CreateProductsDTO dto);
         Task<CreateProductsDTO> GetForEdit(int id);
         Task Update(CreateProductsDTO dto);
+        Task<List<ProductListDto>> GetAll();
+        Task Delete(int id);
     }
 
     public class ProductService : IProducts
@@ -33,6 +35,19 @@ namespace Application.Interface
             mydb = _mydb;
             _env = env;
         }
+        public async Task<List<ProductListDto>> GetAll()
+        {
+            return await mydb.Products
+                .OrderByDescending(p => p.Id)
+                .Select(p => new ProductListDto
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Price = p.Price,
+       
+                })
+                .ToListAsync();
+        }
 
         // نام متد را با اینترفیس هماهنگ کردیم
         public async Task<int> CreateProductAsync(CreateProductsDTO dto)
@@ -42,7 +57,8 @@ namespace Application.Interface
             {
                 Title = dto.Title,
                 Description = dto.Description,
-                Price = dto.Price
+                Price = dto.Price,
+                Invoice =  dto.Invoice
                 // IsActive = true, // اگر فیلد فعال بودن دارید
                 // CreateDate = DateTime.Now // اگر BaseEntity ندارید
             };
@@ -101,7 +117,7 @@ namespace Application.Interface
                 Id = p.Id,
                 Title = p.Title,
                 Description = p.Description,
-           
+                Invoice =  p.Invoice,
                 Price = p.Price,
           
                 // تبدیل رنگ‌های موجود به لیست ID
@@ -130,7 +146,7 @@ namespace Application.Interface
             // 1. آپدیت فیلدها
             product.Title = dto.Title;
             product.Description = dto.Description;
-
+            product.Invoice = dto.Invoice;
             product.Price = dto.Price;
   
 
@@ -164,6 +180,17 @@ namespace Application.Interface
             // 4. مدیریت عکس اصلی (Primary Image)
            
         }
+        public async Task Delete(int id)
+        {
+            var product = await mydb.Products.FindAsync(id);
+            if (product != null)
+            {
+                // عکس‌ها رو هم پاک کنیم؟ یا فقط رکورد؟
+                // فعلا ساده پاک می‌کنیم. EF خودش Cascade Delete می‌کنه معمولا.
+                mydb.Products.Remove(product);
+                await mydb.SaveChangesAsync();
+            }
+        }
 
 
 
@@ -177,7 +204,10 @@ namespace Application.Interface
 
 
 
-
+        
+        
+        
+        
 
 
         // متد خصوصی برای آپلود داخل همین سرویس
@@ -194,7 +224,7 @@ namespace Application.Interface
             var fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
             var fileName = $"{Guid.NewGuid()}{fileExtension}";
 
-            // مسیر ذخیره‌سازی: wwwroot/upload
+          
             var uploadPath = Path.Combine(_env.WebRootPath, "upload");
 
             if (!Directory.Exists(uploadPath))
@@ -215,7 +245,7 @@ namespace Application.Interface
         }
     }
 
-    // کلاس کمکی استاتیک (بهتر است در لایه Infra باشد اما اینجا هم کار می‌کند)
+    // کلاس کمکی استاتیک (بهتر است در لایه Infra باشد )
     public static class FileUploadHelper
     {
         private static readonly Dictionary<string, List<byte[]>> _fileSignature =
@@ -267,7 +297,6 @@ namespace Application.Interface
 
             var fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
 
-            // اصلاح ارور 2: عملگر || اضافه شد
             if (string.IsNullOrEmpty(fileExtension) || !_allowedExtensions.Contains(fileExtension))
             {
                 return new FileUploadValidationResultDto
@@ -307,9 +336,6 @@ namespace Application.Interface
                     }
                     else
                     {
-                        // باید استریم را ریست کنیم یا با دقت بخوانیم
-                        // چون reader قبلا چند بایت خوانده، موقعیت تغییر کرده.
-                        // برای سادگی اینجا دوباره بافر را پر می‌کنیم از اول
                         stream.Position = 0;
                         byte[] buffer = new byte[12];
                         stream.Read(buffer, 0, 12);
