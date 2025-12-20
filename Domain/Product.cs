@@ -18,6 +18,10 @@ namespace Domain
 
         public List<ProductImage>? images { get; set; }
 
+        [ForeignKey("category")]
+        public int CategoryId { get; set; }
+        public Category? category { get; set; }
+
 
     }
 }

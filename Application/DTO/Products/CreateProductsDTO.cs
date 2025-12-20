@@ -16,6 +16,10 @@ namespace Application.DTO
         public decimal Price { get; set; }
         public float Invoice { get; set; }
         public List<IFormFile>? images { get; set; }
+
+        public int CategoryId { get; set; }
+
+
         public List<ProductImageDto> ExistingImages { get; set; } = new();
     }
     public class ProductImageDto
