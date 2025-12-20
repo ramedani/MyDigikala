@@ -25,7 +25,7 @@ namespace Web.Controllers
                 // >> مهمترین بخش <<
                 // اینجا یک شیء خالی ولی غیر-null به ویو پاس داده می‌شود.
                 // نام ویو "AddProduct" است تا با فایل شما مطابقت داشته باشد.
-                return View("AddProduct", new CreateProductsDTO());
+                return View("AddProduct", new EditProductDto());
             }
 
             // حالت ویرایش محصول موجود
@@ -43,7 +43,7 @@ namespace Web.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> AddProduct(CreateProductsDTO dto)
+        public async Task<IActionResult> AddProduct(EditProductDto dto)
         {
             if (!ModelState.IsValid)
             {

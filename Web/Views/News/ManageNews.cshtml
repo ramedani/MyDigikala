@@ -1,0 +1,44 @@
+@model Application.DTO.EditNewsDto
+@{
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<!-- نمایش لیست خطاها برای اینکه بفهمیم چرا ذخیره نمی‌شود -->
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(x => x.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}
+
+<form asp-action="ManageNews" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id" />
+    
+    <!-- موقتاً یک مقدار پیش‌فرض بدهید تا فرم رد نشود -->
+    <!-- بعداً باید این را به یک <select> تبدیل کنید -->
+    <input type="hidden" asp-for="NewsCategoryId" value="1" /> 
+
+    <div class="form-group">
+        <label>عنوان:</label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>نویسنده:</label>
+        <input asp-for="AuthorName" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>عکس:</label>
+        <!-- نام اینپوت باید دقیقاً با نام پراپرتی در DTO یکی باشد -->
+        <input type="file" name="Image" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3">ثبت خبر</button>
+</form>

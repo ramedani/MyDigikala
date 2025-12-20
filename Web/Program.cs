@@ -3,20 +3,39 @@ using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 using System;
 using Infra;
 using Application.Interface;
+using Application.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+
 builder.Services.AddControllersWithViews();
+var useSqlServer = builder.Configuration.GetValue<bool>("UseSqlServer");
+
+
+var connectionString = useSqlServer 
+    ? builder.Configuration.GetConnectionString("SqlServerConnection") 
+    : builder.Configuration.GetConnectionString("PostgresConnection"); 
+
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration
-    .GetConnectionString("a")));
+{
+    if (useSqlServer)
+    {
+       
+        options.UseSqlServer(connectionString);
+    }
+    else
+    {
+        options.UseNpgsql(connectionString);
+    }
+});
+
 
 builder.Services.AddScoped<ICategory , CategoryService>();
 builder.Services.AddScoped<ISiteSetting, SiteSettingService>();
 builder.Services.AddScoped<IProducts, ProductService>();
-
+builder.Services.AddScoped<INews, NewsService>();
+builder.Services.AddScoped<IFileSecurityHelper, FileSecurityHelper>(); 
 var app = builder.Build();
 
 

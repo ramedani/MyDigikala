@@ -1,7 +1,7 @@
-﻿using Application.DTO; // مطمئن شوید این namespace درست است
-using Domain;         // مطمئن شوید این namespace درست است
-using Infra;          // اگر کلاسی از اینجا استفاده می‌کنید
-
+﻿using Application.DTO; 
+using Domain;         
+using Infra;          
+using Application.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
@@ -19,8 +19,8 @@ namespace Application.Interface
     {
  
         Task<int> CreateProductAsync(CreateProductsDTO dto);
-        Task<CreateProductsDTO> GetForEdit(int id);
-        Task Update(CreateProductsDTO dto);
+        Task<EditProductDto> GetForEdit(int id);
+        Task Update(EditProductDto dto);
         Task<List<ProductListDto>> GetAll();
         Task Delete(int id);
     }
@@ -29,11 +29,12 @@ namespace Application.Interface
     {
         private readonly AppDbContext mydb;
         private readonly IWebHostEnvironment _env;
-
-        public ProductService(AppDbContext _mydb, IWebHostEnvironment env)
+        private readonly IFileSecurityHelper _fileHelper;
+        public ProductService(AppDbContext _mydb, IWebHostEnvironment env,IFileSecurityHelper fileHelper)
         {
             mydb = _mydb;
             _env = env;
+            _fileHelper = fileHelper;
         }
         public async Task<List<ProductListDto>> GetAll()
         {
@@ -77,7 +78,7 @@ namespace Application.Interface
                         try
                         {
                             // آپلود امن فایل
-                            var fileName = await SecureUploadFileAsync(file);
+                            var fileName = await _fileHelper.SecureUploadAsync(file, _env.WebRootPath, "upload");
 
                             // اولین عکس به عنوان عکس اصلی؟ (اختیاری)
                             // bool isFirst = !mydb.ProductImages.Any(x => x.ProductId == product.Id);
@@ -103,7 +104,7 @@ namespace Application.Interface
         }
 
 
-        public async Task<CreateProductsDTO> GetForEdit(int id)
+        public async Task<EditProductDto> GetForEdit(int id)
         {
             var p = await mydb.Products
                 .Include(x => x.images)
@@ -112,7 +113,7 @@ namespace Application.Interface
 
             if (p == null) return null;
 
-            return new CreateProductsDTO
+            return new EditProductDto
             {
                 Id = p.Id,
                 Title = p.Title,
@@ -134,7 +135,7 @@ namespace Application.Interface
             };
         }
 
-        public async Task Update(CreateProductsDTO dto)
+        public async Task Update(EditProductDto dto)
         {
             var product = await mydb.Products
      
@@ -160,7 +161,7 @@ namespace Application.Interface
                 {
                     try
                     {
-                        var fileName = await SecureUploadFileAsync(file);
+                        var fileName = await _fileHelper.SecureUploadAsync(file, _env.WebRootPath, "upload");
                         mydb.ProductImages.Add(new ProductImage
                         {
                             ProductId = product.Id,
@@ -205,154 +206,5 @@ namespace Application.Interface
 
 
         
-        
-        
-        
-
-
-        // متد خصوصی برای آپلود داخل همین سرویس
-        private async Task<string> SecureUploadFileAsync(IFormFile file)
-        {
-            // 1. اعتبارسنجی فایل
-            var validationResult = await FileUploadHelper.ValidateFileAsync(file);
-            if (!validationResult.IsValid)
-            {
-                throw new ArgumentException(validationResult.ErrorMessage);
-            }
-
-            // 2. ساخت نام یکتا
-            var fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
-            var fileName = $"{Guid.NewGuid()}{fileExtension}";
-
-          
-            var uploadPath = Path.Combine(_env.WebRootPath, "upload");
-
-            if (!Directory.Exists(uploadPath))
-            {
-                Directory.CreateDirectory(uploadPath);
-            }
-
-            var filePath = Path.Combine(uploadPath, fileName);
-
-            // 3. ذخیره فایل
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-            }
-
-            // برگرداندن مسیر نسبی (برای نمایش در HTML)
-            return $"/upload/{fileName}";
-        }
-    }
-
-    // کلاس کمکی استاتیک (بهتر است در لایه Infra باشد )
-    public static class FileUploadHelper
-    {
-        private static readonly Dictionary<string, List<byte[]>> _fileSignature =
-            new Dictionary<string, List<byte[]>>
-            {
-                { ".png", new List<byte[]> { new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A } } },
-                { ".jpeg", new List<byte[]>
-                    {
-                        new byte[] { 0xFF, 0xD8, 0xFF, 0xE0 },
-                        new byte[] { 0xFF, 0xD8, 0xFF, 0xE1 },
-                        new byte[] { 0xFF, 0xD8, 0xFF, 0xE8 }
-                    }
-                },
-                { ".jpg", new List<byte[]>
-                    {
-                        new byte[] { 0xFF, 0xD8, 0xFF, 0xE0 },
-                        new byte[] { 0xFF, 0xD8, 0xFF, 0xE1 },
-                        new byte[] { 0xFF, 0xD8, 0xFF, 0xE8 }
-                    }
-                },
-                { ".gif", new List<byte[]> { new byte[] { 0x47, 0x49, 0x46, 0x38 } } },
-                { ".webp", new List<byte[]>
-                    {
-                        new byte[] { 0x52, 0x49, 0x46, 0x46 }, // RIFF
-                    }
-                }
-            };
-
-        private static readonly string[] _allowedExtensions = { ".png", ".jpeg", ".jpg", ".gif", ".webp" };
-        private static readonly string[] _allowedMimeTypes = { "image/jpeg", "image/png", "image/gif", "image/webp" };
-        private const int MaxFileSizeInBytes = 5 * 1024 * 1024; // 5 MB
-
-        public static async Task<FileUploadValidationResultDto> ValidateFileAsync(IFormFile file)
-        {
-            // اصلاح ارور 1: عملگر || اضافه شد
-            if (file == null || file.Length == 0)
-            {
-                return new FileUploadValidationResultDto { IsValid = false, ErrorMessage = "فایل خالی است." };
-            }
-
-            if (file.Length > MaxFileSizeInBytes)
-            {
-                return new FileUploadValidationResultDto
-                {
-                    IsValid = false,
-                    ErrorMessage = $"حجم فایل نباید بیشتر از 5 مگابایت باشد."
-                };
-            }
-
-            var fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
-
-            if (string.IsNullOrEmpty(fileExtension) || !_allowedExtensions.Contains(fileExtension))
-            {
-                return new FileUploadValidationResultDto
-                {
-                    IsValid = false,
-                    ErrorMessage = "فرمت فایل مجاز نیست."
-                };
-            }
-
-            if (!_allowedMimeTypes.Contains(file.ContentType.ToLowerInvariant()))
-            {
-                return new FileUploadValidationResultDto
-                { IsValid = false, ErrorMessage = "نوع محتوا (MIME) معتبر نیست." };
-            }
-
-            // بررسی Magic Bytes
-            using (var stream = file.OpenReadStream())
-            using (var reader = new BinaryReader(stream))
-            {
-                if (!_fileSignature.ContainsKey(fileExtension))
-                {
-                    return new FileUploadValidationResultDto { IsValid = false, ErrorMessage = "فرمت ناشناخته." };
-                }
-
-                var signatures = _fileSignature[fileExtension];
-                var headerBytes = reader.ReadBytes(signatures.Max(m => m.Length));
-
-                bool isSignatureValid = signatures.Any(signature =>
-                    headerBytes.Take(signature.Length).SequenceEqual(signature));
-
-                // منطق WebP
-                if (fileExtension == ".webp" && isSignatureValid)
-                {
-                    if (file.Length < 12)
-                    {
-                        isSignatureValid = false;
-                    }
-                    else
-                    {
-                        stream.Position = 0;
-                        byte[] buffer = new byte[12];
-                        stream.Read(buffer, 0, 12);
-
-                        // چک کردن WEBP
-                        isSignatureValid = buffer[8] == 0x57 && buffer[9] == 0x45 && buffer[10] == 0x42 && buffer[11] == 0x50;
-                    }
-                }
-
-                if (!isSignatureValid)
-                {
-                    return new FileUploadValidationResultDto
-                    { IsValid = false, ErrorMessage = "فایل معتبر نیست (Signature mismatch)." };
-                }
-            }
-
-            return new FileUploadValidationResultDto { IsValid = true };
-        }
     }
 }
