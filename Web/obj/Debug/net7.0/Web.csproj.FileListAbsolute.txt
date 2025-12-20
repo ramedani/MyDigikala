@@ -520,3 +520,16 @@ D:\pishrafteh\MyDigikala\Web\obj\Debug\net7.0\refint\Web.dll
 D:\pishrafteh\MyDigikala\Web\obj\Debug\net7.0\Web.pdb
 D:\pishrafteh\MyDigikala\Web\obj\Debug\net7.0\Web.genruntimeconfig.cache
 D:\pishrafteh\MyDigikala\Web\obj\Debug\net7.0\ref\Web.dll
+D:\pishrafteh\MyDigikala\Web\obj\Debug\net7.0\Web.MvcApplicationPartsAssemblyInfo.cs
+D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\Microsoft.Extensions.Configuration.Abstractions.dll
+D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\Microsoft.Extensions.Diagnostics.Abstractions.dll
+D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\Microsoft.Extensions.FileProviders.Abstractions.dll
+D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\Microsoft.Extensions.Hosting.Abstractions.dll
+D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\Microsoft.Extensions.ObjectPool.dll
+D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\Microsoft.Extensions.Options.dll
+D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\Microsoft.Extensions.Primitives.dll
+D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\System.Diagnostics.DiagnosticSource.dll
+D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\System.Text.Encodings.Web.dll
+D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\runtimes\browser\lib\net7.0\System.Text.Encodings.Web.dll

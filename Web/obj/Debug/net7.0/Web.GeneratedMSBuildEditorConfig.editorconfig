@@ -52,8 +52,68 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDckN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/pishrafteh/MyDigikala/Web/Views/Home/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxFcnJvci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/pishrafteh/MyDigikala/Web/Views/Home/fivehundred.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxmaXZlaHVuZHJlZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/pishrafteh/MyDigikala/Web/Views/Home/fivehundredandfour.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxmaXZlaHVuZHJlZGFuZGZvdXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/pishrafteh/MyDigikala/Web/Views/Home/fivehundredandone.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxmaXZlaHVuZHJlZGFuZG9uZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/pishrafteh/MyDigikala/Web/Views/Home/fivehundredandthree.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxmaXZlaHVuZHJlZGFuZHRocmVlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/pishrafteh/MyDigikala/Web/Views/Home/fivehundredandtwo.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxmaXZlaHVuZHJlZGFuZHR3by5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/pishrafteh/MyDigikala/Web/Views/Home/forhundred.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxmb3JodW5kcmVkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/pishrafteh/MyDigikala/Web/Views/Home/forhundredandeight.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxmb3JodW5kcmVkYW5kZWlnaHQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/pishrafteh/MyDigikala/Web/Views/Home/forhundredandfive.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxmb3JodW5kcmVkYW5kZml2ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/pishrafteh/MyDigikala/Web/Views/Home/forhundredandnine.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxmb3JodW5kcmVkYW5kbmluZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/pishrafteh/MyDigikala/Web/Views/Home/forhundredandten.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxmb3JodW5kcmVkYW5kdGVuLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/pishrafteh/MyDigikala/Web/Views/Home/forhundredandtwentynine.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxmb3JodW5kcmVkYW5kdHdlbnR5bmluZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/pishrafteh/MyDigikala/Web/Views/Home/forhundredandtwentytwo.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxmb3JodW5kcmVkYW5kdHdlbnR5dHdvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/pishrafteh/MyDigikala/Web/Views/Home/forhundredandtwo.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxmb3JodW5kcmVkYW5kdHdvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/pishrafteh/MyDigikala/Web/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/pishrafteh/MyDigikala/Web/Views/Home/NotFound.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxOb3RGb3VuZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/pishrafteh/MyDigikala/Web/Views/Home/Privacy.cshtml]
@@ -78,6 +138,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/pishrafteh/MyDigikala/Web/Views/Panel/sefaresh.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFuZWxcc2VmYXJlc2guY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/pishrafteh/MyDigikala/Web/Views/Product/AddProduct.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxBZGRQcm9kdWN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/pishrafteh/MyDigikala/Web/Views/Shared/Error.cshtml]

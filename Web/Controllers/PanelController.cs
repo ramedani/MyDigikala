@@ -33,18 +33,7 @@ namespace Web.Controllers
 
 
 
-        public ActionResult dashboard()
-        {
-            return View();
-        }
-        public ActionResult sefaresh()
-        {
-            return View();
-        }
-        public ActionResult alaghe_mandi()
-        {
-            return View();
-        }
+     
 
 
         // GET: PanelController/Create
