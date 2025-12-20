@@ -5,25 +5,32 @@ namespace Web.Controllers
 {
     public class AccountController : Controller
     {
-        // GET: AccountController
+        // GET: AcountController
         public ActionResult Index()
         {
             return View();
         }
-
-        // GET: AccountController/Details/5
+        public ActionResult Login()
+        {
+            return View();
+        }
+        public ActionResult Signup()
+        {
+            return View();
+        }
+        // GET: AcountController/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: AccountController/Create
+        // GET: AcountController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: AccountController/Create
+        // POST: AcountController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -38,13 +45,13 @@ namespace Web.Controllers
             }
         }
 
-        // GET: AccountController/Edit/5
+        // GET: AcountController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: AccountController/Edit/5
+        // POST: AcountController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -59,13 +66,13 @@ namespace Web.Controllers
             }
         }
 
-        // GET: AccountController/Delete/5
+        // GET: AcountController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: AccountController/Delete/5
+        // POST: AcountController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)

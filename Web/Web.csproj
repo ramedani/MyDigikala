@@ -22,7 +22,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Infra\Infra.csproj" />
-	<ProjectReference Include="..\Application\Application.csproj" />
+	  <ProjectReference Include="..\Application\Application.csproj" />
+
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Admin\app-assets\.DS_Store" />
   </ItemGroup>
 
 </Project>

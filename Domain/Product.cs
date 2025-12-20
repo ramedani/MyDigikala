@@ -14,13 +14,10 @@ namespace Domain
         public string? Description { get; set; }
         public decimal Price { get; set; }
         public float Invoice { get; set; }
-
-
         public List<ProductComment>? prdcmt { get; set; }
+
         public List<ProductImage>? images { get; set; }
 
-        [ForeignKey("cat")]
-        public int CategoryId { get; set; }
-        public Category cat { get; set; }
+
     }
 }

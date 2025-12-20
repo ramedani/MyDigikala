@@ -13,8 +13,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration
     .GetConnectionString("a")));
 
-builder.Services.AddScoped<ICategory, CategoryService>();
-
+builder.Services.AddScoped<ICategory , CategoryService>();
+builder.Services.AddScoped<ISiteSetting, SiteSettingService>();
+builder.Services.AddScoped<IProducts, ProductService>();
 
 var app = builder.Build();
 
