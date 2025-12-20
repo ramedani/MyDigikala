@@ -5,6 +5,8 @@ using Application.DTO;
 using Application.Interface;
 using System.Threading.Tasks;
 using Infra;
+using Microsoft.AspNetCore.Http;
+
 namespace Web.Controllers
 {
     public class HomeController : Controller
@@ -49,10 +51,21 @@ namespace Web.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+
+
+		[Route("Home/Error/{statusCode?}")]
+		public IActionResult Error(int? statusCode)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+			if (statusCode == 404)
+			{
+				// نمایش ویوی اختصاصی ۴۰۴
+				return View("NotFound");
+			}
+
+			// نمایش ویوی خطای عمومی (برای ۵۰۰ و سایر خطاها)
+			return View("Error");
+		}
+
+
     }
 }

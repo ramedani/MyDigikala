@@ -7,12 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Infra;
 using Domain;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Interface
 {
     public interface ICategory
     {
-        Task<List<CreateCategoryDTO>> GetAll();
+        Task<SelectList> GetAll();
         Task<CreateCategoryDTO> Get(int id);
         Task<int> Creat(CreateCategoryDTO dto);
     }
@@ -41,9 +43,10 @@ namespace Application.Interface
             throw new NotImplementedException();
         }
 
-        public Task<List<CreateCategoryDTO>> GetAll()
+        public async Task<SelectList> GetAll()
         {
-            throw new NotImplementedException();
-        }
+            var listdata =await mydb.Categories.Select(p =>new { p.Id,p.Name}).ToListAsync();
+			return new SelectList(listdata,"Id","Name");
+		}
     }
 }

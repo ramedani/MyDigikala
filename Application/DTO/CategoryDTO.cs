@@ -16,4 +16,7 @@ namespace Application.DTO
         public string Picture { get; set; }
        
     }
+
+
+
 }
