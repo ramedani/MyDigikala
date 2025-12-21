@@ -35,6 +35,7 @@ builder.Services.AddScoped<ICategory , CategoryService>();
 builder.Services.AddScoped<ISiteSetting, SiteSettingService>();
 builder.Services.AddScoped<IProducts, ProductService>();
 builder.Services.AddScoped<INews, NewsService>();
+builder.Services.AddScoped<INewsCategory, NewsCategoryService>();
 builder.Services.AddScoped<IFileSecurityHelper, FileSecurityHelper>(); 
 var app = builder.Build();
 

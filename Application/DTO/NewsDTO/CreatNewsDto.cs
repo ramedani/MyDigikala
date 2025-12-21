@@ -1,13 +1,18 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 
 namespace Application.DTO;
 
 public class CreatNewsDto
 {
+    [Required(ErrorMessage = "نام اجباری است")]
+    [StringLength(50)]
     public string Title { get; set; }
     public string AuthorName { get; set; }
+    public bool IsFeatured { get; set; }
+    public bool IsActive { get; set; }
     public int? NewsCategoryId { get; set; }
-    public IFormFile? Images { get; set; } 
+    public IFormFile? NewsImageMain { get; set; } 
     public List<CreateArticleBlockDto>? NewsBlocks { get; set; }
 }
 
@@ -26,26 +31,41 @@ public class CreateArticleBlockDto
 public class EditNewsDto : CreatNewsDto
 {
     public int Id { get; set; }
-    public string? CurrentPicUrl { get; set; } 
+    public string? CurrentPicUrl { get; set; }
     
 }
 
 
-// نمونه json تولید شده از این DTO 
+// نمونه json تولید شده موقع ساخت خبر 
+/*
+ 
+{
+    "title": "ASP.NET Core Best Practices",
+    "authorName": "پارسا صفی لیان",
+    "isFeatured": true,
+    "isActive": true,
+    "newsCategoryId": 3,
+    "newsImageMain": null,
+    "newsBlocks": [
+        {
+            "content": "This is the introduction of the article.",
+            "sortOrder": 1,
+            "blockType": 1
+        },
+        {
+        "content": "Here is the main content section.",
+        "sortOrder": 2,
+        "blockType": 2
+        },
+        {
+            "content": "Final thoughts and conclusion.",
+            "sortOrder": 3,
+            "blockType": 1
+        }
+    ]
+}
 
-// {
-//     "Title": "آموزش قهوه",
-//     "author": "پارسا سفی لیان",
-//     "categoryId": 5,
-//     "blocks": [
-//         { "sortOrder": 1, "blockType": 1, "content": "مواد لازم" },
-//         { "sortOrder": 2, "blockType": 3, "content": "قهوه - شکر - آب" },
-//         { "sortOrder": 3, "blockType": 1, "content": "طرز تهیه" },
-//         { "sortOrder": 4, "blockType": 2, "content": "آب را جوش بیاورید..." }
-//     ]
-// }
-
-
+*/
 
 
 

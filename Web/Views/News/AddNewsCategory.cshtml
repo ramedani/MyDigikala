@@ -1,0 +1,15 @@
+@model Application.DTO.EditNewsCategoryDto
+
+@{
+    Layout = "_admin";
+}
+
+<form asp-action="AddNewsCategory" asp-controller="News" method="post" enctype="multipart/form-data">
+    <label asp-for="Name"></label>
+    <input asp-for="Name" class="form-control" required />
+    <span asp-validation-for="Name" class="text-danger"></span>
+
+    <input type="hidden" asp-for="Id" />
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>

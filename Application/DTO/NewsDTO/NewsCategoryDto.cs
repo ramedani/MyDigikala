@@ -16,6 +16,8 @@ public class EditNewsCategoryDto : NewsCategoryDto
 public class NewsCategoryListDto
 {
     public int Id { get; set; }
+    [Required(ErrorMessage = "نام اجباری است")]
+    [StringLength(50)]
     public string Name { get; set; }
 }
 

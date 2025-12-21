@@ -13,7 +13,8 @@ namespace Domain
         public int Id { get; set; }
         public string Title { get; set; }
         public string AuthorName { get; set; }
-        
+        public bool IsFeatured { get; set; }
+        public bool IsActive { get; set; }
         public ICollection<NewsBlocks>? NewsBlocks { get; set; } 
 
         public string? PicUrl { get; set; }

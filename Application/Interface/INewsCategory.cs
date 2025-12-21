@@ -40,7 +40,7 @@ public class NewsCategoryService : INewsCategory
 
     public async Task<EditNewsCategoryDto> Get(int id)
     {
-        var category = await mydb.Categories.FindAsync(id);
+        var category = await mydb.NewsCategories.FindAsync(id);
         if (category == null) return null;
 
         return new EditNewsCategoryDto
@@ -52,7 +52,7 @@ public class NewsCategoryService : INewsCategory
 
     public async Task<List<NewsCategoryListDto>> GetAll()
     {
-        return await mydb.Categories
+        return await mydb.NewsCategories
             .Select(b => new NewsCategoryListDto
             {
                 Id = b.Id,
@@ -60,13 +60,21 @@ public class NewsCategoryService : INewsCategory
             }).ToListAsync();
     }
 
-    public Task Update(EditNewsCategoryDto dto)
+    public async Task Update(EditNewsCategoryDto dto)
     {
-        throw new NotImplementedException();
+        var category = await mydb.NewsCategories.FindAsync(dto.Id);
+    
+        if (category == null)
+        {
+            throw new KeyNotFoundException($"Category with ID {dto.Id} not found");
+        }
+
+        category.Name = dto.Name;
+
+
+        await mydb.SaveChangesAsync();
     }
-
-
-
+    
     public async Task<DeleteNewsCategoryResultDto> Delete(int id)
     {
         var category = await mydb.NewsCategories

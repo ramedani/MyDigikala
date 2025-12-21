@@ -12,6 +12,13 @@ public interface INews
     Task<int> CreateNewsAsync(CreatNewsDto dto);
     Task<EditNewsDto> GetForEdit(int id);
     Task Update(EditNewsDto dto);
+    Task<List<NewsListDto>> GetAll(string? search = null, int? categoryId = null);
+    Task<NewsDashboardStatsDto> GetDashboardStatsAsync();
+    
+    
+    Task DeleteGroup(List<int> ids);
+    Task ToggleStatusGroup(List<int> ids);
+    Task ToggleFeaturedGroup(List<int> ids);
 }
 
 public class NewsService : INews
@@ -29,31 +36,25 @@ public class NewsService : INews
     
     public async Task<int> CreateNewsAsync(CreatNewsDto dto)
     {
-        // ۱. ساخت آبجکت اولیه (هنوز در دیتابیس ذخیره نمی‌کنیم)
-        Console.WriteLine($"[DEBUG-SERVICE] Incoming CategoryId: {dto.NewsCategoryId}");
 
         var article = new News
         {
             Title = dto.Title,
             AuthorName = dto.AuthorName,
-        
-            // لاگ منطق تبدیل
+            IsActive = dto.IsActive,
+            IsFeatured = dto.IsFeatured,
             NewsCategoryId = (dto.NewsCategoryId == 0) ? null : dto.NewsCategoryId,
 
             CreateTime = DateTime.UtcNow, 
             NewsBlocks = new List<NewsBlocks>() 
         };
 
-        // لاگ نهایی قبل از ذخیره
-        Console.WriteLine($"[DEBUG-SERVICE] Entity Ready to Save.");
-        Console.WriteLine($"[DEBUG-SERVICE] Entity.NewsCategoryId: {(article.NewsCategoryId == null ? "NULL" : article.NewsCategoryId.ToString())}");
-
-        // ۲. مدیریت آپلود عکس
-        if (dto.Images != null && dto.Images.Length > 0)
+        if (dto.NewsImageMain != null && dto.NewsImageMain.Length > 0)
         {
             try 
             {
-                var fileName = await _fileHelper.SecureUploadAsync(dto.Images, _env.WebRootPath, "upload/news");
+                // پوشه ذخیره سازی: wwwroot/NewsImages
+                var fileName = await _fileHelper.SecureUploadAsync(dto.NewsImageMain, _env.WebRootPath, "NewsImages");
                 article.PicUrl = fileName;
             }
             catch (Exception ex)
@@ -61,8 +62,7 @@ public class NewsService : INews
                 Console.WriteLine($"Image Upload Failed: {ex.Message}");
             }
         }
-    
-        // ۳. مدیریت بلوک‌های خبر
+        
         if (dto.NewsBlocks != null && dto.NewsBlocks.Any())
         {
             foreach (var blockDto in dto.NewsBlocks)
@@ -76,21 +76,10 @@ public class NewsService : INews
             }
         }
     
-        try 
-        {
+      
             await _mydb.News.AddAsync(article);
             await _mydb.SaveChangesAsync();
-            Console.WriteLine($"[DEBUG-SERVICE] Save Successful! New ID: {article.Id}");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"[DEBUG-SERVICE] CRITICAL ERROR ON SAVE: {ex.Message}");
-            if (ex.InnerException != null)
-            {
-                Console.WriteLine($"[DEBUG-SERVICE] Inner Exception: {ex.InnerException.Message}");
-            }
-            throw; // پرتاب مجدد خطا تا برنامه متوجه شود
-        }
+   
 
         return article.Id;
     }
@@ -109,12 +98,12 @@ public class NewsService : INews
             Title = news.Title,
             AuthorName = news.AuthorName,
             NewsCategoryId = news.NewsCategoryId,
-            
+            IsFeatured = news.IsFeatured,
+            IsActive = news.IsActive,
             CurrentPicUrl = news.PicUrl, 
             
-            Images = null, 
-
-            // 3. تبدیل بلوک‌ها
+            NewsImageMain = null,
+            
             NewsBlocks = news.NewsBlocks
                 .OrderBy(b => b.SortOrder)
                 .Select(b => new CreateArticleBlockDto
@@ -137,7 +126,8 @@ public class NewsService : INews
             
             news.Title = dto.Title;
             news.AuthorName = dto.AuthorName;
-    
+            news.IsFeatured = dto.IsFeatured;
+            news.IsActive = dto.IsActive;
             
             if (dto.NewsCategoryId.HasValue)
             {
@@ -147,19 +137,18 @@ public class NewsService : INews
             news.UpdatedAt = DateTime.UtcNow; 
 
 
-            if (dto.Images != null && dto.Images.Length > 0)
+            if (dto.NewsImageMain != null && dto.NewsImageMain.Length > 0)
             {
                 try
                 {
-                    var fileName = await _fileHelper.SecureUploadAsync(dto.Images, _env.WebRootPath, "upload/news");
-                    news.PicUrl = fileName;
+                    var fileName = await _fileHelper.SecureUploadAsync(dto.NewsImageMain, _env.WebRootPath, "NewsImages");
+                    news.PicUrl = fileName; 
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
             }
-
     
             if (news.NewsBlocks != null && news.NewsBlocks.Any())
             {
@@ -182,5 +171,80 @@ public class NewsService : INews
             await _mydb.SaveChangesAsync();
         }
     
+
+public async Task<List<NewsListDto>> GetAll(string? search = null, int? categoryId = null)
+{
+    var query = _mydb.News.Include(n => n.NC).AsQueryable();
+
+    if (!string.IsNullOrEmpty(search))
+    {
+        query = query.Where(n => n.Title.Contains(search) || n.AuthorName.Contains(search));
+    }
+
+    if (categoryId.HasValue && categoryId.Value > 0)
+    {
+        query = query.Where(n => n.NewsCategoryId == categoryId.Value);
+    }
+
+    var list = await query.OrderByDescending(n => n.CreateTime)
+        .Select(n => new NewsListDto
+        {
+            Id = n.Id,
+            Title = n.Title,
+            AuthorName = n.AuthorName,
+            CategoryName = n.NC != null ? n.NC.Name : "بدون دسته",
+            PicUrl = n.PicUrl,
+            IsActive = n.IsActive,
+            IsFeatured = n.IsFeatured,
+            CreateTime = n.CreateTime ?? DateTime.UtcNow 
+        }).ToListAsync();
+
+    return list;
+}
+
+
+public async Task<NewsDashboardStatsDto> GetDashboardStatsAsync()
+{
+    var total = await _mydb.News.CountAsync();
+    var active = await _mydb.News.CountAsync(n => n.IsActive);
     
+    return new NewsDashboardStatsDto
+    {
+        TotalNews = total,
+        PublishedCount = active,
+        DraftCount = total - active,
+
+    };
+}
+
+public async Task DeleteGroup(List<int> ids)
+{
+    var News = await _mydb.News.Where(p => ids.Contains(p.Id)).ToListAsync();
+    _mydb.News.RemoveRange(News);
+    await _mydb.SaveChangesAsync();
+}
+
+
+
+public async Task ToggleStatusGroup(List<int> ids)
+{
+    var News = await _mydb.News.Where(p => ids.Contains(p.Id)).ToListAsync();
+    foreach (var p in News)
+    {
+        p.IsActive = !p.IsActive;
+    }
+
+    await _mydb.SaveChangesAsync();
+}
+public async Task ToggleFeaturedGroup(List<int> ids)
+{
+    var News = await _mydb.News.Where(p => ids.Contains(p.Id)).ToListAsync();
+    foreach (var p in News)
+    {
+        p.IsFeatured = !p.IsFeatured;
+    }
+
+    await _mydb.SaveChangesAsync();
+}
+
 }
