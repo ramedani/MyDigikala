@@ -12,3 +12,4 @@ public class NewsBlocks
     [ForeignKey("NewsId")]
     public News? News { get; set; } 
 }
+

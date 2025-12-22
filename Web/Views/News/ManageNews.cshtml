@@ -104,7 +104,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>نویسنده</label>
-                                    <input asp-for="AuthorName" id="AuthorName" class="form-control" placeholder="نام نویسنده" value="ادمین" />
+                                    <input asp-for="AuthorName" id="AuthorName" class="form-control" placeholder="نام نویسنده" value="" />
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -153,7 +153,7 @@
         <div class="card-header py-3 d-flex justify-content-between align-items-center bg-white border-bottom-0">
             <h6 class="m-0 font-weight-bold text-primary">دسته‌بندی‌ها</h6>
             <!-- دکمه افزودن سریع دسته‌بندی -->
-            <a href="/News/AddNewsCategory" class="btn btn-sm btn-icon btn-flat-primary rounded-circle" onclick="openAddCategoryModal()" title="افزودن دسته جدید">
+            <a href="/News/AddNewsCategory" class="btn btn-sm btn-icon btn-flat-primary rounded-circle" @*onclick="openAddCategoryModal()"*@ title="افزودن دسته جدید">
                 <i class="feather icon-plus font-medium-3"></i>
             </a>
             <a href="/News/NewsCategoryList" class="btn btn-sm btn-icon btn-flat-secondary rounded-circle me-1" title="مشاهده لیست کامل">
@@ -356,95 +356,114 @@
 @section script {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+
+        let newsBlocks = []; 
+        let tempListItems = []; 
         
+        const serverBlocks = @Html.Raw(Model.NewsBlocks != null ? Json.Serialize(Model.NewsBlocks) : "[]");
+
+        $(document).ready(function() {
+            if (serverBlocks && serverBlocks.length > 0) {
+                initExistingBlocks();
+            }
+        });
+
+
+        function initExistingBlocks() {
+            serverBlocks.forEach(serverBlock => {
+                let jsBlock = {};
+                
+                let sType = serverBlock.blockType || serverBlock.BlockType; 
+                let sContent = serverBlock.content || serverBlock.Content;
+
+                if (sType === 1) {
+                    jsBlock.type = 'heading';
+                    jsBlock.dbTypeId = 1;
+                    jsBlock.content = sContent;
+                    jsBlock.listData = null;
+                } 
+                else if (sType === 2) {
+                    jsBlock.type = 'paragraph';
+                    jsBlock.dbTypeId = 2;
+                    jsBlock.content = sContent;
+                    jsBlock.listData = null;
+                } 
+                else if (sType === 3) {
+                    jsBlock.type = 'list';
+                    jsBlock.dbTypeId = 3;
+                    jsBlock.content = sContent;
+                    
+                    jsBlock.listData = parseHtmlListToArray(sContent);
+                }
+
+                newsBlocks.push(jsBlock);
+            });
+            
+            renderBlocks();
+        }
+
+        function parseHtmlListToArray(htmlString) {
+            let tempDiv = document.createElement('div');
+            tempDiv.innerHTML = htmlString;
+            let items = [];
+            $(tempDiv).find('li').each(function() {
+                items.push($(this).text().trim());
+            });
+            return items;
+        }
+        
+
         function filterCategories(input) {
             var filter = input.value.toLowerCase();
-            var ul = document.getElementById("category-list-ul");
-            var li = ul.getElementsByTagName("li");
+            var listItems = document.querySelectorAll("#category-list-ul li");
 
-            for (var i = 0; i < li.length; i++) {
-                var label = li[i].getElementsByClassName("category-label")[0];
+            listItems.forEach(function(item) {
+                var label = item.querySelector(".category-label");
                 if (label) {
                     var txtValue = label.textContent || label.innerText;
                     if (txtValue.toLowerCase().indexOf(filter) > -1) {
-                        li[i].style.display = "";
+                        item.style.display = "";
                     } else {
-                        li[i].style.display = "none";
+                        item.style.display = "none";
                     }
-                }
-            }
-}
-        
-        function previewMainImage(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    $('#preview-main-image').attr('src', e.target.result).css('opacity', '1');
-
-                    $(input).siblings('p').hide();
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-}
-
-   
-        function openAddCategoryModal() {
-
-            Swal.fire({
-                title: 'نام دسته‌بندی جدید',
-                input: 'text',
-                inputAttributes: {
-                    autocapitalize: 'off',
-                    placeholder: 'مثلاً: تکنولوژی'
-                },
-                showCancelButton: true,
-                confirmButtonText: 'افزودن',
-                cancelButtonText: 'لغو',
-                showLoaderOnConfirm: true,
-                preConfirm: (categoryName) => {
-
-                    if(!categoryName) return Swal.showValidationMessage('نام الزامی است');
-
-                    return categoryName; 
-                },
-                allowOutsideClick: () => !Swal.isLoading()
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var newName = result.value;
-   
-                    var tempId = Math.floor(Math.random() * 1000);
-
-
-                    var newItemHtml = `
-                <li class="mb-2 category-item">
-                    <div class="vs-radio-con vs-radio-primary">
-                        <input type="radio" name="NewsCategoryId" value="${tempId}" checked>
-                        <span class="vs-radio">
-                            <span class="vs-radio--border"></span>
-                            <span class="vs-radio--circle"></span>
-                        </span>
-                        <span class="ml-2 category-label text-body">${newName}</span>
-                        <span class="badge badge-sm badge-light-success float-right ml-1">جدید</span>
-                    </div>
-                </li>`;
-
-                    $('#category-list-ul').prepend(newItemHtml);
-
-                    Swal.fire({
-                        title: 'انجام شد!',
-                        text: 'دسته‌بندی با موفقیت اضافه شد.',
-                        icon: 'success',
-                        timer: 1500,
-                        showConfirmButton: false
-                    });
                 }
             });
         }
 
+        function openAddCategoryModal() {
+            Swal.fire({
+                title: 'نام دسته‌بندی جدید',
+                input: 'text',
+                showCancelButton: true,
+                confirmButtonText: 'افزودن',
+                cancelButtonText: 'لغو',
+                preConfirm: (name) => {
+                    if(!name) Swal.showValidationMessage('نام الزامی است');
+                    return name;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var newName = result.value;
+                    var tempId = Math.floor(Math.random() * 10000); 
+                    
+                    var newItemHtml = `
+                    <li class="mb-2 category-item">
+                        <div class="vs-radio-con vs-radio-primary">
+                            <input type="radio" name="NewsCategoryId" value="${tempId}" checked>
+                            <span class="vs-radio"><span class="vs-radio--border"></span><span class="vs-radio--circle"></span></span>
+                            <span class="ml-2 category-label text-body">${newName}</span>
+                            <span class="badge badge-success float-right ml-1">جدید</span>
+                        </div>
+                    </li>`;
+                    
+                    $('#category-list-ul').prepend(newItemHtml);
+                }
+            });
+        }
 
-        
         function setTodayDate() {
             try {
                 const date = new Date();
@@ -452,7 +471,6 @@
                 const shamsiDate = new Intl.DateTimeFormat('fa-IR', options).format(date);
                 $('#preview-date').text(shamsiDate);
             } catch (e) {
-      
                 $('#preview-date').text(new Date().toLocaleDateString());
             }
         }
@@ -460,17 +478,15 @@
         function goToStep2() {
             var title = $('#Title').val();
             var author = $('#AuthorName').val();
-            var category = $('input[name="NewsCategoryId"]:checked').closest('.vs-radio-con').find('.category-label').text();
+            var categoryInput = document.querySelector('input[name="NewsCategoryId"]:checked');
+            var category = categoryInput ? categoryInput.closest('.vs-radio-con').querySelector('.category-label').innerText : "دسته‌بندی نشده";
 
-            if (!title) { alert('لطفاً عنوان خبر را وارد کنید.'); return; }
-            if (!category) category = "دسته‌بندی نشده";
-
+            if (!title) { Swal.fire('خطا', 'لطفاً عنوان خبر را وارد کنید.', 'error'); return; }
 
             $('#preview-title').text(title);
             $('#preview-author').text(author || 'ناشناس');
             $('#preview-category').text(category);
             setTodayDate();
-
 
             var fileInput = document.getElementById('NewsImageMain');
             if (fileInput.files && fileInput.files[0]) {
@@ -480,10 +496,10 @@
                 }
                 reader.readAsDataURL(fileInput.files[0]);
             } else {
-
-                 $('#preview-image').hide(); 
+                 if (!$('#preview-image').attr('src')) {
+                     $('#preview-image').hide(); 
+                 }
             }
-
 
             $('#step-1-container').slideUp(300, function() {
                 $('#step-2-container').fadeIn(300);
@@ -496,11 +512,7 @@
             $('#step-1-container').fadeIn(300);
             window.scrollTo(0, 0);
         }
-
-
-        let newsBlocks = [];
-        let tempListItems = [];
-
+        
         function openBlockModal(editIndex = -1) {
             $('#blockModal').modal('show');
             if (editIndex > -1) {
@@ -509,7 +521,9 @@
                 resetModalUI();
             }
         }
+
         function closeBlockModal() { $('#blockModal').modal('hide'); }
+
         function resetModalUI() {
             $('#stage-type-select').show();
             $('#stage-editor').hide();
@@ -521,6 +535,7 @@
             tempListItems = [];
             renderTempList();
         }
+
         function selectType(type) {
             $('#stage-type-select').hide();
             $('#stage-editor').show();
@@ -543,6 +558,7 @@
                 }
             }
         }
+
         function resetModal() { resetModalUI(); }
         
         function addListItem() {
@@ -553,14 +569,22 @@
                 renderTempList();
             }
         }
+
         function renderTempList() {
             var html = '';
             tempListItems.forEach((item, idx) => {
-                html += `<li class="list-group-item d-flex justify-content-between py-2 small">${item} <button type="button" class="btn text-danger p-0" onclick="removeTempItem(${idx})">&times;</button></li>`;
+                html += `<li class="list-group-item d-flex justify-content-between py-2 small align-items-center">
+                            <span>${item}</span>
+                            <button type="button" class="btn btn-sm text-danger" onclick="removeTempItem(${idx})">&times;</button>
+                         </li>`;
             });
             $('#temp-list-preview').html(html);
         }
-        function removeTempItem(idx) { tempListItems.splice(idx, 1); renderTempList(); }
+
+        function removeTempItem(idx) { 
+            tempListItems.splice(idx, 1); 
+            renderTempList(); 
+        }
 
         function saveBlock() {
             var type = $('#selected-type').val();
@@ -569,13 +593,12 @@
             var dbTypeId = 2; 
 
             if (type === 'list') {
-                if (tempListItems.length === 0) { alert('لیست خالی است'); return; }
-
+                if (tempListItems.length === 0) { alert('لیست نمی‌تواند خالی باشد'); return; }
                 content = JSON.stringify(tempListItems); 
                 dbTypeId = 3; 
             } else {
                 content = $('#block-input-text').val();
-                if (!content.trim()) { alert('متن خالی است'); return; }
+                if (!content.trim()) { alert('متن نمی‌تواند خالی باشد'); return; }
                 dbTypeId = (type === 'heading') ? 1 : 2; 
             }
 
@@ -599,14 +622,23 @@
             var block = newsBlocks[index];
             $('#current-edit-id').val(index);
             selectType(block.type);
+            
             if (block.type === 'list') {
-                tempListItems = [...block.listData];
+                // اگر دیتا موجود بود کپی کن، اگر نه آرایه خالی
+                tempListItems = block.listData ? [...block.listData] : [];
                 renderTempList();
             } else {
                 $('#block-input-text').val(block.content);
             }
         }
-        function deleteBlock(index) { if(confirm('حذف شود؟')) { newsBlocks.splice(index, 1); renderBlocks(); } }
+
+        function deleteBlock(index) { 
+            if(confirm('آیا از حذف این بلوک اطمینان دارید؟')) { 
+                newsBlocks.splice(index, 1); 
+                renderBlocks(); 
+            } 
+        }
+
         function moveBlock(index, dir) {
             if ((dir === -1 && index === 0) || (dir === 1 && index === newsBlocks.length - 1)) return;
             [newsBlocks[index], newsBlocks[index + dir]] = [newsBlocks[index + dir], newsBlocks[index]];
@@ -619,56 +651,46 @@
             $container.empty();
             $hiddenInputs.empty();
 
-            if (newsBlocks.length === 0) { $('#empty-state-msg').show(); return; } 
+            if (newsBlocks.length === 0) { $('#empty-state-msg').show(); } 
             else { $('#empty-state-msg').hide(); }
 
             newsBlocks.forEach((block, index) => {
                 let htmlContent = '';
-                
+                let serverContentForInput = block.content;
 
                 if (block.type === 'heading') {
-
-                    htmlContent = `<h2 class="mt-3 font-DanaMedium text-xl font-weight-bold" style="margin-top: 1.5rem; font-size: 1.25rem;">${block.content}</h2>`;
+                    htmlContent = `<h2 class="font-MorabbaMedium font-weight-bold text-dark mb-3" style="font-size: 1.5rem;">${block.content}</h2>`;
                 } 
                 else if (block.type === 'paragraph') {
-
-                    htmlContent = `<p class="mt-3 leading-10 text-gray-600 dark:text-gray-300" style="margin-top: 0.75rem; line-height: 2.5rem; color: #4b5563;">${block.content}</p>`;
+                    htmlContent = `<p class="text-justify text-muted mb-3" style="line-height: 2rem;">${block.content}</p>`;
                 } 
                 else if (block.type === 'list') {
-   
                     let listItemsHtml = '';
                     block.listData.forEach(item => {
                         listItemsHtml += `
-                        <li style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span class="w-3 h-3 rounded-full bg-green-500 flex" style="width: 12px; height: 12px; border-radius: 50%; background-color: #22c55e; display: inline-block;"></span>
-                            <p style="margin: 0;">${item}</p>
+                        <li style="display: flex; align-items: start; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <span style="width: 10px; height: 10px; border-radius: 50%; background-color: #22c55e; flex-shrink: 0; margin-top: 8px;"></span>
+                            <span style="color: #4b5563;">${item}</span>
                         </li>`;
                     });
-                    htmlContent = `<ul class="mt-3 text-gray-600 dark:text-gray-300 space-y-2 child:flex child:items-center child:gap-x-2" style="margin-top: 0.75rem; color: #4b5563; list-style: none; padding: 0;">${listItemsHtml}</ul>`;
+                    htmlContent = `<ul style="list-style: none; padding: 0; margin-bottom: 1.5rem;">${listItemsHtml}</ul>`;
+                    serverContentForInput = '<ul>' + block.listData.map(i => `<li>${i}</li>`).join('') + '</ul>';
                 }
-
-
+                
                 let wrappedHtml = `
-                    <div class="block-wrapper">
+                    <div class="block-wrapper mb-3 p-2">
                         <div class="block-controls">
-                             <button type="button" class="btn btn-sm btn-light text-primary" onclick="openBlockModal(${index})" title="ویرایش"><i class="feather icon-edit"></i></button>
-                             <button type="button" class="btn btn-sm btn-light" onclick="moveBlock(${index}, -1)" title="بالا"><i class="feather icon-arrow-up"></i></button>
-                             <button type="button" class="btn btn-sm btn-light" onclick="moveBlock(${index}, 1)" title="پایین"><i class="feather icon-arrow-down"></i></button>
-                             <button type="button" class="btn btn-sm btn-light text-danger" onclick="deleteBlock(${index})" title="حذف"><i class="feather icon-trash-2"></i></button>
+                             <button type="button" class="btn btn-sm btn-white border shadow-sm text-primary" onclick="openBlockModal(${index})" title="ویرایش"><i class="feather icon-edit"></i></button>
+                             <button type="button" class="btn btn-sm btn-white border shadow-sm" onclick="moveBlock(${index}, -1)" title="بالا"><i class="feather icon-arrow-up"></i></button>
+                             <button type="button" class="btn btn-sm btn-white border shadow-sm" onclick="moveBlock(${index}, 1)" title="پایین"><i class="feather icon-arrow-down"></i></button>
+                             <button type="button" class="btn btn-sm btn-white border shadow-sm text-danger" onclick="deleteBlock(${index})" title="حذف"><i class="feather icon-trash-2"></i></button>
                         </div>
                         ${htmlContent}
                     </div>
                 `;
                 $container.append(wrappedHtml);
 
-              
-                let serverContent = block.content;
-                if(block.type === 'list') {
-                   
-                   serverContent = '<ul>' + block.listData.map(i => `<li>${i}</li>`).join('') + '</ul>';
-                }
-
-                $hiddenInputs.append(`<input type="hidden" name="NewsBlocks[${index}].Content" value='${serverContent}' />`);
+                $hiddenInputs.append(`<input type="hidden" name="NewsBlocks[${index}].Content" value='${serverContentForInput}' />`);
                 $hiddenInputs.append(`<input type="hidden" name="NewsBlocks[${index}].BlockType" value="${block.dbTypeId}" />`);
                 $hiddenInputs.append(`<input type="hidden" name="NewsBlocks[${index}].SortOrder" value="${index + 1}" />`);
             });

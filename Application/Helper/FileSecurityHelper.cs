@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Application.Security;
+namespace Application.Helper;
 
   public interface IFileSecurityHelper
     {
