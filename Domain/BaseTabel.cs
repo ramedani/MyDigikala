@@ -13,7 +13,7 @@ namespace Domain
         public int Id { get; set; }
 
         public string? UserInsert { get; set; }
-
         public DateTime? CreateTime { get; set; }
+        public DateTime? UpdatedAt { get; set; }
     }
 }

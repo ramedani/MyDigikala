@@ -1,0 +1,286 @@
+@model Application.DTO.NewsSearchViewModel
+@using Application.Helper
+
+@{
+}
+
+<section>
+    <ul class="flex items-center gap-x-2 text-gray-400 text-sm lg:text-base">
+        <li class="flex items-center gap-x-2">
+            <a href="index.html">صفحه اصلی</a>
+            <svg class="w-4 h-4">
+                <use href="#chevron-left"></use>
+            </svg>
+        </li>
+        <li class="flex items-center gap-x-2">
+            <a href="articles.html">مقالات</a>
+        </li>
+    </ul>
+</section>
+
+<div class="flex flex-col lg:flex-row gap-4">
+    
+    <!-- SIDE FILTER BOX -->
+    <div class="lg:sticky top-5 h-fit lg:w-1/4 flex flex-col gap-y-4 items-center shadow rounded-lg p-4 dark:bg-zinc-700 bg-white">
+        <!-- TITLE -->
+        <div class="flex items-center justify-between w-full">
+            <span class="flex items-center gap-x-1">
+                <svg class="w-5 h-5">
+                    <use href="#filter"></use>
+                </svg>
+                <p class="font-DanaMedium ">فیلتر ها</p>
+            </span>
+            <a href="@Url.Action("Article")" class="text-green-500 text-sm hover:underline">حذف همه</a>
+        </div>
+
+
+        <form asp-action="Article" method="get" id="filterForm" class="w-full flex flex-col gap-y-4 mt-2">
+            
+            <!-- accordion: دسته بندی -->
+            <div class="mt-6 w-full dark:bg-zinc-600 cursor-pointer shadow rounded-lg">
+                <div class="accordion-header p-3 flex items-center justify-between">
+                    <p class="font-DanaMedium">دسته بندی </p>
+                    <svg class="w-4 h-4">
+                        <use href="#chevron-left"></use>
+                    </svg>
+                </div>
+
+                <ul class="space-y-2 max-h-64 overflow-y-auto pl-2 custom-scrollbar p-2">
+                    @foreach (var cat in Model.Categories)
+                    {
+                        <li class="flex items-center justify-between p-1 rounded hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                            <label class="flex items-center gap-x-2 cursor-pointer flex-grow">
+                                <div class="relative flex items-center">
+                                    <input type="checkbox"
+                                           name="selectedCategories"
+                                           value="@cat.Id"
+                                           onchange="document.getElementById('pageIdInput').value=1; document.getElementById('filterForm').submit()"
+                                           class="peer w-5 h-5 rounded border-gray-300 text-green-500 focus:ring-green-500 bg-gray-100 dark:bg-zinc-700 dark:border-zinc-600"
+                                           @(Model.SelectedCategories.Contains(cat.Id) ? "checked" : "")>
+                                </div>
+                                <span class="text-sm text-gray-600 dark:text-gray-300">@cat.Title</span>
+                            </label>
+
+                            <span class="text-xs text-gray-400 bg-gray-100 dark:bg-zinc-700 px-2 py-0.5 rounded-full">
+                                @cat.NewsCount
+                            </span>
+                        </li>
+                    }
+                </ul>
+                
+
+            </div>
+
+
+            <!-- Accordion: تاریخ انتشار -->
+            <div class="w-full dark:bg-zinc-600 cursor-pointer shadow rounded-lg">
+                <div class="accordion-header p-3 flex items-center justify-between">
+                    <p class="font-DanaMedium">تاریخ انتشار</p>
+                    <svg class="w-4 h-4 rotate-90">
+                        <use href="#chevron-left"></use>
+                    </svg>
+                </div>
+                <ul class="accordion-content py-2 mx-2 child:dark:text-gray-200 child:text-gray-600 child:flex items-center child:gap-x-2 child:py-1 child:px-2 child:rounded space-y-2 block">
+                    <li>
+                        <label class="cl-checkbox">
+                            <input type="checkbox">
+                            <span></span>
+                        </label>
+                        <p>امروز</p>
+                    </li>
+                    <li>
+                        <label class="cl-checkbox">
+                            <input type="checkbox">
+                            <span></span>
+                        </label>
+                        <p>دیروز</p>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- CHECK BOXES -->
+            <div class="flex my-2 w-full flex-col h-auto gap-y-5 child:flex child:items-center child:justify-between child:font-DanaMedium">
+                <!-- قسمت داغ ترین -->
+                <div class="">
+                    <p>داغ ترین</p>
+                    <label class="switch">
+                        <input type="checkbox"
+                               name="isFeatured"
+                               value="true"
+                               onchange="document.getElementById('pageIdInput').value=1; document.getElementById('filterForm').submit()"
+                               @(Model.IsFeatured ? "checked" : "")>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <!-- قسمت بروز ترین -->
+                <div class="">
+                    <p>بروز ترین </p>
+                    <label class="switch">
+                        <input type="checkbox"
+                               name="isNewest"
+                               value="true"
+                               onchange="document.getElementById('pageIdInput').value=1; document.getElementById('filterForm').submit()"
+                               @(Model.IsNewest ? "checked" : "")>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+
+            <input type="hidden" name="pageId" id="pageIdInput" value="@Model.CurrentPage" />
+        
+        </form>
+    </div>
+
+    <!-- FILTER BOXES & articles -->
+    <div class="lg:w-3/4">
+        <!-- TOP FILTER BOX -->
+        <div class="dark:bg-zinc-700 bg-white flex flex-wrap items-center justify-start sm:gap-x-8 py-2 px-2 sm:px-4 shadow rounded-lg sm:h-16">
+            <div class="flex items-center gap-x-2">
+                <svg class="w-5 h-5">
+                    <use href="#sort-list"></use>
+                </svg>
+                <h2 class="font-DanaDemiBold">مرتب سازی بر اساس :</h2>
+            </div>
+            <ul class="flex items-center  gap-x-2 lg:gap-x-5 child:transition-all child:cursor-pointer child-hover:bg-gray-300/30 child:rounded-lg child:px-1 child:py-1 child:text-sm sm:child:text-base">
+                <li class="text-green-500">محبوب ترین</li>
+                <li>جدید ترین</li>
+                <li>پربازدید ترین</li>
+            </ul>
+        </div>
+        
+        <!-- articles -->
+        <div class="mt-4 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-3  gap-6 sm:gap-8 child-hover:-translate-y-2 child:duration-300
+                    child:bg-white child:dark:bg-zinc-700  child:rounded-lg child:p-2 child:cursor-pointer child:shadow ">
+
+            @if (Model.NewsList != null && Model.NewsList.Any())
+            {
+                @foreach (var item in Model.NewsList)
+                {
+                    <div class="group">
+                        <div class="relative overflow-hidden rounded-lg">
+                            <img src="@item.PicUrl" class="h-[180px] w-full object-cover rounded-bl-3xl rounded-tr-3xl" alt="">
+                            <div class="absolute opacity-0 left-0 top-0 bottom-0 right-0 bg-black/60 flex items-center justify-center group-hover:opacity-100 duration-300 transition-all rounded-bl-3xl rounded-tr-3xl">
+                                <a href="/home/News/@item.Id" class="flex items-center px-2 py-1 gap-x-1 font-DanaMedium rounded-lg border-2 border-white text-white">
+                                    <p>ادامه مطلب</p>
+                                    <svg class="w-4 h-4">
+                                        <use href="#chevron-left"></use>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-y-1 my-2 px-1">
+                            <h2 class="font-DanaDemiBold">@item.Title</h2>
+                            <p class="line-clamp-2 text-sm text-gray-400">
+                                @*  @item.ShortDescription *@
+                                OnProgress
+                            </p>
+                        </div>
+                        <span class="flex w-full h-1 py-1 border-t border-gray-100 dark:border-white/10"></span>
+                        <div class="flex items-center justify-between text-sm px-1">
+                            <span class="flex items-center gap-x-1 text-gray-400">
+                                <svg class="w-4 h-4">
+                                    <use href="#calendar"></use>
+                                </svg>
+                                <p class="mt-1">@item.CreateTime.ToShamsi()</p>
+                            </span>
+                            <span class="flex items-start gap-x-1 text-gray-400">
+                                <p class="font-DanaDemiBold">26</p>
+                                <svg class="w-4 h-4">
+                                    <use href="#eye"></use>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-span-full text-center py-10">
+                    <p class="text-gray-500">خبری با این مشخصات یافت نشد.</p>
+                </div>
+            }
+        </div>
+
+        <!-- PAGINATION -->
+        <!-- اصلاح مهم: فرم دوم حذف شد. دکمه‌ها مستقیماً با جاوااسکریپت فرم اصلی را صدا می‌زنند -->
+        <div class="mt-10 w-full flex items-center justify-center">
+            
+            @if (Model.TotalPages > 1)
+            {
+                <ul class="flex items-center gap-x-3 child:flex child:items-center child:justify-center child:w-8 child:h-8 child:cursor-pointer child:shadow child:rounded-lg child:transition-all child:duration-300">
+                    @if (Model.CurrentPage > 1)
+                    {
+                        <li class="bg-white dark:bg-zinc-700 hover:bg-green-500 hover:text-white">
+                            <a onclick="changePage(@(Model.CurrentPage - 1))" class="w-full h-full flex items-center justify-center">
+                                <svg class="w-5 h-5">
+                                    <use href="#chevron-right"></use>
+                                </svg>
+                            </a>
+                        </li>
+                    }
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        var isActive = (Model.CurrentPage == i);
+                        <li class="cursor-pointer flex items-center justify-center w-10 h-10 rounded-full transition-colors @(isActive ? "bg-green-500 text-white shadow-md cursor-default" : "hover:bg-gray-200 dark:hover:bg-white/10 text-zinc-600 dark:text-gray-300")">
+                            @if (isActive)
+                            {
+                                <span class="w-full h-full flex items-center justify-center">@i</span>
+                            }
+                            else
+                            {
+                                <a onclick="changePage(@i)" class="w-full h-full flex items-center justify-center">
+                                    @i
+                                </a>
+                            }
+                        </li>
+                    }
+                    @if (Model.CurrentPage < Model.TotalPages)
+                    {
+                        <li class="bg-white dark:bg-zinc-700 hover:bg-green-500 hover:text-white">
+                            <a onclick="changePage(@(Model.CurrentPage + 1))" class="w-full h-full flex items-center justify-center">
+                                <svg class="w-5 h-5">
+                                    <use href="#chevron-left"></use>
+                                </svg>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+    </div>
+</div>
+
+@section script
+{
+    <script>
+        function toggleAccordion(header) {
+            const content = header.nextElementSibling;
+            const icon = header.querySelector('svg');
+
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                icon.style.transform = "rotate(0deg)";
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+                icon.style.transform = "rotate(180deg)";
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const contents = document.querySelectorAll('.accordion-content');
+            contents.forEach(c => c.style.maxHeight = c.scrollHeight + "px");
+        });
+    </script>
+
+    <script>
+        function changePage(pageNumber) {
+            var pageInput = document.getElementById('pageIdInput');
+            if(pageInput) {
+                pageInput.value = pageNumber;
+                document.getElementById('filterForm').submit();
+            }
+        }
+    </script>
+}

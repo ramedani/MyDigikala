@@ -1,0 +1,452 @@
+@model List<Application.DTO.NewsListDto>
+@{
+    var stats = ViewBag.Stats as Application.DTO.NewsDashboardStatsDto;
+    var categories = ViewBag.Categories as List<Domain.NewsCategory>;
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+@section css {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="~/Admin/app-assets/css-rtl/core/menu/menu-types/vertical-menu.css">
+    <link rel="stylesheet" type="text/css" href="~/Admin/app-assets/css-rtl/core/colors/palette-gradient.css">
+    <link rel="stylesheet" type="text/css" href="~/Admin/app-assets/css-rtl/plugins/file-uploaders/dropzone.css">
+    <link rel="stylesheet" type="text/css" href="~/Admin/app-assets/css-rtl/pages/data-list-view.css">
+    <style>
+
+    .news-table-row {
+        transition: all 0.3s ease;
+        border-bottom: 1px solid #f0f0f0;
+        position: relative;
+    }
+    .news-table-row:hover {
+        background-color: #f8f9fa;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        z-index: 10;
+    }
+
+
+    .thumb-wrapper {
+        width: 60px;
+        height: 60px;
+        overflow: hidden;
+        border-radius: 12px;
+    }
+    .thumb-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+    }
+    .news-table-row:hover .thumb-wrapper img {
+        transform: scale(1.15);
+    }
+
+
+    .featured-strip {
+        position: absolute;
+        right: 0;
+        top: 10%;
+        bottom: 10%;
+        width: 4px;
+        background: linear-gradient(to bottom, #ffd700, #ffaa00);
+        border-radius: 4px 0 0 4px;
+        display: none;
+    }
+    .is-featured .featured-strip { display: block; }
+    
+
+    .row-actions {
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+        display: flex;
+        gap: 5px;
+        justify-content: flex-end;
+    }
+    .news-table-row:hover .row-actions {
+        opacity: 1;
+    }
+
+
+    .soft-delete-anim {
+        animation: fadeOutRight 0.5s forwards;
+    }
+    @@keyframes fadeOutRight {
+        to { opacity: 0; transform: translateX(50px); }
+    }
+
+
+    .stat-card {
+        border: none;
+        border-radius: 15px;
+        transition: transform 0.3s;
+        overflow: hidden;
+        position: relative;
+    }
+    .stat-card:hover { transform: translateY(-5px); }
+    .stat-icon-bg {
+        position: absolute;
+        left: -10px;
+        bottom: -10px;
+        font-size: 5rem;
+        opacity: 0.1;
+        transform: rotate(15deg);
+    }
+</style>
+}
+<div class="container-fluid py-4">
+
+    <!-- 1. Heads-Up Display (Stats) -->
+    <div class="row g-3 mb-4">
+        <!-- Total News -->
+        <div class="col-md-3">
+            <div class="card stat-card bg-primary text-white shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-white-50 mb-1">کل اخبار</h6>
+                            <h2 class="fw-bold mb-0">@stats?.TotalNews</h2>
+                        </div>
+                        <i class="fas fa-newspaper fa-2x opacity-50"></i>
+                    </div>
+                    <i class="fas fa-newspaper stat-icon-bg"></i>
+                </div>
+            </div>
+        </div>
+        <!-- Published -->
+        <div class="col-md-3">
+            <div class="card stat-card bg-success text-white shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-white-50 mb-1">منتشر شده</h6>
+                            <h2 class="fw-bold mb-0">@stats?.PublishedCount</h2>
+                        </div>
+                        <i class="fas fa-check-circle fa-2x opacity-50"></i>
+                    </div>
+                    <i class="fas fa-check-circle stat-icon-bg"></i>
+                </div>
+            </div>
+        </div>
+        <!-- Drafts -->
+        <div class="col-md-3">
+            <div class="card stat-card bg-warning text-dark shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-black-50 mb-1">پیش‌نویس</h6>
+                            <h2 class="fw-bold mb-0">@stats?.DraftCount</h2>
+                        </div>
+                        <i class="fas fa-pen-ruler fa-2x opacity-50"></i>
+                    </div>
+                    <i class="fas fa-pen-ruler stat-icon-bg"></i>
+                </div>
+            </div>
+        </div>
+        <!-- Trending (Mock) -->
+        <div class="col-md-3">
+            <div class="card stat-card bg-danger text-white shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div style="overflow: hidden;">
+                            <h6 class="text-white-50 mb-1">پربازدیدترین امروز</h6>
+                            <div class="text-truncate fw-bold" style="max-width: 100%;">InProgress
+                            </div>
+                            <small class="opacity-75"><i class="fas fa-eye me-1"></i> InProgress بازدید</small>
+                        </div>
+                        <i class="fas fa-fire fa-2x opacity-50"></i>
+                    </div>
+                    <i class="fas fa-fire stat-icon-bg"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- 2. Main Content Card -->
+
+<section id="data-list-view" class="data-list-view-header">
+
+    <!-- Tools Start -->
+    <div class="action-btns d-none">
+        <div class="btn-dropdown mr-1 mb-1">
+            <div class="btn-group dropdown actions-dropodown">
+                <button type="button" class="btn btn-white px-1 py-1 dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Actions
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="javascript:void(0)" id="btn-delete-selected">
+                        <i class="feather icon-trash"></i>Delete
+                    </a>
+                    <a class="dropdown-item" href="javascript:void(0)" id="btn-archive-selected">
+                        <i class="feather icon-archive"></i>Add/Remove Archive
+                    </a>
+                    <a class="dropdown-item" href="javascript:void(0)" id="btn-featured-selected">
+                        <i class="feather icon-star"></i>Add/Remove Featured
+                    </a>
+                    <a class="dropdown-item" href="#"><i class="feather icon-save"></i>Another Action</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Tools End -->
+    <!-- DataTable starts -->
+    <div class="table-responsive">
+        <table class="table data-list-view">
+            <thead>
+            <tr>
+                <!-- ستون چک باکس یا خالی -->
+                <th style="width: 10px;"></th> 
+                
+                <th class="text-center">ID</th>
+                
+                <th class="text-center">IMAGE</th>
+                
+                <th class="text-center">NAME</th>
+                
+                <th class="text-center" style="white-space: nowrap;">CATEGORY</th>
+                
+                <th class="text-center" style="white-space: nowrap;">STATUS</th>
+                
+                <th class="text-center">FEATURED</th>
+                
+                <th class="text-center">VIEWS</th>
+                
+                <th class="text-center">ACTION</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model) {
+                
+                <tr  data-id="@item.Id">
+                    <!-- ستون خالی -->
+                    <td></td>
+                    
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    
+                    <td class="product-img text-center">
+                        @if (!string.IsNullOrEmpty(item.PicUrl))
+                        {
+                            <img src="@item.PicUrl" width="60" height="60" style="object-fit:cover; border-radius:8px;" />
+                        }
+                        else
+                        {
+                            <span>-</span>
+                        }
+                    </td>
+                    
+                    <td class="product-name text-center">
+                        @item.Title)
+                    </td>
+                    
+                    <td class="product-category text-center">
+                        @item.CategoryName
+                    </td>
+
+
+                    <td class="text-center">
+                        <span style="display:none;">@(item.IsActive ? "1" : "0")</span>
+                        <div class="chip chip-@(item.IsActive ? "success" : "danger")">
+                            <div class="chip-body">
+                                <div class="chip-text">@(item.IsActive ? "Active" : "Inactive")</div>
+                            </div>
+                        </div>
+                    </td>
+                  
+                    <td class="text-center">
+                        <span style="display:none;">@(item.IsFeatured ? "1" : "0")</span>
+                        <div class="chip chip-@(item.IsFeatured ? "warning" : "Default")">
+                            <div class="chip-body">
+                                <div class="chip-text">@(item.IsFeatured ? "Featured" : "Regular")</div>
+                            </div>
+                        </div>
+                    </td>
+
+                    <td class="text-center">
+                        InProgress
+                    </td>
+
+
+                    <td class="text-center" style="white-space: nowrap;">
+                        @Html.ActionLink("ویرایش", "ManageNews", new { id = item.Id }, new { @class = "btn btn-dark", @style="width: 80px;" })
+                        <span style="margin: 0 5px;">|</span>
+                        @Html.ActionLink("حذف", "DeleteNews", new { id = item.Id }, new { @class = "btn btn-danger", @style="width: 80px;" })
+                    </td>
+                </tr>
+                            
+
+
+            
+ 
+            }
+            </tbody>
+        </table>
+    
+
+   
+                          
+                   
+    </div>
+    <!-- DataTable ends -->
+
+                  
+</section>
+
+
+
+@section script {
+
+    <!-- JavaScript Logic -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/Admin/app-assets/vendors/js/extensions/dropzone.min.js"></script>
+    <script src="~/Admin/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
+    <script src="~/Admin/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js"></script>
+    <script src="~/Admin/app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js"></script>
+    <script src="~/Admin/app-assets/vendors/js/tables/datatable/buttons.bootstrap.min.js"></script>
+    <script src="~/Admin/app-assets/vendors/js/tables/datatable/dataTables.select.min.js"></script>
+    <script src="~/Admin/app-assets/vendors/js/tables/datatable/datatables.checkboxes.min.js"></script>
+    <script src="~/Admin/app-assets/js/scripts/ui/data-list-view.js"></script>
+    <script>
+    $(document).ready(function () {
+    setTimeout(function() {
+    var addNewBtn = $('.dt-buttons .btn-outline-primary');
+        
+    addNewBtn.off('click').on('click', function (e) {
+    e.preventDefault(); 
+    window.location.href = '@Url.Action("ManageNews", "News")'; 
+    });
+                
+
+    addNewBtn.css('cursor', 'pointer');
+    }, 1000);
+    });
+    </script>
+    
+    <script>
+        $(document).ready(function () {
+            
+            $('#btn-delete-selected').on('click', function () {
+                
+                var selectedIds = [];
+                
+                $('.data-list-view tbody tr.selected').each(function () {
+                    var id = $(this).data('id');
+                    if (id) {
+                        selectedIds.push(id);
+                    }
+                });
+                
+                if (selectedIds.length === 0) {
+                    alert("لطفاً حداقل یک خبر را انتخاب کنید.");
+                    return;
+                }
+                
+                if (!confirm("آیا از حذف " + selectedIds.length + " خبر انتخاب شده اطمینان دارید؟")) {
+                    return;
+                }
+                
+                $.ajax({
+                    url: '/News/DeleteGroupNews', 
+                    type: 'POST',
+                    data: { ids: selectedIds },
+                    traditional: true,
+                    success: function (response) {
+                        if (response.success) {
+                            location.reload();
+                        } else {
+                            alert("خطا در حذف: " + response.message);
+                        }
+                    },
+                    error: function () {
+                        alert("خطا در برقراری ارتباط با سرور.");
+                    }
+                });
+            });
+        });
+    </script>
+    
+    <script>
+        $(document).ready(function () {
+            
+            $('#btn-archive-selected').on('click', function () {
+                
+                var selectedIds = [];
+                $('.data-list-view tbody tr.selected').each(function () {
+                    var id = $(this).data('id');
+                    if (id) {
+                        selectedIds.push(id);
+                    }
+                });
+                
+                if (selectedIds.length === 0) {
+                    alert("لطفاً حداقل یک خبر را انتخاب کنید.");
+                    return;
+                }
+                
+                $.ajax({
+                    url: '/News/ChangeStatusGroupNews', 
+                    type: 'POST',
+                    data: { ids: selectedIds },
+                    traditional: true,
+                    success: function (response) {
+                        if (response.success) {
+                            location.reload();
+                        } else {
+                            alert("خطا: " + response.message);
+                        }
+                    },
+                    error: function () {
+                        alert("خطا در ارتباط با سرور.");
+                    }
+                });
+            });
+
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            
+           
+            $('#btn-featured-selected').on('click', function () {
+                
+                var selectedIds = [];
+                $('.data-list-view tbody tr.selected').each(function () {
+                    var id = $(this).data('id');
+                    if (id) {
+                        selectedIds.push(id);
+                    }
+                });
+                
+                if (selectedIds.length === 0) {
+
+                    if(typeof Swal !== 'undefined'){
+                        Swal.fire({ icon: 'warning', title: 'توجه', text: 'لطفاً حداقل یک خبر را انتخاب کنید.' });
+                    } else {
+                        alert("لطفاً حداقل یک خبر را انتخاب کنید.");
+                    }
+                    return;
+                }
+                
+                $.ajax({
+                    url: '/News/ChangeFeaturedGroupNews', 
+                    type: 'POST',
+                    data: { ids: selectedIds },
+                    traditional: true,
+                    success: function (response) {
+                        if (response.success) {
+                            location.reload();
+                        } else {
+                            alert("خطا: " + response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+
+                        alert("خطا در ارتباط با سرور. (کد خطا: " + xhr.status + ")");
+                    }
+                });
+            });
+
+        });
+    </script>
+
+}

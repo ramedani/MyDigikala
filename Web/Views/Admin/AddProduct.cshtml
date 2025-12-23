@@ -1,4 +1,4 @@
-﻿@model Application.DTO.CreateProductsDTO
+﻿@model Application.DTO.EditProductDto
 
 @{
     ViewData["Title"] = Model.Id == 0 ? "افزودن محصول جدید" : $"ویرایش محصول: {Model.Title}";
@@ -180,7 +180,7 @@
                         <hr />
                         <div class="form-group">
                             <label asp-for="Invoice"></label>
-                            <input asp-for="Invoice" id="Price" class="form-control" />
+                            <input asp-for="Invoice" id="Invoice" class="form-control" />
                         </div>
 
                         <!-- دسته‌بندی‌ها -->
@@ -232,7 +232,7 @@
     </div>
 </form>
 
-@section Scripts {
+@section script {
     <script src="~/tinymce/tinymce.js"></script>
     <script>
         tinymce.init({

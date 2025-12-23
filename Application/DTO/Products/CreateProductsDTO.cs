@@ -28,4 +28,13 @@ namespace Application.DTO
         public string PicUrl { get; set; }
      
     }
+    public class EditProductDto : CreateProductsDTO
+    {
+        public int Id { get; set; }
+        
+        public List<ProductImageDto> ExistingImages { get; set; } = new();
+    }
+
+    
+    
 }

@@ -14,11 +14,13 @@ namespace Web.Controllers
         private readonly ILogger<HomeController> _logger;
         private ICategory icat;
         private AppDbContext mydb;
-        public HomeController(ILogger<HomeController> logger , ICategory _icat,AppDbContext _mydb)
+        private readonly INews inews;
+        public HomeController(ILogger<HomeController> logger , ICategory _icat,AppDbContext _mydb, INews _inews)
         {
             _logger = logger;
             icat = _icat;
             mydb = _mydb;
+            inews = _inews;
         }
 
         public IActionResult Index()
@@ -40,6 +42,58 @@ namespace Web.Controllers
             CreateCategoryDTO obj = new CreateCategoryDTO();
             return View(obj);
         }
+        
+        
+        public async Task<IActionResult> Article(
+            int pageId = 1, 
+            List<int>? selectedCategories = null, 
+            bool isFeatured = false, //داخ ترین
+            bool isNewest = false)  //بروز ترین
+        {
+           
+            var result = await inews.GetNewsForIndex(pageId, selectedCategories, isFeatured, isNewest);
+            var categories = await inews.GetCategoriesWithCountsAsync();
+
+
+            int pageSize = isNewest ? 10 : 6; 
+    
+            int totalItems = result.Item2;
+            int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+
+
+            var finalModel = new NewsSearchViewModel
+            {
+                NewsList = result.Item1,           
+                Categories = categories,           
+                SelectedCategories = selectedCategories ?? new List<int>(), 
+                IsFeatured = isFeatured,
+                IsNewest = isNewest,
+        
+
+                CurrentPage = pageId,
+        
+                TotalPages = totalPages
+            };
+
+
+            return View(finalModel);
+        }
+
+        [Route("Home/News/{id}")]
+        public async Task<IActionResult> News(int id)
+        {
+
+            var model = await inews.GetNewsDetailAsync(id);
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+
+            return View(model);
+        }
+
         [HttpPost]
         public async Task<ActionResult> CrCt(CreateCategoryDTO obj)
         {
