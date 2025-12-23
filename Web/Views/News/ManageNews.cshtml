@@ -3,24 +3,58 @@
 @{
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
-
 @section css {
 
-    <!-- ==========================  FAVICON ============================= -->
-    <link rel="icon" type="image/x-icon" href="~/home/public/Images/svg/favicon.png" />
-    <!-- ==========================  STYLE APP ============================= -->
+    <link rel="stylesheet" type="text/css" href="~/Admin/app-assets/css-rtl/core/menu/menu-types/vertical-menu.css">
+    <link rel="stylesheet" type="text/css" href="~/Admin/app-assets/css-rtl/core/colors/palette-gradient.css">
+    
     <link rel="stylesheet" href="~/home/public/styles/app.css" />
-    <!-- ==========================  SLIDER ============================= -->
     <link rel="stylesheet" href="~/home/public/styles/swiper.css" />
-    <!-- ==========================  DARK MODE SCRPT ============================= -->
+    
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     
+
     <style>
+        
+        .main-menu, .main-menu * {
+            border: none !important;
+            text-decoration: none !important;
+        }
+        
+        .main-menu ul.navigation li {
+            border: none !important;
+            margin: 0 !important;
+        }
+        
+        .main-menu .navigation > li > a,
+        .main-menu .navigation > li > a:hover {
+            border: none !important;
+            background-image: none !important; 
+            box-shadow: none !important;
+        }
+
+        .main-menu .navigation li::before,
+        .main-menu .navigation li::after,
+        .main-menu .navigation li a::before,
+        .main-menu .navigation li a::after {
+            background-color: transparent !important;
+            border: none !important;
+        }
+        
+        .main-menu .navigation > li.active > a {
+            background: linear-gradient(118deg, #7367f0, rgba(115, 103, 240, 0.7)) !important;
+            box-shadow: 0 0 10px 1px rgba(115, 103, 240, 0.7) !important;
+            color: #fff !important;
+            border-radius: 4px;
+        }
+        
         .block-wrapper {
             position: relative;
             border: 1px solid transparent;
             transition: all 0.2s;
         }
+
         .block-wrapper:hover {
             border: 1px dashed #cbd5e1;
             background-color: #f8fafc;
@@ -43,42 +77,15 @@
         }
         .font-DanaMedium { font-family: 'Dana', sans-serif; font-weight: 500; }
         .font-MorabbaMedium { font-family: 'Morabba', serif; font-weight: 500; }
+
+        .category-list-wrapper::-webkit-scrollbar { width: 5px; }
+        .category-list-wrapper::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        .category-list-wrapper::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+        .category-list-wrapper::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+        .category-item:hover { background-color: #f8f9fa; border-radius: 4px; transition: background-color 0.2s; }
         
-        .child-flex li { display: flex; align-items: center; gap: 0.5rem; }
-    </style>
-    <style>
-        /* استایل اسکرول بار  برای لیست دسته‌ها */
-        .category-list-wrapper::-webkit-scrollbar {
-            width: 5px;
-        }
-        .category-list-wrapper::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
-        }
-        .category-list-wrapper::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 4px;
-        }
-        .category-list-wrapper::-webkit-scrollbar-thumb:hover {
-            background: #a8a8a8;
-        }
-
-        /* هاور روی آیتم‌های لیست */
-        .category-item:hover {
-            background-color: #f8f9fa;
-            border-radius: 4px;
-            transition: background-color 0.2s;
-        }
-
-        /* استایل آپلودر */
-        .image-upload-area:hover {
-            border-color: #7367f0 !important; /* رنگ اصلی تم شما */
-            background-color: #f0f0f5 !important;
-        }
-
     </style>
 }
-
 <form asp-action="ManageNews" method="post" enctype="multipart/form-data" id="mainForm">
     <input type="hidden" asp-for="Id" />
     
@@ -161,13 +168,17 @@
             </a>
         </div>
         <div class="card-body pt-0">
-            <!-- باکس جستجو در دسته‌ها (اگر تعداد زیاد شود مفید است) -->
-            <div class="position-relative has-icon-right mb-3">
-                <input type="text" class="form-control form-control-sm round" placeholder="جستجو..." onkeyup="filterCategories(this)">
-                <div class="form-control-position">
-                    <i class="feather icon-search"></i>
+            <!-- باکس جستجو در دسته‌ها  -->
+            <div class="position-relative mb-3">
+                <input type="text" 
+                       class="form-control form-control-sm round" 
+                       placeholder="جستجو..." 
+                       onkeyup="filterCategories(this)" 
+                       style="padding-left: 35px;"> 
+           
+                <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;">
+                    <i class="fas fa-search text-muted"></i>
                 </div>
-                
             </div>
 
             <!-- لیست دسته‌ها -->
@@ -624,7 +635,6 @@
             selectType(block.type);
             
             if (block.type === 'list') {
-                // اگر دیتا موجود بود کپی کن، اگر نه آرایه خالی
                 tempListItems = block.listData ? [...block.listData] : [];
                 renderTempList();
             } else {

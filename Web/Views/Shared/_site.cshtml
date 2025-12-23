@@ -257,10 +257,11 @@
                 d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0-3.75-3.75M17.25 21 21 17.25" />
         </symbol>
         <symbol id="filter" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-            stroke="currentColor" class="size-6">
+                stroke="currentColor" class="size-6">
             <path stroke-linecap="round" stroke-linejoin="round"
-                d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
+                  d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
         </symbol>
+        @RenderSection("svg", required: false)
     </svg>
 
 
@@ -322,17 +323,17 @@
                     <!-- ITEM HASE SUBMENU -->
                     <li class="relative group">
                         <div class="flex items-center flex-row gap-x-1">
-                            <a href="articles.html">مقالات</a>
+                            <a href="/Home/Article">مقالات</a>
                             <svg class="w-4 h-4 transition-transform duration-300 group-hover:rotate-180">
                                 <use href="#chevron-down"></use>
                             </svg>
                         </div>
                         <!-- SUBMENU -->
                         <div class="absolute bg-white flex flex-col gap-y-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:top-10 transition-all delay-100 dark:bg-zinc-700 top-20 w-52 rounded border-t-2 border-green-500 p-5 text-base shadow-md child-hover:text-green-500 child:transition-all">
-                            <a href="articles.html">سلامتی</a>
-                            <a href="articles.html">اخبار قهوه</a>
-                            <a href="articles.html">روش‌های دم‌آوری قهوه</a>
-                            <a href="articles.html">لوازم و تجهیزات قهوه</a>
+                            <a href="~/Home/Article">سلامتی</a>
+                            <a href="~/Home/Article">اخبار قهوه</a>
+                            <a href="~/Home/Article">روش‌های دم‌آوری قهوه</a>
+                            <a href="~/Home/Article">لوازم و تجهیزات قهوه</a>
                         </div>
                     </li>
                     <li class="nav-item text-green-500">

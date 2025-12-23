@@ -6,12 +6,12 @@
 }
 @section css {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" type="text/css" href="~/admin/app-assets/css-rtl/core/menu/menu-types/vertical-menu.css">
-    <link rel="stylesheet" type="text/css" href="~/admin/app-assets/css-rtl/core/colors/palette-gradient.css">
-    <link rel="stylesheet" type="text/css" href="~/admin/app-assets/css-rtl/plugins/file-uploaders/dropzone.css">
-    <link rel="stylesheet" type="text/css" href="~/admin/app-assets/css-rtl/pages/data-list-view.css">
+    <link rel="stylesheet" type="text/css" href="~/Admin/app-assets/css-rtl/core/menu/menu-types/vertical-menu.css">
+    <link rel="stylesheet" type="text/css" href="~/Admin/app-assets/css-rtl/core/colors/palette-gradient.css">
+    <link rel="stylesheet" type="text/css" href="~/Admin/app-assets/css-rtl/plugins/file-uploaders/dropzone.css">
+    <link rel="stylesheet" type="text/css" href="~/Admin/app-assets/css-rtl/pages/data-list-view.css">
     <style>
-    /* 1. Rich Table Styling */
+
     .news-table-row {
         transition: all 0.3s ease;
         border-bottom: 1px solid #f0f0f0;
@@ -24,7 +24,7 @@
         z-index: 10;
     }
 
-    /* Thumbnail Zoom Effect */
+
     .thumb-wrapper {
         width: 60px;
         height: 60px;
@@ -41,7 +41,7 @@
         transform: scale(1.15);
     }
 
-    /* Featured Strip (Gold Bar) */
+
     .featured-strip {
         position: absolute;
         right: 0;
@@ -54,7 +54,7 @@
     }
     .is-featured .featured-strip { display: block; }
     
-    /* Action Buttons (Show on Hover) */
+
     .row-actions {
         opacity: 0;
         transition: opacity 0.2s ease-in-out;
@@ -66,7 +66,7 @@
         opacity: 1;
     }
 
-    /* Soft Delete Animation */
+
     .soft-delete-anim {
         animation: fadeOutRight 0.5s forwards;
     }
@@ -74,7 +74,7 @@
         to { opacity: 0; transform: translateX(50px); }
     }
 
-    /* Stats Cards */
+
     .stat-card {
         border: none;
         border-radius: 15px;
@@ -298,14 +298,14 @@
 
     <!-- JavaScript Logic -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="~/admin/app-assets/vendors/js/extensions/dropzone.min.js"></script>
-    <script src="~/admin/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
-    <script src="~/admin/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js"></script>
-    <script src="~/admin/app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js"></script>
-    <script src="~/admin/app-assets/vendors/js/tables/datatable/buttons.bootstrap.min.js"></script>
-    <script src="~/admin/app-assets/vendors/js/tables/datatable/dataTables.select.min.js"></script>
-    <script src="~/admin/app-assets/vendors/js/tables/datatable/datatables.checkboxes.min.js"></script>
-    <script src="~/admin/app-assets/js/scripts/ui/data-list-view.js"></script>
+    <script src="~/Admin/app-assets/vendors/js/extensions/dropzone.min.js"></script>
+    <script src="~/Admin/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
+    <script src="~/Admin/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js"></script>
+    <script src="~/Admin/app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js"></script>
+    <script src="~/Admin/app-assets/vendors/js/tables/datatable/buttons.bootstrap.min.js"></script>
+    <script src="~/Admin/app-assets/vendors/js/tables/datatable/dataTables.select.min.js"></script>
+    <script src="~/Admin/app-assets/vendors/js/tables/datatable/datatables.checkboxes.min.js"></script>
+    <script src="~/Admin/app-assets/js/scripts/ui/data-list-view.js"></script>
     <script>
     $(document).ready(function () {
     setTimeout(function() {

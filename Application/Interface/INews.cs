@@ -19,8 +19,15 @@ public interface INews
     Task DeleteGroup(List<int> ids);
     Task ToggleStatusGroup(List<int> ids);
     Task ToggleFeaturedGroup(List<int> ids);
-    Task<Tuple<List<NewsCardDto>, int>> GetNewsForIndex(int pageId = 1, string sort = "newest");
+    Task<Tuple<List<NewsCardDto>, int>> GetNewsForIndex(
+        int pageId = 1, 
+        List<int>? selectedCategories = null, 
+        bool isFeatured = false, 
+        bool isNewest = false
+    );
     Task<NewsDetailViewModelDto> GetNewsDetailAsync(int id);
+    
+    Task<List<NewsCategorySummaryDto>> GetCategoriesWithCountsAsync();
     
 }
 
@@ -260,72 +267,104 @@ public class NewsService : INews
 //#####################
 //     START User
 //#####################  
-    public async Task<Tuple<List<NewsCardDto>, int>> GetNewsForIndex(int pageId = 1, string sort = "new")
+public async Task<Tuple<List<NewsCardDto>, int>> GetNewsForIndex(
+    int pageId = 1, 
+    List<int>? selectedCategories = null, 
+    bool isFeatured = false,              // فیلتر داغ‌ترین
+    bool isNewest = false                 // فیلتر بروزترین
+)
+{
+
+    int take = isNewest ? 10 : 6; 
+    int skip = (pageId - 1) * take;
+
+
+    var query = _mydb.News
+        .AsNoTracking()
+        .Include(n => n.NC) 
+        .Where(p => p.IsActive);
+
+    if (selectedCategories != null && selectedCategories.Any())
     {
-        int take = 6; 
-        int skip = (pageId - 1) * take;
-
-
-        var query = _mydb.News
-            .AsNoTracking() 
-            .Where(p => p.IsActive); 
-
- 
-        switch (sort)
-        {
-            case "new":
-                query = query.OrderByDescending(p => p.CreateTime);
-                break;
-            default: // newest
-                query = query.OrderByDescending(p => p.Id); // یا p.CreateDate
-                break;
-        }
-
-        int totalCount = await query.CountAsync();
-
-        var products = await query
-            .Skip(skip)
-            .Take(take)
-
-            .Select(p => new NewsCardDto()
-            {
-                Id = p.Id,
-                Title = p.Title,
-                CreateTime = p.CreateTime ?? DateTime.UtcNow,
-                CategoryName = p.NC != null ? p.NC.Name : "بدون دسته‌بندی",
-                PicUrl = p.PicUrl ?? "default.png",
-
-
-            })
-
-            .ToListAsync();
-
-        return Tuple.Create(products, totalCount);
+        query = query.Where(p => selectedCategories.Contains(p.NC.Id));
     }
+    
+    if (isFeatured)
+    {
+        query = query.Where(p => p.IsFeatured);
+    }
+    query = query.OrderByDescending(p => p.CreateTime);
+    
+    int totalCount = await query.CountAsync();
+
+    //خروجی نهایی
+    var products = await query
+        .Skip(skip)
+        .Take(take)
+        .Select(p => new NewsCardDto()
+        {
+            Id = p.Id,
+            Title = p.Title,
+            CreateTime = p.CreateTime ?? DateTime.UtcNow,
+            CategoryName = p.NC != null ? p.NC.Name : "بدون دسته‌بندی", 
+            PicUrl = p.PicUrl ?? "default.png",
+            // Description = p.ShortDescription 
+        })
+        .ToListAsync();
+
+    return Tuple.Create(products, totalCount);
+}
 
 public async Task<NewsDetailViewModelDto> GetNewsDetailAsync(int id)
 {
-    // ۱. کوئری اصلی خبر
     var news = await _mydb.News
-        .Include(p => p.NC) // فقط ریلیشن‌ها اینکلود می‌شوند
+        .Include(p => p.NC)
         .FirstOrDefaultAsync(p => p.Id == id);
 
     if (news == null) return null;
 
-    // ۲. دریافت بلاک‌ها (اصلاح شده برای رفع ارور نال‌پذیری)
+
     var blocks = await _mydb.NewsBlocks
         .Where(b => b.NewsId == id)
         .OrderBy(b => b.SortOrder)
         .Select(b => new NewsBlockViewModelDto
         {
-            // از عملگر ؟؟ استفاده می‌کنیم تا اگر نال بود، مقدار پیش‌فرض جایگزین شود
-            Content = b.Content ?? "",       // اگر متن نال بود، رشته خالی بگذار
-            BlockType = b.BlockType ?? 1,    // اگر نوع بلاک نال بود، پیش‌فرض ۱ (مثلاً پاراگراف) بگذار
-            SortOrder = b.SortOrder ?? 0     // اگر ترتیب نال بود، ۰ بگذار
+            Content = b.Content ?? "",
+            BlockType = b.BlockType ?? 1,
+            SortOrder = b.SortOrder ?? 0
         })
         .ToListAsync();
 
-    // ۳. مقالات مرتبط
+
+    var rawLatestNews = await _mydb.News
+        .Where(n => n.IsActive && n.Id != id) 
+        .OrderByDescending(n => n.CreateTime) 
+        .Take(4)
+        .Select(n => new 
+        { 
+            n.Id, 
+            n.Title, 
+            n.PicUrl,
+            CreateTime = n.CreateTime 
+        })
+        .ToListAsync();
+    
+    var latestNews = rawLatestNews.Select(n => new NewsSummaryDto
+    {
+        Id = n.Id,
+        Title = n.Title,
+        ImageName = n.PicUrl ?? "default.png",
+        PersianDate = n.CreateTime.HasValue ? n.CreateTime.Value.ToShamsi() : "-" 
+    }).ToList();
+
+    var categoriesDto = await _mydb.NewsCategories 
+        .Select(c => new NewsCategorySummaryDto
+        {
+            Id = c.Id,
+            Title = c.Name, 
+            NewsCount = _mydb.News.Count(n => n.NC.Id == c.Id && n.IsActive)
+        })
+        .ToListAsync();
     List<NewsListDto> relatedNewsDto = new List<NewsListDto>();
     if (news.NC != null)
     {
@@ -339,12 +378,12 @@ public async Task<NewsDetailViewModelDto> GetNewsDetailAsync(int id)
                 Title = p.Title,
                 IsActive = p.IsActive,
                 CreateTime = p.CreateTime ?? DateTime.UtcNow,
-                PicUrl = p.PicUrl ?? "default.png"
+                PicUrl = p.PicUrl ?? "default.png",
             })
             .ToListAsync();
     }
 
-    // ۴. ساخت خروجی نهایی
+    //  خروجی نهایی
     var model = new NewsDetailViewModelDto
     {
         Id = news.Id,
@@ -355,10 +394,25 @@ public async Task<NewsDetailViewModelDto> GetNewsDetailAsync(int id)
         CreateTime = news.CreateTime ?? DateTime.UtcNow,
         PicUrl = news.PicUrl ?? "default.png",
         RelatedNews = relatedNewsDto,
-        Blocks = blocks // لیست بلاک‌ها که حالا پر شده است
+        Blocks = blocks,
+        LatestNews = latestNews,
+        Categories = categoriesDto 
     };
 
     return model;
+}
+public async Task<List<NewsCategorySummaryDto>> GetCategoriesWithCountsAsync()
+{
+    return await _mydb.NewsCategories
+        .AsNoTracking()
+        .Select(c => new NewsCategorySummaryDto
+        {
+            Id = c.Id,
+            Title = c.Name, 
+            
+            NewsCount = _mydb.News.Count(n => n.NewsCategoryId == c.Id && n.IsActive)
+        })
+        .ToListAsync();
 }
 
 }

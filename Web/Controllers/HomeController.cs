@@ -39,29 +39,47 @@ namespace Web.Controllers
             CreateCategoryDTO obj = new CreateCategoryDTO();
             return View(obj);
         }
-        public async Task<IActionResult> Article(int page = 1, string sort = "new")
-        {
-            var result = await inews.GetNewsForIndex(page, sort);
-
-            // داده‌های لیست محصولات
-            var model = result.Item1;
         
-            // محاسبه تعداد صفحات برای Pagination
+        
+        public async Task<IActionResult> Article(
+            int pageId = 1, 
+            List<int>? selectedCategories = null, 
+            bool isFeatured = false, //داخ ترین
+            bool isNewest = false)  //بروز ترین
+        {
+           
+            var result = await inews.GetNewsForIndex(pageId, selectedCategories, isFeatured, isNewest);
+            var categories = await inews.GetCategoriesWithCountsAsync();
+
+
+            int pageSize = isNewest ? 10 : 6; 
+    
             int totalItems = result.Item2;
-            int pageSize = 6;
             int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
 
-            // ارسال اطلاعات به ویو
-            ViewBag.Page = page;
-            ViewBag.TotalPages = totalPages;
-            ViewBag.Sort = sort;
 
-            return View(model);
+            var finalModel = new NewsSearchViewModel
+            {
+                NewsList = result.Item1,           
+                Categories = categories,           
+                SelectedCategories = selectedCategories ?? new List<int>(), 
+                IsFeatured = isFeatured,
+                IsNewest = isNewest,
+        
+
+                CurrentPage = pageId,
+        
+                TotalPages = totalPages
+            };
+
+
+            return View(finalModel);
         }
+
         [Route("Home/News/{id}")]
         public async Task<IActionResult> News(int id)
         {
-            // تمام کارها در سرویس انجام می‌شود
+
             var model = await inews.GetNewsDetailAsync(id);
 
             if (model == null)
@@ -69,7 +87,7 @@ namespace Web.Controllers
                 return NotFound();
             }
 
-            // مدل را به ویو می‌فرستیم
+
             return View(model);
         }
 
