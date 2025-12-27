@@ -1,20 +1,52 @@
+﻿using Application.Helper;
+using Application.Interface;
+using ElmahCore.Mvc;
+using ElmahCore.Sql;
+using Infra;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 using System;
-using Infra;
-using Application.Interface;
-using Application.Helper;
+using System.Globalization;
+using System.Reflection;
+using Application.Resource;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddLocalization();
+
+builder.Services.AddControllersWithViews()
+    .AddDataAnnotationsLocalization(options =>
+    {
+        options.DataAnnotationLocalizerProvider = (type, factory) =>
+            factory.Create(typeof(ValidationMessages));
+    }).AddViewLocalization();
+
+
 var useSqlServer = builder.Configuration.GetValue<bool>("UseSqlServer");
 
 
 var connectionString = useSqlServer 
     ? builder.Configuration.GetConnectionString("SqlServerConnection") 
-    : builder.Configuration.GetConnectionString("PostgresConnection"); 
+    : builder.Configuration.GetConnectionString("PostgresConnection");
+
+builder.Services.AddElmah<SqlErrorLog>(options =>
+{
+    options.ConnectionString =
+        builder.Configuration.GetConnectionString("SqlServerConnection");
+    options.Path = "elmah";
+});
+
+builder.Services.AddMemoryCache();//
+builder.Services.AddOutputCache();///
+builder.Services.AddResponseCaching();
+
+//builder.Services.AddLocalization(options =>
+//{
+//    options.ResourcesPath = "Resources";
+//});///////
+
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -29,6 +61,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseNpgsql(connectionString);
     }
 });
+
+
+
 
 
 builder.Services.AddScoped<ICategory , CategoryService>();
@@ -56,9 +91,31 @@ app.UseStatusCodePagesWithReExecute("/Home/Error/{0}");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+//https://localhost:7207/Home/login?culture=fa
+app.UseElmah(); // فعال‌سازی ELMAH
+
+var supportedCultures = new[]
+{
+    new CultureInfo("fa"),
+    new CultureInfo("en")
+};
+
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("fa"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures
+});
+
 app.UseRouting();
 
+app.UseOutputCache();//
+app.UseResponseCaching();//
+
 app.UseAuthorization();
+
+
+
 
 app.MapControllerRoute(
     name: "default",

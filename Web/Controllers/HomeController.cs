@@ -1,11 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using Web.Models;
-using Application.DTO;
+﻿using Application.DTO;
 using Application.Interface;
-using System.Threading.Tasks;
+using Application.Resource;
+using Domain;
 using Infra;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Localization;
+using System.Diagnostics;
+using System.Globalization;
+using System.Threading.Tasks;
+using Web.Models;
 
 namespace Web.Controllers
 {
@@ -15,20 +21,68 @@ namespace Web.Controllers
         private ICategory icat;
         private AppDbContext mydb;
         private readonly INews inews;
-        public HomeController(ILogger<HomeController> logger , ICategory _icat,AppDbContext _mydb, INews _inews)
+        private readonly IMemoryCache _cache;
+        private readonly IStringLocalizer<ValidationMessages> _localizer;
+        public HomeController(IStringLocalizer<ValidationMessages> localizer,ILogger<HomeController> logger , ICategory _icat,AppDbContext _mydb, INews _inews, IMemoryCache cache)
         {
             _logger = logger;
+            _localizer = localizer;
             icat = _icat;
             mydb = _mydb;
             inews = _inews;
+            _cache = cache;
+        }
+        ///Home/TestLang?culture=fa
+        public IActionResult TestLang()
+        {
+            // این خط باید متن فارسی را برگرداند
+            var text = _localizer["test"];
+            return Content($"Current Culture: {CultureInfo.CurrentCulture.Name} | Value: {text}");
         }
 
+        public IActionResult me()
+        {
+           
+            return View(new RegisterUserDto());
+        }
+
+
+
+
+        [OutputCache(Duration = 30)]
+        public IActionResult GetProduct1s()
+        {
+            Thread.Sleep(10000);
+            return Ok(new[] { "Laptop", "Mouse", "Keyboard" });
+        }
+
+
+        [ResponseCache(Duration = 30)]
+        public IActionResult GetProduct7s()
+        {
+            Thread.Sleep(10000);
+            return Ok(new[] { "Laptop", "Mouse", "Keyboard" });
+        }
+
+
+
+		public IActionResult login()
+		{
+		
+			return View( new LoginDTO());
+		}
+
+
+		
+        
         public IActionResult Index()
         {
+            //throw new Exception("Test ELMAH Error");
             return View();
         }
- 
-        public IActionResult Shop()
+		
+
+		public IActionResult Shop()
         {
             return View();
         }
