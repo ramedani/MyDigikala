@@ -16,8 +16,9 @@ namespace Infra
 
         public DbSet<SiteSetting> SiteSettings { get; set; }
 
-
-
-
+        public DbSet<News> News { get; set; }
+        public DbSet<NewsImage> NewsImages { get; set; }
+        public DbSet<NewsBlocks> NewsBlocks { get; set; }
+        public DbSet<NewsCategory> NewsCategories { get; set; }
     }
 }

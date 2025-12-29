@@ -81,6 +81,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[7.0.20, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[7.0.4, )"
             }
           },
           "imports": [
@@ -175,6 +179,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[7.0.20, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[7.0.4, )"
             }
           },
           "imports": [
@@ -266,6 +274,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[7.0.20, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[7.0.4, )"
             }
           },
           "imports": [
@@ -341,6 +353,14 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "ElmahCore": {
+              "target": "Package",
+              "version": "[2.1.2, )"
+            },
+            "ElmahCore.Sql": {
+              "target": "Package",
+              "version": "[2.1.2, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[7.0.20, )"
@@ -364,6 +384,10 @@
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[7.0.12, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[7.0.4, )"
             }
           },
           "imports": [

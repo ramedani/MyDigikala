@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    public class NewsCategory
+    public class NewsCategory : BaseTabel
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
 
-        public List<News> MyNews { get; set; }
+        public string? Name { get; set; }
 
+        public List<News>? News { get; set; }
     }
 }

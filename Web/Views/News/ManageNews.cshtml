@@ -1,0 +1,709 @@
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model Application.DTO.EditNewsDto
+@{
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+@section css {
+
+    <link rel="stylesheet" type="text/css" href="~/Admin/app-assets/css-rtl/core/menu/menu-types/vertical-menu.css">
+    <link rel="stylesheet" type="text/css" href="~/Admin/app-assets/css-rtl/core/colors/palette-gradient.css">
+    
+    <link rel="stylesheet" href="~/home/public/styles/app.css" />
+    <link rel="stylesheet" href="~/home/public/styles/swiper.css" />
+    
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    
+
+    <style>
+        
+        .main-menu, .main-menu * {
+            border: none !important;
+            text-decoration: none !important;
+        }
+        
+        .main-menu ul.navigation li {
+            border: none !important;
+            margin: 0 !important;
+        }
+        
+        .main-menu .navigation > li > a,
+        .main-menu .navigation > li > a:hover {
+            border: none !important;
+            background-image: none !important; 
+            box-shadow: none !important;
+        }
+
+        .main-menu .navigation li::before,
+        .main-menu .navigation li::after,
+        .main-menu .navigation li a::before,
+        .main-menu .navigation li a::after {
+            background-color: transparent !important;
+            border: none !important;
+        }
+        
+        .main-menu .navigation > li.active > a {
+            background: linear-gradient(118deg, #7367f0, rgba(115, 103, 240, 0.7)) !important;
+            box-shadow: 0 0 10px 1px rgba(115, 103, 240, 0.7) !important;
+            color: #fff !important;
+            border-radius: 4px;
+        }
+        
+        .block-wrapper {
+            position: relative;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .block-wrapper:hover {
+            border: 1px dashed #cbd5e1;
+            background-color: #f8fafc;
+            border-radius: 0.5rem;
+        }
+        .block-controls {
+            position: absolute;
+            left: 0;
+            top: -15px;
+            display: none;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            padding: 2px;
+            z-index: 10;
+        }
+        .block-wrapper:hover .block-controls {
+            display: flex;
+            gap: 2px;
+        }
+        .font-DanaMedium { font-family: 'Dana', sans-serif; font-weight: 500; }
+        .font-MorabbaMedium { font-family: 'Morabba', serif; font-weight: 500; }
+
+        .category-list-wrapper::-webkit-scrollbar { width: 5px; }
+        .category-list-wrapper::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        .category-list-wrapper::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+        .category-list-wrapper::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+        .category-item:hover { background-color: #f8f9fa; border-radius: 4px; transition: background-color 0.2s; }
+        
+    </style>
+}
+<form asp-action="ManageNews" method="post" enctype="multipart/form-data" id="mainForm">
+    <input type="hidden" asp-for="Id" />
+    
+    <!-- ============================================================ -->
+    <!-- STEP 1: فرم ورود اطلاعات پایه -->
+    <!-- ============================================================ -->
+    <div id="step-1-container">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">ایجاد/ویرایش خبر (مرحله ۱: اطلاعات پایه)</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <!-- ستون راست: ورودی‌ها -->
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label>عنوان خبر <span class="text-danger">*</span></label>
+                            <input asp-for="Title" id="Title" class="form-control form-control-lg" placeholder="یک تیتر جذاب بنویسید..." />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>نویسنده</label>
+                                    <input asp-for="AuthorName" id="AuthorName" class="form-control" placeholder="نام نویسنده" value="" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>تصویر شاخص</label>
+                                    <input type="file" type="file" name="NewsImageMain" id="NewsImageMain" class="form-control" accept="image/*" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ستون چپ: دسته‌بندی --><div class="col-md-4">
+    
+    <!-- بخش 1: تنظیمات وضعیت و انتشار -->
+    <div class="card shadow-sm mb-3">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center bg-white border-bottom-0">
+            <h6 class="m-0 font-weight-bold text-primary">تنظیمات انتشار</h6>
+            <i class="feather icon-settings text-muted"></i>
+        </div>
+        <div class="card-body">
+            <!-- وضعیت فعال/غیرفعال -->
+            <div class="form-group d-flex justify-content-between align-items-center mb-3">
+                <label for="IsActive" class="mb-0 cursor-pointer">وضعیت نمایش</label>
+                <div class="custom-control custom-switch custom-switch-success mr-2 mb-1">
+                    <input type="checkbox" class="custom-control-input" id="IsActive" name="IsActive" value="true" @(Model != null && Model.IsActive ? "checked" : "")>
+                    <label class="custom-control-label" for="IsActive">
+                        <span class="switch-text-left">فعال</span>
+                        <span class="switch-text-right">پیش‌نویس</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- خبر ویژه (برای اسلایدر یا بخش مهم) -->
+            <div class="form-group d-flex justify-content-between align-items-center border-top pt-3">
+                <label for="IsFeatured" class="mb-0 cursor-pointer text-warning">خبر ویژه (Featured)</label>
+                <div class="custom-control custom-switch custom-switch-warning mr-2 mb-1">
+                    <input type="checkbox" class="custom-control-input" id="IsFeatured" name="IsFeatured" value="true" @(Model != null && Model.IsFeatured ? "checked" : "")>
+                    <label class="custom-control-label" for="IsFeatured"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- بخش 2: دسته‌بندی‌ها -->
+    <div class="card shadow-sm mb-3">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center bg-white border-bottom-0">
+            <h6 class="m-0 font-weight-bold text-primary">دسته‌بندی‌ها</h6>
+            <!-- دکمه افزودن سریع دسته‌بندی -->
+            <a href="/News/AddNewsCategory" class="btn btn-sm btn-icon btn-flat-primary rounded-circle" @*onclick="openAddCategoryModal()"*@ title="افزودن دسته جدید">
+                <i class="feather icon-plus font-medium-3"></i>
+            </a>
+            <a href="/News/NewsCategoryList" class="btn btn-sm btn-icon btn-flat-secondary rounded-circle me-1" title="مشاهده لیست کامل">
+                <i class="feather icon-list font-medium-3"></i>
+            </a>
+        </div>
+        <div class="card-body pt-0">
+            <!-- باکس جستجو در دسته‌ها  -->
+            <div class="position-relative mb-3">
+                <input type="text" 
+                       class="form-control form-control-sm round" 
+                       placeholder="جستجو..." 
+                       onkeyup="filterCategories(this)" 
+                       style="padding-left: 35px;"> 
+           
+                <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;">
+                    <i class="fas fa-search text-muted"></i>
+                </div>
+            </div>
+
+            <!-- لیست دسته‌ها -->
+            <div class="category-list-wrapper" style="max-height: 250px; overflow-y: auto; padding-right: 5px;">
+                <ul class="list-unstyled" id="category-list-ul">
+                    @{
+                        var categories = ViewBag.NewsCategoryList as IEnumerable<SelectListItem>;
+                    }
+                    @if (categories != null && categories.Any())
+                    {
+                        foreach (var item in categories)
+                        {
+                            var isChecked = Model != null && Model.NewsCategoryId.HasValue && Model.NewsCategoryId.Value.ToString() == item.Value;
+                            <li class="mb-2 category-item">
+                                <div class="vs-radio-con vs-radio-primary">
+                                    <input type="radio" name="NewsCategoryId" value="@item.Value" @(isChecked ? "checked" : "")>
+                                    <span class="vs-radio">
+                                        <span class="vs-radio--border"></span>
+                                        <span class="vs-radio--circle"></span>
+                                    </span>
+                                    <span class="ml-2 category-label text-body">@item.Text</span>
+                                </div>
+                            </li>
+                        }
+                    }
+                    else 
+                    {
+                        <li class="text-muted text-center small py-2">دسته‌ای یافت نشد</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+
+ 
+
+</div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-12 text-right">
+                        <button type="button" onclick="goToStep2()" class="btn btn-primary btn-lg shadow">
+                            مرحله بعد: محتوای خبر <i class="feather icon-arrow-left"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- STEP 2: پیش‌نمایش و بلوک‌بندی (طراحی جدید) -->
+    <!-- ============================================================ -->
+    <div id="step-2-container" style="display: none;">
+        
+        <!-- دکمه برگشت -->
+        <button type="button" onclick="goToStep1()" class="mb-4 btn btn-link text-decoration-none text-muted">
+             <i class="feather icon-arrow-right"></i> بازگشت به ویرایش اطلاعات پایه
+        </button>
+
+        <!-- کانتینر اصلی کارت (Design Provided by User) -->
+        <div class="w-full lg:w-3/4 flex flex-col gap-y-8 px-4 lg:px-8 py-4 rounded-lg bg-white dark:bg-zinc-700 shadow mx-auto" style="max-width: 900px; margin: 0 auto; background: #fff; padding: 2rem; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+            
+            <!-- ARTICLE HEADER -->
+            <div class="w-full flex flex-col gap-y-6">
+                <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between mb-3">
+                    <!-- عنوان خبر -->
+                    <h2 id="preview-title" class="font-MorabbaMedium text-lg lg:text-2xl font-weight-bold" style="font-size: 1.5rem;">
+
+                    </h2>
+                    
+                    <span class="text-success cursor-pointer d-flex align-items-center">
+                        <i class="feather icon-share-2 mr-1"></i>
+                        <p class="font-DanaMedium mb-0">اشتراک گذاری</p>
+                    </span>
+                </div>
+
+                <div class="d-flex flex-wrap align-items-center text-muted small mb-4" style="gap: 1.5rem;">
+                    <span class="d-flex align-items-center">
+                        <i class="feather icon-list mr-1"></i>
+                        <p class="mb-0">دسته‌بندی : <span id="preview-category" class="font-weight-bold text-dark">...</span></p>
+                    </span>
+                    <span class="d-flex align-items-center">
+                        <i class="feather icon-user mr-1"></i>
+                        <p class="mb-0">توسط : <span id="preview-author" class="font-weight-bold text-dark">ادمین</span></p> 
+                    </span>
+                    <span class="d-flex align-items-center">
+                        <i class="feather icon-calendar mr-1"></i>
+                        <p class="mb-0"> تاریخ انتشار : <span id="preview-date" class="font-weight-bold text-dark">...</span> </p>
+                    </span>
+                </div>
+            </div>
+
+            <!-- ARTICLE MAIN -->
+            <div>
+                <!-- تصویر خبر -->
+                <img id="preview-image" class="rounded-lg w-100 object-cover mb-4" style="border-radius: 0.5rem; max-height: 400px; object-fit: cover; width: 100%;" src="" alt="تصویر خبر">
+                
+                <!-- ناحیه متن خبر -->
+                <div id="article-body-container">
+                    <div class="text-center text-muted py-5 border border-dashed rounded bg-light" id="empty-state-msg">
+                        هنوز محتوایی اضافه نشده است. برای شروع دکمه زیر را بزنید.
+                    </div>
+                </div>
+
+                <!-- دکمه افزودن بلوک جدید  -->
+                <div class="mt-5 text-center">
+                    <button type="button" onclick="openBlockModal()" class="btn btn-outline-primary border-dashed font-weight-bold px-4 py-2" style="border-style: dashed; border-width: 2px;">
+                        <i class="feather icon-plus-circle font-medium-3"></i> افزودن متن، تیتر یا لیست جدید
+                    </button>
+                </div>
+
+
+                <div id="hidden-inputs-container"></div>
+            </div>
+
+            <div class="text-center mt-5 pt-4 border-top">
+                 <button type="submit" class="btn btn-success btn-lg px-5 shadow-lg">
+                    <i class="feather icon-check-circle"></i> ثبت و انتشار خبر
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- ============================================================ -->
+<!-- Tools For Step 2 -->
+<!-- ============================================================ -->
+<div class="modal fade" id="blockModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="modalTitle">افزودن محتوا</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeBlockModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                
+                <div id="stage-type-select">
+                    <div class="list-group">
+                        <button onclick="selectType('paragraph')" class="list-group-item list-group-item-action">
+                            <h6 class="mb-0 font-weight-bold"><i class="feather icon-align-justify text-success mr-2"></i> پاراگراف متنی</h6>
+                        </button>
+                        <button onclick="selectType('heading')" class="list-group-item list-group-item-action">
+                             <h6 class="mb-0 font-weight-bold"><i class="feather icon-type text-primary mr-2"></i> تیتر (Heading)</h6>
+                        </button>
+                        <button onclick="selectType('list')" class="list-group-item list-group-item-action">
+                             <h6 class="mb-0 font-weight-bold"><i class="feather icon-list text-info mr-2"></i> لیست موردی</h6>
+                        </button>
+                    </div>
+                </div>
+
+
+                <div id="stage-editor" style="display:none;">
+                    <input type="hidden" id="current-edit-id" value="-1">
+                    <input type="hidden" id="selected-type" value="">
+
+
+                    <div id="text-editor-area">
+                        <label class="font-weight-bold" id="input-label">متن را وارد کنید:</label>
+                        <textarea id="block-input-text" class="form-control" rows="5"></textarea>
+                    </div>
+                    
+                    <div id="list-editor-area" style="display:none;">
+                        <label class="font-weight-bold">آیتم‌های لیست:</label>
+                        <div class="input-group mb-2">
+                            <input type="text" id="list-item-input" class="form-control" placeholder="مورد جدید...">
+                            <div class="input-group-append">
+                                <button type="button" onclick="addListItem()" class="btn btn-primary"><i class="feather icon-plus"></i></button>
+                            </div>
+                        </div>
+                        <ul id="temp-list-preview" class="list-group list-group-flush border rounded bg-light" style="max-height: 150px; overflow-y:auto;"></ul>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer bg-light" id="modal-footer" style="display:none;">
+                <button type="button" class="btn btn-secondary" onclick="resetModal()">بازگشت</button>
+                <button type="button" class="btn btn-success" onclick="saveBlock()">ذخیره</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section script {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+
+        let newsBlocks = []; 
+        let tempListItems = []; 
+        
+        const serverBlocks = @Html.Raw(Model.NewsBlocks != null ? Json.Serialize(Model.NewsBlocks) : "[]");
+
+        $(document).ready(function() {
+            if (serverBlocks && serverBlocks.length > 0) {
+                initExistingBlocks();
+            }
+        });
+
+
+        function initExistingBlocks() {
+            serverBlocks.forEach(serverBlock => {
+                let jsBlock = {};
+                
+                let sType = serverBlock.blockType || serverBlock.BlockType; 
+                let sContent = serverBlock.content || serverBlock.Content;
+
+                if (sType === 1) {
+                    jsBlock.type = 'heading';
+                    jsBlock.dbTypeId = 1;
+                    jsBlock.content = sContent;
+                    jsBlock.listData = null;
+                } 
+                else if (sType === 2) {
+                    jsBlock.type = 'paragraph';
+                    jsBlock.dbTypeId = 2;
+                    jsBlock.content = sContent;
+                    jsBlock.listData = null;
+                } 
+                else if (sType === 3) {
+                    jsBlock.type = 'list';
+                    jsBlock.dbTypeId = 3;
+                    jsBlock.content = sContent;
+                    
+                    jsBlock.listData = parseHtmlListToArray(sContent);
+                }
+
+                newsBlocks.push(jsBlock);
+            });
+            
+            renderBlocks();
+        }
+
+        function parseHtmlListToArray(htmlString) {
+            let tempDiv = document.createElement('div');
+            tempDiv.innerHTML = htmlString;
+            let items = [];
+            $(tempDiv).find('li').each(function() {
+                items.push($(this).text().trim());
+            });
+            return items;
+        }
+        
+
+        function filterCategories(input) {
+            var filter = input.value.toLowerCase();
+            var listItems = document.querySelectorAll("#category-list-ul li");
+
+            listItems.forEach(function(item) {
+                var label = item.querySelector(".category-label");
+                if (label) {
+                    var txtValue = label.textContent || label.innerText;
+                    if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                        item.style.display = "";
+                    } else {
+                        item.style.display = "none";
+                    }
+                }
+            });
+        }
+
+        function openAddCategoryModal() {
+            Swal.fire({
+                title: 'نام دسته‌بندی جدید',
+                input: 'text',
+                showCancelButton: true,
+                confirmButtonText: 'افزودن',
+                cancelButtonText: 'لغو',
+                preConfirm: (name) => {
+                    if(!name) Swal.showValidationMessage('نام الزامی است');
+                    return name;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var newName = result.value;
+                    var tempId = Math.floor(Math.random() * 10000); 
+                    
+                    var newItemHtml = `
+                    <li class="mb-2 category-item">
+                        <div class="vs-radio-con vs-radio-primary">
+                            <input type="radio" name="NewsCategoryId" value="${tempId}" checked>
+                            <span class="vs-radio"><span class="vs-radio--border"></span><span class="vs-radio--circle"></span></span>
+                            <span class="ml-2 category-label text-body">${newName}</span>
+                            <span class="badge badge-success float-right ml-1">جدید</span>
+                        </div>
+                    </li>`;
+                    
+                    $('#category-list-ul').prepend(newItemHtml);
+                }
+            });
+        }
+
+        function setTodayDate() {
+            try {
+                const date = new Date();
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                const shamsiDate = new Intl.DateTimeFormat('fa-IR', options).format(date);
+                $('#preview-date').text(shamsiDate);
+            } catch (e) {
+                $('#preview-date').text(new Date().toLocaleDateString());
+            }
+        }
+        
+        function goToStep2() {
+            var title = $('#Title').val();
+            var author = $('#AuthorName').val();
+            var categoryInput = document.querySelector('input[name="NewsCategoryId"]:checked');
+            var category = categoryInput ? categoryInput.closest('.vs-radio-con').querySelector('.category-label').innerText : "دسته‌بندی نشده";
+
+            if (!title) { Swal.fire('خطا', 'لطفاً عنوان خبر را وارد کنید.', 'error'); return; }
+
+            $('#preview-title').text(title);
+            $('#preview-author').text(author || 'ناشناس');
+            $('#preview-category').text(category);
+            setTodayDate();
+
+            var fileInput = document.getElementById('NewsImageMain');
+            if (fileInput.files && fileInput.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#preview-image').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                 if (!$('#preview-image').attr('src')) {
+                     $('#preview-image').hide(); 
+                 }
+            }
+
+            $('#step-1-container').slideUp(300, function() {
+                $('#step-2-container').fadeIn(300);
+                window.scrollTo(0, 0);
+            });
+        }
+
+        function goToStep1() {
+            $('#step-2-container').hide();
+            $('#step-1-container').fadeIn(300);
+            window.scrollTo(0, 0);
+        }
+        
+        function openBlockModal(editIndex = -1) {
+            $('#blockModal').modal('show');
+            if (editIndex > -1) {
+                loadBlockForEdit(editIndex);
+            } else {
+                resetModalUI();
+            }
+        }
+
+        function closeBlockModal() { $('#blockModal').modal('hide'); }
+
+        function resetModalUI() {
+            $('#stage-type-select').show();
+            $('#stage-editor').hide();
+            $('#modal-footer').hide();
+            $('#modalTitle').text('انتخاب نوع محتوا');
+            $('#block-input-text').val('');
+            $('#list-item-input').val('');
+            $('#current-edit-id').val('-1');
+            tempListItems = [];
+            renderTempList();
+        }
+
+        function selectType(type) {
+            $('#stage-type-select').hide();
+            $('#stage-editor').show();
+            $('#modal-footer').show();
+            $('#selected-type').val(type);
+
+            if (type === 'list') {
+                $('#text-editor-area').hide();
+                $('#list-editor-area').show();
+                $('#modalTitle').text('ایجاد لیست');
+            } else {
+                $('#list-editor-area').hide();
+                $('#text-editor-area').show();
+                if (type === 'heading') {
+                    $('#modalTitle').text('ویرایش تیتر');
+                    $('#block-input-text').attr('rows', 2);
+                } else {
+                    $('#modalTitle').text('ویرایش پاراگراف');
+                    $('#block-input-text').attr('rows', 6);
+                }
+            }
+        }
+
+        function resetModal() { resetModalUI(); }
+        
+        function addListItem() {
+            var val = $('#list-item-input').val().trim();
+            if(val) {
+                tempListItems.push(val);
+                $('#list-item-input').val('').focus();
+                renderTempList();
+            }
+        }
+
+        function renderTempList() {
+            var html = '';
+            tempListItems.forEach((item, idx) => {
+                html += `<li class="list-group-item d-flex justify-content-between py-2 small align-items-center">
+                            <span>${item}</span>
+                            <button type="button" class="btn btn-sm text-danger" onclick="removeTempItem(${idx})">&times;</button>
+                         </li>`;
+            });
+            $('#temp-list-preview').html(html);
+        }
+
+        function removeTempItem(idx) { 
+            tempListItems.splice(idx, 1); 
+            renderTempList(); 
+        }
+
+        function saveBlock() {
+            var type = $('#selected-type').val();
+            var editId = parseInt($('#current-edit-id').val());
+            var content = '';
+            var dbTypeId = 2; 
+
+            if (type === 'list') {
+                if (tempListItems.length === 0) { alert('لیست نمی‌تواند خالی باشد'); return; }
+                content = JSON.stringify(tempListItems); 
+                dbTypeId = 3; 
+            } else {
+                content = $('#block-input-text').val();
+                if (!content.trim()) { alert('متن نمی‌تواند خالی باشد'); return; }
+                dbTypeId = (type === 'heading') ? 1 : 2; 
+            }
+
+            var blockObj = {
+                content: content,
+                type: type,
+                dbTypeId: dbTypeId,
+                listData: (type === 'list') ? [...tempListItems] : null
+            };
+
+            if (editId > -1) {
+                newsBlocks[editId] = blockObj;
+            } else {
+                newsBlocks.push(blockObj);
+            }
+            renderBlocks();
+            closeBlockModal();
+        }
+
+        function loadBlockForEdit(index) {
+            var block = newsBlocks[index];
+            $('#current-edit-id').val(index);
+            selectType(block.type);
+            
+            if (block.type === 'list') {
+                tempListItems = block.listData ? [...block.listData] : [];
+                renderTempList();
+            } else {
+                $('#block-input-text').val(block.content);
+            }
+        }
+
+        function deleteBlock(index) { 
+            if(confirm('آیا از حذف این بلوک اطمینان دارید؟')) { 
+                newsBlocks.splice(index, 1); 
+                renderBlocks(); 
+            } 
+        }
+
+        function moveBlock(index, dir) {
+            if ((dir === -1 && index === 0) || (dir === 1 && index === newsBlocks.length - 1)) return;
+            [newsBlocks[index], newsBlocks[index + dir]] = [newsBlocks[index + dir], newsBlocks[index]];
+            renderBlocks();
+        }
+        
+        function renderBlocks() {
+            var $container = $('#article-body-container');
+            var $hiddenInputs = $('#hidden-inputs-container');
+            $container.empty();
+            $hiddenInputs.empty();
+
+            if (newsBlocks.length === 0) { $('#empty-state-msg').show(); } 
+            else { $('#empty-state-msg').hide(); }
+
+            newsBlocks.forEach((block, index) => {
+                let htmlContent = '';
+                let serverContentForInput = block.content;
+
+                if (block.type === 'heading') {
+                    htmlContent = `<h2 class="font-MorabbaMedium font-weight-bold text-dark mb-3" style="font-size: 1.5rem;">${block.content}</h2>`;
+                } 
+                else if (block.type === 'paragraph') {
+                    htmlContent = `<p class="text-justify text-muted mb-3" style="line-height: 2rem;">${block.content}</p>`;
+                } 
+                else if (block.type === 'list') {
+                    let listItemsHtml = '';
+                    block.listData.forEach(item => {
+                        listItemsHtml += `
+                        <li style="display: flex; align-items: start; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <span style="width: 10px; height: 10px; border-radius: 50%; background-color: #22c55e; flex-shrink: 0; margin-top: 8px;"></span>
+                            <span style="color: #4b5563;">${item}</span>
+                        </li>`;
+                    });
+                    htmlContent = `<ul style="list-style: none; padding: 0; margin-bottom: 1.5rem;">${listItemsHtml}</ul>`;
+                    serverContentForInput = '<ul>' + block.listData.map(i => `<li>${i}</li>`).join('') + '</ul>';
+                }
+                
+                let wrappedHtml = `
+                    <div class="block-wrapper mb-3 p-2">
+                        <div class="block-controls">
+                             <button type="button" class="btn btn-sm btn-white border shadow-sm text-primary" onclick="openBlockModal(${index})" title="ویرایش"><i class="feather icon-edit"></i></button>
+                             <button type="button" class="btn btn-sm btn-white border shadow-sm" onclick="moveBlock(${index}, -1)" title="بالا"><i class="feather icon-arrow-up"></i></button>
+                             <button type="button" class="btn btn-sm btn-white border shadow-sm" onclick="moveBlock(${index}, 1)" title="پایین"><i class="feather icon-arrow-down"></i></button>
+                             <button type="button" class="btn btn-sm btn-white border shadow-sm text-danger" onclick="deleteBlock(${index})" title="حذف"><i class="feather icon-trash-2"></i></button>
+                        </div>
+                        ${htmlContent}
+                    </div>
+                `;
+                $container.append(wrappedHtml);
+
+                $hiddenInputs.append(`<input type="hidden" name="NewsBlocks[${index}].Content" value='${serverContentForInput}' />`);
+                $hiddenInputs.append(`<input type="hidden" name="NewsBlocks[${index}].BlockType" value="${block.dbTypeId}" />`);
+                $hiddenInputs.append(`<input type="hidden" name="NewsBlocks[${index}].SortOrder" value="${index + 1}" />`);
+            });
+        }
+    </script>
+}

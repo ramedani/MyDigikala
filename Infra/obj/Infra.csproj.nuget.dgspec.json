@@ -73,6 +73,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[7.0.20, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[7.0.4, )"
             }
           },
           "imports": [
@@ -164,6 +168,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[7.0.20, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[7.0.4, )"
             }
           },
           "imports": [

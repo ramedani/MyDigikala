@@ -25,8 +25,7 @@ namespace Web.Controllers
 		public async Task<IActionResult> AddProduct(int? id)
 		{
 			// این متد باید ViewBagها را پر کند
-			var res = await icat.GetAll();
-			ViewBag.category = await icat.GetAll();
+       
 
 			// حالت افزودن محصول جدید
 			if (id == null || id == 0)
@@ -34,7 +33,7 @@ namespace Web.Controllers
 				// >> مهمترین بخش <<
 				// اینجا یک شیء خالی ولی غیر-null به ویو پاس داده می‌شود.
 				// نام ویو "AddProduct" است تا با فایل شما مطابقت داشته باشد.
-				return View("AddProduct", new CreateProductsDTO());
+				return View("AddProduct", new EditProductDto());
 			}
 
 			// حالت ویرایش محصول موجود
@@ -48,12 +47,15 @@ namespace Web.Controllers
 			return View("AddProduct", productDto);
 		}
 
+		// این متد کمکی را هم به کنترلر اضافه کنید
+
+
 		[HttpPost]
-		public async Task<IActionResult> AddProduct(CreateProductsDTO dto)
+		public async Task<IActionResult> AddProduct(EditProductDto dto)
 		{
 			if (!ModelState.IsValid)
 			{
-
+               
 				// FIX: نام ویو را به صراحت مشخص کنید
 				return View("AddProduct", dto);
 			}
@@ -68,7 +70,6 @@ namespace Web.Controllers
 				return RedirectToAction(nameof(AddProduct), new { id = dto.Id });
 			}
 		}
-
 
 	}
 }
