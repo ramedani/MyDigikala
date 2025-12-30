@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\pishrafteh\\MyDigikala\\Domain\\Domain.csproj": {}
+    "F:\\Digi\\MyDigikala\\Domain\\Domain.csproj": {}
   },
   "projects": {
-    "D:\\pishrafteh\\MyDigikala\\Domain\\Domain.csproj": {
+    "F:\\Digi\\MyDigikala\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\pishrafteh\\MyDigikala\\Domain\\Domain.csproj",
+        "projectUniqueName": "F:\\Digi\\MyDigikala\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "D:\\pishrafteh\\MyDigikala\\Domain\\Domain.csproj",
-        "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "D:\\pishrafteh\\MyDigikala\\Domain\\obj\\",
+        "projectPath": "F:\\Digi\\MyDigikala\\Domain\\Domain.csproj",
+        "packagesPath": "C:\\Users\\hosna\\.nuget\\packages\\",
+        "outputPath": "F:\\Digi\\MyDigikala\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\hosna\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,7 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://www.nuget.org/api/v2/": {}
         },
         "frameworks": {
           "net7.0": {
@@ -73,6 +73,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[7.0.20, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[7.0.4, )"
             }
           },
           "imports": [
@@ -91,7 +95,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.308\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.306\\RuntimeIdentifierGraph.json"
         }
       }
     }
