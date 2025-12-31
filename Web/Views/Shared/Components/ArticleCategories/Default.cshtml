@@ -1,0 +1,25 @@
+@model IEnumerable<Domain.NewsCategory>
+
+<li class="relative group">
+    <div class="flex items-center flex-row gap-x-1 cursor-pointer">
+        <a asp-controller="Article" asp-action="Index">مقالات</a>
+        <svg class="w-4 h-4 transition-transform duration-300 group-hover:rotate-180">
+            <use href="#chevron-down"></use>
+        </svg>
+    </div>
+    
+    <div class="absolute bg-white flex flex-col gap-y-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:top-10 transition-all delay-100 dark:bg-zinc-700 top-20 w-52 rounded border-t-2 border-green-500 p-5 text-base shadow-md child-hover:text-green-500 child:transition-all z-50">
+        
+        <a asp-controller="Home" asp-action="Article" class="font-bold border-b pb-2 mb-2">مشاهده همه</a>
+
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <a href="/Home/Article?categoryId=@item.Id">
+                    @item.Name
+                </a>
+            }
+        }
+    </div>
+</li>

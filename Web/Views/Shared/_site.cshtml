@@ -321,21 +321,8 @@
                         </div>
                     </li>
                     <!-- ITEM HASE SUBMENU -->
-                    <li class="relative group">
-                        <div class="flex items-center flex-row gap-x-1">
-                            <a href="/Home/Article">مقالات</a>
-                            <svg class="w-4 h-4 transition-transform duration-300 group-hover:rotate-180">
-                                <use href="#chevron-down"></use>
-                            </svg>
-                        </div>
-                        <!-- SUBMENU -->
-                        <div class="absolute bg-white flex flex-col gap-y-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:top-10 transition-all delay-100 dark:bg-zinc-700 top-20 w-52 rounded border-t-2 border-green-500 p-5 text-base shadow-md child-hover:text-green-500 child:transition-all">
-                            <a href="~/Home/Article">سلامتی</a>
-                            <a href="~/Home/Article">اخبار قهوه</a>
-                            <a href="~/Home/Article">روش‌های دم‌آوری قهوه</a>
-                            <a href="~/Home/Article">لوازم و تجهیزات قهوه</a>
-                        </div>
-                    </li>
+                    @await Component.InvokeAsync("ArticleCategories")
+
                     <li class="nav-item text-green-500">
                         <a href="contact-us.html">تماس با ما</a>
                     </li>

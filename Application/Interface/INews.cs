@@ -271,9 +271,10 @@ public async Task<Tuple<List<NewsCardDto>, int>> GetNewsForIndex(
     int pageId = 1, 
     List<int>? selectedCategories = null, 
     bool isFeatured = false,              // فیلتر داغ‌ترین
-    bool isNewest = false                 // فیلتر بروزترین
+    bool isNewest = false                  // فیلتر بروزترین
 )
 {
+
 
     int take = isNewest ? 10 : 6; 
     int skip = (pageId - 1) * take;
@@ -339,7 +340,7 @@ public async Task<NewsDetailViewModelDto> GetNewsDetailAsync(int id)
     var rawLatestNews = await _mydb.News
         .Where(n => n.IsActive && n.Id != id) 
         .OrderByDescending(n => n.CreateTime) 
-        .Take(4)
+        .Take(5)
         .Select(n => new 
         { 
             n.Id, 
@@ -371,7 +372,7 @@ public async Task<NewsDetailViewModelDto> GetNewsDetailAsync(int id)
         relatedNewsDto = await _mydb.News
             .Where(p => p.NC.Id == news.NC.Id && p.Id != news.Id)
             .OrderByDescending(p => p.Id)
-            .Take(4)
+            .Take(5)
             .Select(p => new NewsListDto
             {
                 Id = p.Id,
