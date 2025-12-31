@@ -174,18 +174,22 @@
                     {
                         @foreach (var cat in Model.Categories)
                         {
-                        <li class="group">
-                            <span
-                                class="flex items-center justify-center gap-x-1 group-hover:pr-2 duration-300 transition-all group-hover:text-green-500">
+                     
+                            <li class="group">
+                                <a href="/Home/Article?categoryId=@cat.Id">
+                                <span
+                                    class="flex items-center justify-center gap-x-1 group-hover:pr-2 duration-300 transition-all group-hover:text-green-500">
 
-                                <p>@cat.Title</p>
-                                <svg class="w-4 h-4">
-                                    <use href="#chevron-left"></use>
-                                </svg>
-                            </span>
-                            <span
-                                class="w-5 h-5 flex items-center justify-center rounded-lg text-white bg-green-500 text-xs">  @cat.NewsCount</span>
-                        </li>
+                                    <p>@cat.Title</p>
+                                    <svg class="w-4 h-4">
+                                        <use href="#chevron-left"></use>
+                                    </svg>
+                                </span>
+                            </a>
+                                <span
+                                    class="w-5 h-5 flex items-center justify-center rounded-lg text-white bg-green-500 text-xs">  @cat.NewsCount</span>
+                            </li>
+                            
                     }
                     }
                     
@@ -196,7 +200,7 @@
     </ul>
                 </div>
             </div>
-
+            
         </section>
 
         <!-- Best-selling products -->

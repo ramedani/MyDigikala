@@ -77,7 +77,6 @@ namespace Web.Controllers
         
         public IActionResult Index()
         {
-            //throw new Exception("Test ELMAH Error");
             return View();
         }
 		
@@ -102,12 +101,23 @@ namespace Web.Controllers
             int pageId = 1, 
             List<int>? selectedCategories = null, 
             bool isFeatured = false, //داخ ترین
-            bool isNewest = false)  //بروز ترین
+            bool isNewest = false,  //بروز ترین
+            int? categoryId = null)
         {
            
+            if (selectedCategories == null)
+            {
+                selectedCategories = new List<int>();
+            }
+
+            if (categoryId.HasValue)
+            {
+                selectedCategories.Add(categoryId.Value);
+            }
+   
+     
             var result = await inews.GetNewsForIndex(pageId, selectedCategories, isFeatured, isNewest);
             var categories = await inews.GetCategoriesWithCountsAsync();
-
 
             int pageSize = isNewest ? 10 : 6; 
     
