@@ -533,3 +533,17 @@ D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\Microsoft.Extensions.Primitives.dl
 D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\System.Diagnostics.DiagnosticSource.dll
 D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\System.Text.Encodings.Web.dll
 D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\runtimes\browser\lib\net7.0\System.Text.Encodings.Web.dll
+D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\ElmahCore.Mvc.dll
+D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\ElmahCore.dll
+D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\ElmahCore.Sql.dll
+D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\HtmlAgilityPack.dll
+D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\Npgsql.dll
+D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\System.Data.SqlClient.dll
+D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\runtimes\win-arm64\native\sni.dll
+D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\runtimes\win-x64\native\sni.dll
+D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\runtimes\win-x86\native\sni.dll
+D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\en\Application.resources.dll
+D:\pishrafteh\MyDigikala\Web\bin\Debug\net7.0\fa\Application.resources.dll

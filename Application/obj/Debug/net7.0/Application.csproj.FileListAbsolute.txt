@@ -37,3 +37,11 @@ D:\pishrafteh\MyDigikala\Application\obj\Debug\net7.0\refint\Application.dll
 D:\pishrafteh\MyDigikala\Application\obj\Debug\net7.0\Application.pdb
 D:\pishrafteh\MyDigikala\Application\obj\Debug\net7.0\Application.genruntimeconfig.cache
 D:\pishrafteh\MyDigikala\Application\obj\Debug\net7.0\ref\Application.dll
+D:\pishrafteh\MyDigikala\Application\bin\Debug\net7.0\en\Application.resources.dll
+D:\pishrafteh\MyDigikala\Application\bin\Debug\net7.0\fa\Application.resources.dll
+D:\pishrafteh\MyDigikala\Application\obj\Debug\net7.0\Application.Resource.ValidationMessages.resources
+D:\pishrafteh\MyDigikala\Application\obj\Debug\net7.0\Application.Resource.ValidationMessages.en.resources
+D:\pishrafteh\MyDigikala\Application\obj\Debug\net7.0\Application.Resource.ValidationMessages.fa.resources
+D:\pishrafteh\MyDigikala\Application\obj\Debug\net7.0\Application.csproj.GenerateResource.cache
+D:\pishrafteh\MyDigikala\Application\obj\Debug\net7.0\en\Application.resources.dll
+D:\pishrafteh\MyDigikala\Application\obj\Debug\net7.0\fa\Application.resources.dll
