@@ -31,15 +31,26 @@ var connectionString = useSqlServer
     ? builder.Configuration.GetConnectionString("SqlServerConnection") 
     : builder.Configuration.GetConnectionString("PostgresConnection");
 
-builder.Services.AddElmah<SqlErrorLog>(options =>
+if (useSqlServer)
 {
-    options.ConnectionString =
-        builder.Configuration.GetConnectionString("SqlServerConnection");
-    options.Path = "elmah";
-});
+    builder.Services.AddElmah<SqlErrorLog>(options =>
+    {
+        options.ConnectionString = builder.Configuration.GetConnectionString("SqlServerConnection");
+        options.Path = "elmah";
+    });
+}
+else
+{
+    // اگر پستگرس است، فعلا الماه را روی حافظه یا فایل تنظیم کنید تا ارور ندهد
+    // یا می‌توانید کلا این بخش else را خالی بگذارید تا الماه غیرفعال شود
+    builder.Services.AddElmah<ElmahCore.MemoryErrorLog>(options =>
+    {
+        options.Path = "elmah";
+    });
+}
 
 builder.Services.AddMemoryCache();//
-builder.Services.AddOutputCache();///
+builder.Services.AddOutputCache();//
 builder.Services.AddResponseCaching();
 
 //builder.Services.AddLocalization(options =>
