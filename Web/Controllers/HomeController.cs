@@ -181,7 +181,7 @@ namespace Web.Controllers
 
         public IActionResult Index()
         {
-            throw new Exception("Test ELMAH Error");
+            //throw new Exception("Test ELMAH Error");
             return View();
         }
  
