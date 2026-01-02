@@ -1,39 +1,33 @@
 {
   "format": 1,
   "restore": {
-    "D:\\pishrafteh\\MyDigikala\\Web\\Web.csproj": {}
+    "/home/ramedani/0dibagran/project/MyDigikala/Web/Web.csproj": {}
   },
   "projects": {
-    "D:\\pishrafteh\\MyDigikala\\Application\\Application.csproj": {
+    "/home/ramedani/0dibagran/project/MyDigikala/Application/Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\pishrafteh\\MyDigikala\\Application\\Application.csproj",
+        "projectUniqueName": "/home/ramedani/0dibagran/project/MyDigikala/Application/Application.csproj",
         "projectName": "Application",
-        "projectPath": "D:\\pishrafteh\\MyDigikala\\Application\\Application.csproj",
-        "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "D:\\pishrafteh\\MyDigikala\\Application\\obj\\",
+        "projectPath": "/home/ramedani/0dibagran/project/MyDigikala/Application/Application.csproj",
+        "packagesPath": "/home/ramedani/.nuget/packages/",
+        "outputPath": "/home/ramedani/0dibagran/project/MyDigikala/Application/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/ramedani/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "D:\\pishrafteh\\MyDigikala\\Infra\\Infra.csproj": {
-                "projectPath": "D:\\pishrafteh\\MyDigikala\\Infra\\Infra.csproj"
+              "/home/ramedani/0dibagran/project/MyDigikala/Infra/Infra.csproj": {
+                "projectPath": "/home/ramedani/0dibagran/project/MyDigikala/Infra/Infra.csproj"
               }
             }
           }
@@ -48,7 +42,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net7.0": {
@@ -81,6 +75,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[7.0.20, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[7.0.4, )"
             }
           },
           "imports": [
@@ -94,6 +92,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[7.0.20, 7.0.20]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -102,32 +106,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.308\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.110/RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\pishrafteh\\MyDigikala\\Domain\\Domain.csproj": {
+    "/home/ramedani/0dibagran/project/MyDigikala/Domain/Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\pishrafteh\\MyDigikala\\Domain\\Domain.csproj",
+        "projectUniqueName": "/home/ramedani/0dibagran/project/MyDigikala/Domain/Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "D:\\pishrafteh\\MyDigikala\\Domain\\Domain.csproj",
-        "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "D:\\pishrafteh\\MyDigikala\\Domain\\obj\\",
+        "projectPath": "/home/ramedani/0dibagran/project/MyDigikala/Domain/Domain.csproj",
+        "packagesPath": "/home/ramedani/.nuget/packages/",
+        "outputPath": "/home/ramedani/0dibagran/project/MyDigikala/Domain/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/ramedani/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -146,7 +144,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net7.0": {
@@ -175,6 +173,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[7.0.20, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[7.0.4, )"
             }
           },
           "imports": [
@@ -188,45 +190,45 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[7.0.20, 7.0.20]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.308\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.110/RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\pishrafteh\\MyDigikala\\Infra\\Infra.csproj": {
+    "/home/ramedani/0dibagran/project/MyDigikala/Infra/Infra.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\pishrafteh\\MyDigikala\\Infra\\Infra.csproj",
+        "projectUniqueName": "/home/ramedani/0dibagran/project/MyDigikala/Infra/Infra.csproj",
         "projectName": "Infra",
-        "projectPath": "D:\\pishrafteh\\MyDigikala\\Infra\\Infra.csproj",
-        "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "D:\\pishrafteh\\MyDigikala\\Infra\\obj\\",
+        "projectPath": "/home/ramedani/0dibagran/project/MyDigikala/Infra/Infra.csproj",
+        "packagesPath": "/home/ramedani/.nuget/packages/",
+        "outputPath": "/home/ramedani/0dibagran/project/MyDigikala/Infra/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/ramedani/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "D:\\pishrafteh\\MyDigikala\\Domain\\Domain.csproj": {
-                "projectPath": "D:\\pishrafteh\\MyDigikala\\Domain\\Domain.csproj"
+              "/home/ramedani/0dibagran/project/MyDigikala/Domain/Domain.csproj": {
+                "projectPath": "/home/ramedani/0dibagran/project/MyDigikala/Domain/Domain.csproj"
               }
             }
           }
@@ -241,7 +243,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net7.0": {
@@ -266,6 +268,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[7.0.20, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[7.0.4, )"
             }
           },
           "imports": [
@@ -279,48 +285,48 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[7.0.20, 7.0.20]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.308\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.110/RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\pishrafteh\\MyDigikala\\Web\\Web.csproj": {
+    "/home/ramedani/0dibagran/project/MyDigikala/Web/Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\pishrafteh\\MyDigikala\\Web\\Web.csproj",
+        "projectUniqueName": "/home/ramedani/0dibagran/project/MyDigikala/Web/Web.csproj",
         "projectName": "Web",
-        "projectPath": "D:\\pishrafteh\\MyDigikala\\Web\\Web.csproj",
-        "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "D:\\pishrafteh\\MyDigikala\\Web\\obj\\",
+        "projectPath": "/home/ramedani/0dibagran/project/MyDigikala/Web/Web.csproj",
+        "packagesPath": "/home/ramedani/.nuget/packages/",
+        "outputPath": "/home/ramedani/0dibagran/project/MyDigikala/Web/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/ramedani/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "D:\\pishrafteh\\MyDigikala\\Application\\Application.csproj": {
-                "projectPath": "D:\\pishrafteh\\MyDigikala\\Application\\Application.csproj"
+              "/home/ramedani/0dibagran/project/MyDigikala/Application/Application.csproj": {
+                "projectPath": "/home/ramedani/0dibagran/project/MyDigikala/Application/Application.csproj"
               },
-              "D:\\pishrafteh\\MyDigikala\\Infra\\Infra.csproj": {
-                "projectPath": "D:\\pishrafteh\\MyDigikala\\Infra\\Infra.csproj"
+              "/home/ramedani/0dibagran/project/MyDigikala/Infra/Infra.csproj": {
+                "projectPath": "/home/ramedani/0dibagran/project/MyDigikala/Infra/Infra.csproj"
               }
             }
           }
@@ -335,12 +341,20 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "ElmahCore": {
+              "target": "Package",
+              "version": "[2.1.2, )"
+            },
+            "ElmahCore.Sql": {
+              "target": "Package",
+              "version": "[2.1.2, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[7.0.20, )"
@@ -364,6 +378,10 @@
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[7.0.12, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[7.0.4, )"
             }
           },
           "imports": [
@@ -377,6 +395,16 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[7.0.20, 7.0.20]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.linux-x64",
+              "version": "[7.0.20, 7.0.20]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -385,7 +413,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.308\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.110/RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -61,56 +61,11 @@ namespace Application.Resource {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Back To List.
+        ///   Looks up a localized string similar to test.
         /// </summary>
-        public static string Back {
+        public static string test {
             get {
-                return ResourceManager.GetString("Back", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Login.
-        /// </summary>
-        public static string Login {
-            get {
-                return ResourceManager.GetString("Login", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Password.
-        /// </summary>
-        public static string Pass {
-            get {
-                return ResourceManager.GetString("Pass", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Plz enter Password.
-        /// </summary>
-        public static string PassError {
-            get {
-                return ResourceManager.GetString("PassError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Plz enter User Name.
-        /// </summary>
-        public static string UserError {
-            get {
-                return ResourceManager.GetString("UserError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to UserName.
-        /// </summary>
-        public static string UserName {
-            get {
-                return ResourceManager.GetString("UserName", resourceCulture);
+                return ResourceManager.GetString("test", resourceCulture);
             }
         }
     }

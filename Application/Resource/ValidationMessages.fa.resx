@@ -117,22 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Back" xml:space="preserve">
-    <value>برگشت</value>
-  </data>
-  <data name="Login" xml:space="preserve">
-    <value>ورود</value>
-  </data>
-  <data name="Pass" xml:space="preserve">
-    <value>پسورد</value>
-  </data>
-  <data name="PassError" xml:space="preserve">
-    <value>لطفا کلمه عبور را وارد کنید</value>
-  </data>
-  <data name="UserError" xml:space="preserve">
-    <value>لطفا نام کاربری را وارد کنید</value>
-  </data>
-  <data name="UserName" xml:space="preserve">
-    <value>نام کاربری</value>
+  <data name="test" xml:space="preserve">
+    <value>تست</value>
   </data>
 </root>
