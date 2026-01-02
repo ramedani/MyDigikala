@@ -19,9 +19,10 @@ builder.Services.AddLocalization();
 builder.Services.AddControllersWithViews()
     .AddDataAnnotationsLocalization(options =>
     {
+        // استفاده از روش Type-Safe برای پیدا کردن ریسورس در لایه دیگر
         options.DataAnnotationLocalizerProvider = (type, factory) =>
             factory.Create(typeof(ValidationMessages));
-    }).AddViewLocalization();
+    });
 
 
 var useSqlServer = builder.Configuration.GetValue<bool>("UseSqlServer");
@@ -52,6 +53,8 @@ else
 builder.Services.AddMemoryCache();//
 builder.Services.AddOutputCache();//
 builder.Services.AddResponseCaching();
+
+builder.Services.AddDataProtection();
 
 //builder.Services.AddLocalization(options =>
 //{
@@ -102,7 +105,7 @@ app.UseStatusCodePagesWithReExecute("/Home/Error/{0}");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-//https://localhost:7207/Home/login?culture=fa
+
 app.UseElmah(); // فعال‌سازی ELMAH
 
 var supportedCultures = new[]
