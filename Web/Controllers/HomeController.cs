@@ -3,6 +3,7 @@ using Application.Interface;
 using Application.Resource;
 using Domain;
 using Infra;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
@@ -10,6 +11,8 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
 using System.Diagnostics;
 using System.Globalization;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Web.Models;
 
@@ -23,7 +26,8 @@ namespace Web.Controllers
         private readonly INews inews;
         private readonly IMemoryCache _cache;
         private readonly IStringLocalizer<ValidationMessages> _localizer;
-        public HomeController(IStringLocalizer<ValidationMessages> localizer,ILogger<HomeController> logger , ICategory _icat,AppDbContext _mydb, INews _inews, IMemoryCache cache)
+        private readonly IDataProtector _protector;
+        public HomeController(IDataProtectionProvider provider, IStringLocalizer<ValidationMessages> localizer,ILogger<HomeController> logger , ICategory _icat,AppDbContext _mydb, INews _inews, IMemoryCache cache)
         {
             _logger = logger;
             _localizer = localizer;
@@ -31,7 +35,96 @@ namespace Web.Controllers
             mydb = _mydb;
             inews = _inews;
             _cache = cache;
+            _protector =  provider.CreateProtector("hamid"); 
         }
+
+
+
+        //  /home/edata?txt=salam
+
+        //CfDJ8Fru9UbZ5otCsJhe1z96wrPDxUdQ0v1cW-MplDwkU0pnfnZHkPPZ42iXHjpIiKEqs5di2ZoCyCU4vLcCulFhAiM2-kZ-W7ZsoyHqGpzJOI16LLB4gJ_xCB5oHwFtsmvAdQ
+        public IActionResult edata(string txt)
+        {
+            
+            string encryptedText = _protector.Protect(txt);
+            return Ok(new
+            {
+                OriginalText = txt,
+                EncryptedText = encryptedText
+            });
+        }
+
+  
+        public IActionResult ddata(string txt)
+        {
+            try
+            {
+                string decryptedText = _protector.Unprotect(txt);
+                return Ok(new
+                {
+                    DecryptedText = decryptedText,
+                });
+            }
+            catch (Exception)
+            {
+                return BadRequest("کلید نامعتبر است یا داده دستکاری شده است.");
+            }
+        }
+
+        // ==========================================================
+        // بخش دوم: هش کردن و مقایسه (Hashing / Verification)
+        // ==========================================================
+
+        //https://localhost:7207/home/GenerateHash?text=salam
+        public IActionResult GenerateHash(string text)
+        {
+
+            string textHash = ComputeSha256Hash(text);
+
+            return Ok(new
+            {
+                TextHash = textHash,
+            });
+        }
+
+
+        public IActionResult VerifyHash(string rawText, string hashedText)
+        {
+            // روش مقایسه: متن ورودی جدید را هش می‌کنیم
+            string newHash = ComputeSha256Hash(rawText);
+
+            // هش جدید را با هش قدیمی مقایسه می‌کنیم
+            if (newHash == hashedText)
+            {
+                return Ok("اطلاعات صحیح است و دستکاری نشده.");
+            }
+            else
+            {
+                return BadRequest("اطلاعات مطابقت ندارد!");
+            }
+        }
+
+        // متد کمکی برای تولید SHA256
+        private string ComputeSha256Hash(string rawData)
+        {
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                // تبدیل رشته به بایت
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+                // تبدیل بایت به رشته Hex
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
+        }
+
+
+
+
         ///Home/TestLang?culture=fa
         public IActionResult TestLang()
         {
@@ -64,24 +157,35 @@ namespace Web.Controllers
             return Ok(new[] { "Laptop", "Mouse", "Keyboard" });
         }
 
+        public IActionResult GetProduct()
+        {
+            string cacheKey = "current_time";
+
+            // تلاش برای دریافت مقدار از کش
+            if (!_cache.TryGetValue(cacheKey, out DateTime cacheValue))
+            {
+                // اگر در کش نبود، مقدار جدید را تولید می‌کنیم (مثلاً از دیتابیس می‌گیریم)
+                cacheValue = DateTime.Now;
+
+                // تنظیمات کش (مثلاً زمان انقضا)
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromSeconds(30)); // اگر تا ۳۰ ثانیه استفاده نشود پاک می‌شود
+
+                // ذخیره در کش
+                _cache.Set(cacheKey, cacheValue, cacheEntryOptions);
+            }
+
+            return Ok($"Time: {cacheValue}");
+        }
 
 
-		public IActionResult login()
-		{
-		
-			return View( new LoginDTO());
-		}
-
-
-		
-        
         public IActionResult Index()
         {
+            throw new Exception("Test ELMAH Error");
             return View();
         }
-		
-
-		public IActionResult Shop()
+ 
+        public IActionResult Shop()
         {
             return View();
         }
