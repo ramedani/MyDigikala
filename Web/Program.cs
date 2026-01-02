@@ -19,9 +19,10 @@ builder.Services.AddLocalization();
 builder.Services.AddControllersWithViews()
     .AddDataAnnotationsLocalization(options =>
     {
+        // استفاده از روش Type-Safe برای پیدا کردن ریسورس در لایه دیگر
         options.DataAnnotationLocalizerProvider = (type, factory) =>
             factory.Create(typeof(ValidationMessages));
-    }).AddViewLocalization();
+    });
 
 
 var useSqlServer = builder.Configuration.GetValue<bool>("UseSqlServer");
@@ -30,6 +31,7 @@ var useSqlServer = builder.Configuration.GetValue<bool>("UseSqlServer");
 var connectionString = useSqlServer 
     ? builder.Configuration.GetConnectionString("SqlServerConnection") 
     : builder.Configuration.GetConnectionString("PostgresConnection");
+
 
 if (useSqlServer)
 {
@@ -41,8 +43,8 @@ if (useSqlServer)
 }
 else
 {
-    // اگر پستگرس است، فعلا الماه را روی حافظه یا فایل تنظیم کنید تا ارور ندهد
-    // یا می‌توانید کلا این بخش else را خالی بگذارید تا الماه غیرفعال شود
+// اگر پستگرس است، فعلا الماه را روی حافظه یا فایل تنظیم کنید تا ارور ندهد
+// یا می‌توانید کلا این بخش else را خالی بگذارید تا الماه غیرفعال شود
     builder.Services.AddElmah<ElmahCore.MemoryErrorLog>(options =>
     {
         options.Path = "elmah";
@@ -50,8 +52,10 @@ else
 }
 
 builder.Services.AddMemoryCache();//
-builder.Services.AddOutputCache();//
+builder.Services.AddOutputCache();///
 builder.Services.AddResponseCaching();
+
+builder.Services.AddDataProtection();
 
 //builder.Services.AddLocalization(options =>
 //{
@@ -102,7 +106,7 @@ app.UseStatusCodePagesWithReExecute("/Home/Error/{0}");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-//https://localhost:7207/Home/login?culture=fa
+
 app.UseElmah(); // فعال‌سازی ELMAH
 
 var supportedCultures = new[]
@@ -133,3 +137,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+
+
