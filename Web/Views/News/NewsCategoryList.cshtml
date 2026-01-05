@@ -1,0 +1,42 @@
+@model IEnumerable<Application.DTO.NewsCategoryListDto>
+
+
+@{
+    ViewData["Title"] = "listnews";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+
+<p>
+    <a asp-action="AddNewsCategory" class="btn btn-info">ایجاد دسته بندی مقاله</a>
+</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+      
+            <td>
+                @Html.ActionLink("ویرایش", "AddNewsCategory", new {  id=item.Id },new {@class="btn btn-dark"}) |
+                @Html.ActionLink("حذف", "DeleteNewsCategory", new {  id=item.Id },new {@class="btn btn-danger"})
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

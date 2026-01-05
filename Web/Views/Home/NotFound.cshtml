@@ -1,0 +1,108 @@
+﻿
+
+<style>
+    /* Wrapper مخصوص 404 */
+    .error-404-wrapper {
+        min-height: calc(100vh - 180px); /* ارتفاع تقریبی هدر + فوتر */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        overflow: hidden;
+        padding: 40px 15px;
+        background: #111;
+        color: #fff;
+    }
+
+    /* انیمیشن افتادن 404 */
+    @@keyframes dropDown {
+        0% {
+            transform: translateY(-150px);
+            opacity: 0;
+        }
+
+        70% {
+            transform: translateY(10px);
+            opacity: 1;
+        }
+
+        100% {
+            transform: translateY(0);
+        }
+    }
+
+    /* Fade برای متن‌ها */
+    @@keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .error-404-wrapper h1 {
+        font-size: 110px;
+        margin: 0;
+        color: #ff6b6b;
+        animation: dropDown 1.2s ease-out;
+    }
+
+    .error-404-wrapper h2 {
+        margin-top: 10px;
+        font-size: 26px;
+        opacity: 0;
+        animation: fadeUp 1s ease forwards;
+        animation-delay: 1.1s;
+    }
+
+    .error-404-wrapper p {
+        font-size: 16px;
+        line-height: 1.9;
+        max-width: 500px;
+        opacity: 0;
+        animation: fadeUp 1s ease forwards;
+        animation-delay: 1.3s;
+    }
+
+    .error-404-wrapper a {
+        margin-top: 25px;
+        padding: 12px 30px;
+        background: #ff6b6b;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 30px;
+        transition: 0.3s;
+        opacity: 0;
+        animation: fadeUp 1s ease forwards;
+        animation-delay: 1.5s;
+    }
+
+        .error-404-wrapper a:hover {
+            background: #ff4b4b;
+            transform: translateY(-3px);
+        }
+
+    /* ریسپانسیو */
+    @@media (max-width: 600px) {
+        .error-404-wrapper h1 {
+            font-size: 80px;
+        }
+    }
+</style>
+
+<div class="error-404-wrapper">
+    <h1>404</h1>
+    <h2>صفحه مورد نظر پیدا نشد!</h2>
+    <p>
+        متأسفانه صفحه‌ای که دنبالش هستید وجود ندارد
+        یا ممکن است آدرس را اشتباه وارد کرده باشید.
+    </p>
+    <a href="@Url.Action("Index", "Home")">
+        بازگشت به صفحه اصلی
+    </a>
+</div>

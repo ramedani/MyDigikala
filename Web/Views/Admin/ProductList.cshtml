@@ -1,0 +1,362 @@
+@model List<Application.DTO.ProductListDto>
+
+
+@{
+    ViewData["Title"] = "listnews";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+@section css{
+    <link rel="stylesheet" type="text/css" href="~/Admin/app-assets/css-rtl/core/menu/menu-types/vertical-menu.css">
+    <link rel="stylesheet" type="text/css" href="~/Admin/app-assets/css-rtl/core/colors/palette-gradient.css">
+    <link rel="stylesheet" type="text/css" href="~/Admin/app-assets/css-rtl/plugins/file-uploaders/dropzone.css">
+    <link rel="stylesheet" type="text/css" href="~/Admin/app-assets/css-rtl/pages/data-list-view.css">
+}
+
+<section id="data-list-view" class="data-list-view-header">
+    <div class="action-btns d-none">
+        <div class="btn-dropdown mr-1 mb-1">
+            <div class="btn-group dropdown actions-dropodown">
+                <button type="button" class="btn btn-white px-1 py-1 dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Actions
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="javascript:void(0)" id="btn-delete-selected">
+                        <i class="feather icon-trash"></i>Delete
+                    </a>
+                    <a class="dropdown-item" href="javascript:void(0)" id="btn-archive-selected">
+                        <i class="feather icon-archive"></i>Add/Remove Archive
+                    </a>
+                    <a class="dropdown-item" href="javascript:void(0)" id="btn-open-price-modal">
+                        <i class="feather icon-file"></i>Adjust the price
+                    </a>
+                    <a class="dropdown-item" href="#"><i class="feather icon-save"></i>Another Action</a>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+    <!-- DataTable starts -->
+    <div class="table-responsive">
+        <table class="table data-list-view">
+            <thead>
+            <tr>
+                <!-- ستون چک باکس یا خالی -->
+                <th style="width: 10px;"></th> 
+
+                <!-- ستون ID -->
+                <th class="text-center">ID</th>
+
+                <!-- ستون تصویر -->
+            
+
+                <!-- ستون نام -->
+                <th class="text-center">NAME</th>
+
+                <!-- ستون دسته بندی (با جلوگیری از شکستن متن) -->
+             
+
+                <!-- ستون موجودی -->
+    
+
+                <!-- ستون قیمت -->
+                <th class="text-center">PRICE</th>
+
+                <!-- ستون عملیات -->
+      
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model) {
+                
+                <tr  data-id="@item.Id">
+                    <!-- ستون خالی -->
+                    <td></td>
+
+                    <!-- ستون ID - وسط چین -->
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+
+                    <!-- ستون عکس - وسط چین و حذف کلاس اضافی sorting_1 -->
+
+
+                    <!-- ستون نام - وسط چین -->
+                    <td class="product-name text-center">
+                        @item.Title)
+                    </td>
+
+                    <!-- ستون دسته بندی - وسط چین -->
+
+
+                    <!-- ستون وضعیت فعال/غیرفعال - وسط چین -->
+        
+           
+                    <!-- ستون قیمت - وسط چین و فرمت سه رقم سه رقم -->
+                    <td class="text-center">
+                        @item.Price
+                    </td>
+                    
+                    <!-- ستون دکمه ها - وسط چین و جلوگیری از شکستن خط -->
+                    <td class="text-center" style="white-space: nowrap;">
+                        @Html.ActionLink("ویرایش", "AddProduct", new { id = item.Id }, new { @class = "btn btn-dark", @style="width: 80px;" })
+                        <span style="margin: 0 5px;">|</span>
+                        @Html.ActionLink("حذف", "DeleteProduct", new { id = item.Id }, new { @class = "btn btn-danger", @style="width: 80px;" })
+                    </td>
+                </tr>
+                            
+
+
+            
+ 
+            }
+            </tbody>
+        </table>
+    
+
+   
+                          
+                   
+    </div>
+    <!-- DataTable ends -->
+
+                  
+</section>
+
+
+<!-- Modal برای وارد کردن درصد افزایش قیمت -->
+<div class="modal fade" id="priceModal" tabindex="-1" role="dialog" aria-labelledby="priceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="priceModalLabel">تغییر قیمت گروهی</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="pricePercentage">درصد تغییر قیمت را وارد کنید:</label>
+                    <input type="number" class="form-control" id="pricePercentage" placeholder="مثلا 10 برای 10% افزایش">
+                    <small class="text-muted">برای کاهش قیمت، عدد منفی وارد کنید (مثلا -10).</small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">لغو</button>
+                <button type="button" class="btn btn-primary" id="btn-confirm-price-update">اعمال</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section script {
+    <script src="~/admin/app-assets/vendors/js/extensions/dropzone.min.js"></script>
+    <script src="~/admin/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
+    <script src="~/admin/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js"></script>
+    <script src="~/admin/app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js"></script>
+    <script src="~/admin/app-assets/vendors/js/tables/datatable/buttons.bootstrap.min.js"></script>
+    <script src="~/admin/app-assets/vendors/js/tables/datatable/dataTables.select.min.js"></script>
+    <script src="~/admin/app-assets/vendors/js/tables/datatable/datatables.checkboxes.min.js"></script>
+    <script src="~/admin/app-assets/js/scripts/ui/data-list-view.js"></script>
+    <script>
+    $(document).ready(function () {
+    // منتظر می‌مانیم تا جدول کامل لود شود
+    setTimeout(function() {
+    // انتخاب دکمه با کلاس‌هایش (بر اساس عکس شما)
+    var addNewBtn = $('.dt-buttons .btn-outline-primary');
+                
+    // حذف ایونت‌های قبلی (اگر وجود داشته باشد) و تنظیم لینک جدید
+    addNewBtn.off('click').on('click', function (e) {
+    e.preventDefault(); // جلوگیری از رفتار پیش‌فرض
+    window.location.href = '@Url.Action("AddProduct", "Admin")'; // هدایت به صفحه افزودن
+    });
+                
+    // اختیاری: اگر می‌خواهید ظاهر ماوس هم تغییر کند
+    addNewBtn.css('cursor', 'pointer');
+    }, 1000); // یک ثانیه تاخیر برای اطمینان از لود شدن دیتاتیبل
+    });
+    </script>
+    
+    <script>
+        $(document).ready(function () {
+            
+            $('#btn-delete-selected').on('click', function () {
+                
+                // 1. پیدا کردن تمام سطرهایی که کلاس selected دارند
+                var selectedIds = [];
+                
+                // در قالب Vuexy معمولا سطر انتخاب شده کلاس selected میگیرد
+                // اگر از DataTables استفاده میکنید، این کلاس توسط پلاگین اضافه میشود
+                $('.data-list-view tbody tr.selected').each(function () {
+                    var id = $(this).data('id'); // خواندن ID از ویژگی data-id که اضافه کردیم
+                    if (id) {
+                        selectedIds.push(id);
+                    }
+                });
+
+                // 2. بررسی اینکه آیا چیزی انتخاب شده؟
+                if (selectedIds.length === 0) {
+                    alert("لطفاً حداقل یک محصول را انتخاب کنید.");
+                    return;
+                }
+
+                // 3. تایید نهایی از کاربر
+                if (!confirm("آیا از حذف " + selectedIds.length + " محصول انتخاب شده اطمینان دارید؟")) {
+                    return;
+                }
+
+                // 4. ارسال درخواست به سرور با AJAX
+                $.ajax({
+                    url: '/Admin/DeleteGroupProduct', // آدرس دقیق کنترلر خود را چک کنید (مثلا نام کنترلر Admin است؟)
+                    type: 'POST',
+                    data: { ids: selectedIds },
+                    traditional: true, // برای ارسال صحیح آرایه ضروری است
+                    success: function (response) {
+                        if (response.success) {
+                            // ریلود کردن صفحه برای دیدن تغییرات
+                            location.reload();
+                        } else {
+                            alert("خطا در حذف: " + response.message);
+                        }
+                    },
+                    error: function () {
+                        alert("خطا در برقراری ارتباط با سرور.");
+                    }
+                });
+            });
+        });
+    </script>
+    
+    
+    <script>
+        $(document).ready(function () {
+
+            // رویداد کلیک روی دکمه آرشیو
+            $('#btn-archive-selected').on('click', function () {
+                
+                // 1. پیدا کردن ID سطرهای انتخاب شده
+                var selectedIds = [];
+                $('.data-list-view tbody tr.selected').each(function () {
+                    var id = $(this).data('id');
+                    if (id) {
+                        selectedIds.push(id);
+                    }
+                });
+
+                // 2. اگر چیزی انتخاب نشده بود
+                if (selectedIds.length === 0) {
+                    alert("لطفاً حداقل یک محصول را انتخاب کنید.");
+                    return;
+                }
+
+                // 3. ارسال به سرور برای تغییر وضعیت
+                $.ajax({
+                    url: '/Admin/ChangeStatusGroupProduct', // نام اکشن جدید در کنترلر
+                    type: 'POST',
+                    data: { ids: selectedIds },
+                    traditional: true,
+                    success: function (response) {
+                        if (response.success) {
+                            // ریلود کردن صفحه برای دیدن نتیجه تغییر
+                            location.reload();
+                        } else {
+                            alert("خطا: " + response.message);
+                        }
+                    },
+                    error: function () {
+                        alert("خطا در ارتباط با سرور.");
+                    }
+                });
+            });
+
+        });
+    </script>
+    
+    <script>
+        $(document).ready(function () {
+            
+            // --- بخش آرشیو (تغییر وضعیت IsActive) ---
+            $('#btn-archive-selected').on('click', function () {
+                var selectedIds = [];
+                $('.data-list-view tbody tr.selected').each(function () {
+                    var id = $(this).data('id');
+                    if (id) selectedIds.push(id);
+                });
+
+                if (selectedIds.length === 0) {
+                    alert("لطفاً محصولی انتخاب کنید.");
+                    return;
+                }
+
+                $.ajax({
+                    url: '/Admin/ChangeStatusGroupProduct',
+                    type: 'POST',
+                    data: { ids: selectedIds },
+                    traditional: true,
+                    success: function (res) {
+                        if (res.success) location.reload();
+                        else alert(res.message);
+                    }
+                });
+            });
+
+            // --- بخش تغییر قیمت (Modal) ---
+            var priceSelectedIds = []; // متغیر برای نگهداری ID ها
+
+            // 1. باز کردن پنجره
+            $('#btn-open-price-modal').on('click', function () {
+                priceSelectedIds = []; 
+                
+                // پیدا کردن سطرهای انتخاب شده (کلاس selected توسط قالب اضافه می‌شود)
+                $('.data-list-view tbody tr.selected').each(function () {
+                    var id = $(this).data('id'); // مطمئن شوید در tr مقدار data-id دارید
+                    if (id) {
+                        priceSelectedIds.push(id);
+                    }
+                });
+
+                if (priceSelectedIds.length === 0) {
+                    alert("لطفاً حداقل یک محصول را انتخاب کنید.");
+                    return;
+                }
+
+                // باز کردن مودال با دستور بوت‌استرپ
+                $('#priceModal').modal('show');
+            });
+
+            // 2. ارسال درخواست تغییر قیمت
+            $('#btn-confirm-price-update').on('click', function () {
+                var percent = $('#pricePercentage').val();
+                if (!percent) {
+                    alert("لطفاً درصد را وارد کنید.");
+                    return;
+                }
+
+                $.ajax({
+                    url: '/Admin/UpdatePriceGroup',
+                    type: 'POST',
+                    data: { 
+                        ids: priceSelectedIds, 
+                        percentage: percent 
+                    },
+                    traditional: true,
+                    success: function (response) {
+                        $('#priceModal').modal('hide');
+                        if (response.success) {
+                            location.reload();
+                        } else {
+                            alert("خطا: " + response.message);
+                        }
+                    },
+                    error: function () {
+                        $('#priceModal').modal('hide');
+                        alert("خطا در ارتباط با سرور.");
+                    }
+                });
+            });
+
+        });
+    </script>
+}
