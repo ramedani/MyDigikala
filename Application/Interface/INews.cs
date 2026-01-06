@@ -28,6 +28,7 @@ public interface INews
     Task<NewsDetailViewModelDto> GetNewsDetailAsync(int id);
     
     Task<List<NewsCategorySummaryDto>> GetCategoriesWithCountsAsync();
+    Task<List<NewsCardDto>> GetHotArticlesForHomePageAsync();
     
 }
 
@@ -414,6 +415,26 @@ public async Task<List<NewsCategorySummaryDto>> GetCategoriesWithCountsAsync()
             NewsCount = _mydb.News.Count(n => n.NewsCategoryId == c.Id && n.IsActive)
         })
         .ToListAsync();
+}
+
+public async Task<List<NewsCardDto>> GetHotArticlesForHomePageAsync()
+{
+    
+    var articles = await _mydb.News
+        .Where(n => n.IsActive == true && n.IsFeatured == true) 
+        .OrderByDescending(n => n.CreateTime) 
+        .Take(4)
+        .Select(n => new NewsCardDto
+        {
+            Id = n.Id,
+            Title = n.Title,
+            PicUrl = n.PicUrl,
+         
+            CreateTime = n.CreateTime ?? DateTime.Now 
+        })
+        .ToListAsync();
+
+    return articles;
 }
 
 }

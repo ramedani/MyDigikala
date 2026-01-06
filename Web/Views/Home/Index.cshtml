@@ -1,4 +1,9 @@
-﻿@section css{
+﻿@using Application.DTO
+@using Application.Helper
+@{
+    var newsList = ViewBag.HotArticles as List<Application.DTO.NewsCardDto>;
+}
+@section css{
     <link rel="stylesheet" href="~/home/public/styles/swiper.css">
 }     
 
@@ -755,73 +760,42 @@ else
 </div>
         </section>
 
-        <!-- ARTICLES -->
-        <section class="container">
-            <!-- TITLE -->
-            <div class="flex items-center justify-between mb-12">
-                <div class="flex flex-col gap-y-2">
-                    <h2 class="font-MorabbaMedium text-xl lg:text-3xl">
-                        مطالب خواندنی
-                    </h2>
-                </div>
-                <a href="articles.html"
-                   class="flex items-center px-2 py-1 rounded-lg gap-x-2 text-green-500 hover:ml-2 duration-300 transition-all">
-                    مشاهده همه
-                    <svg class="w-4 h-4">
-                        <use href="#chevron-left"></use>
-                    </svg>
-                </a>
-            </div>
-            <div class="flex items-center justify-center lg:justify-between flex-wrap gap-4 child-hover:-translate-y-2 child:duration-300
-                child:bg-white child:dark:bg-zinc-700  child:w-[90%] child:sm:w-56 child:lg:w-72 child:rounded-lg child:p-2 child:cursor-pointer child:shadow
-                ">
-                <!-- ITEM -->
+   <!-- ARTICLES -->
+<section class="container mb-12 md:mb-20">
+    <!-- TITLE -->
+    <div class="flex items-center justify-between mb-12">
+        <div class="flex flex-col gap-y-2">
+            <h2 class="font-MorabbaMedium text-xl lg:text-3xl">
+                مطالب خواندنی
+            </h2>
+        </div>
+        <a href="/News/Index"
+           class="flex items-center px-2 py-1 rounded-lg gap-x-2 text-green-500 hover:ml-2 duration-300 transition-all">
+            مشاهده همه
+            <svg class="w-4 h-4">
+                <use href="#chevron-left"></use>
+            </svg>
+        </a>
+    </div>
+
+    <!-- LIST CONTAINER -->
+    <div class="flex items-center justify-center lg:justify-between flex-wrap gap-4 child-hover:-translate-y-2 child:duration-300 child:bg-white child:dark:bg-zinc-700 child:w-[90%] child:sm:w-56 child:lg:w-72 child:rounded-lg child:p-2 child:cursor-pointer child:shadow">
+        
+        @if (newsList != null && newsList.Any())
+        {
+            foreach (var item in newsList)
+            {
+                <!-- ITEM START -->
                 <div class="group">
+                    <!-- Image Wrapper -->
                     <div class="relative overflow-hidden rounded-lg">
-                        <img src="~/home/public/Images/articles/a-1.jpg"
-                             class="h-[180px] w-full object-cover rounded-bl-3xl rounded-tr-3xl" alt="" />
-                        <div
-                            class="absolute opacity-0 left-0 top-0 bottom-0 right-0 bg-black/60 flex items-center justify-center group-hover:opacity-100 duration-300 transition-all rounded-bl-3xl rounded-tr-3xl">
-                            <a href="./article-details.html"
-                               class="flex items-center px-2 py-1 gap-x-1 font-DanaMedium rounded-lg border-2 border-white text-white">
-                                <p>ادامه مطالب</p>
-                                <svg class="w-4 h-4">
-                                    <use href="#chevron-left"></use>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-y-1 my-2 px-1">
-                        <h2 class="font-DanaDemiBold">کشف دنیای قهوه</h2>
-                        <p class="line-clamp-2 text-sm text-gray-400">
-                            از دانه تا فنجان: فرآیند تولید قهوه از کاشت دانه‌های قهوه تا
-                            دم‌آوری نهایی، تمام مراحل تولید قهوه را بشناسید و لذت ببرید.
-                        </p>
-                    </div>
-                    <span class="flex w-full h-1 py-1 border-t border-gray-100 dark:border-white/10"></span>
-                    <div class="flex items-center justify-between text-sm px-1">
-                        <span class="flex items-center gap-x-1 text-gray-400">
-                            <svg class="w-4 h-4">
-                                <use href="#calendar"></use>
-                            </svg>
-                            <p class="mt-1">1403/5/1</p>
-                        </span>
-                        <span class="flex items-start gap-x-1 text-gray-400">
-                            <p class="font-DanaDemiBold">120</p>
-                            <svg class="w-4 h-4">
-                                <use href="#eye"></use>
-                            </svg>
-                        </span>
-                    </div>
-                </div>
-                <!-- ITEM -->
-                <div class="group">
-                    <div class="relative overflow-hidden rounded-lg">
-                        <img src="~/home/public/Images/articles/a-3.jpg"
-                             class="h-[180px] w-full object-cover rounded-bl-3xl rounded-tr-3xl" alt="" />
-                        <div
-                            class="absolute opacity-0 left-0 top-0 bottom-0 right-0 bg-black/60 flex items-center justify-center group-hover:opacity-100 duration-300 transition-all rounded-bl-3xl rounded-tr-3xl">
-                            <a href="./article-details.html"
+                        <img src="@item.PicUrl"
+                             class="h-[180px] w-full object-cover rounded-bl-3xl rounded-tr-3xl" 
+                             alt="@item.Title" />
+                        
+                        <!-- Hover Overlay -->
+                        <div class="absolute opacity-0 left-0 top-0 bottom-0 right-0 bg-black/60 flex items-center justify-center group-hover:opacity-100 duration-300 transition-all rounded-bl-3xl rounded-tr-3xl">
+                            <a href="/Home/News/@item.Id"
                                class="flex items-center px-2 py-1 gap-x-1 font-DanaMedium rounded-lg border-2 border-white text-white">
                                 <p>ادامه مطلب</p>
                                 <svg class="w-4 h-4">
@@ -830,112 +804,47 @@ else
                             </a>
                         </div>
                     </div>
+
+                    <!-- Title & Description -->
                     <div class="flex flex-col gap-y-1 my-2 px-1">
-                        <h2 class="font-DanaDemiBold">سفر به مزارع قهوه</h2>
-                        <p class="line-clamp-2 text-sm text-gray-400">
-                            گزارش‌هایی از بهترین مزارع قهوه جهان به دنیای مزارع قهوه سفر
-                            کنید و با داستان‌های جالب و جذاب از بهترین مزارع آشنا شوید
+                        <h2 class="font-DanaDemiBold line-clamp-1">@item.Title</h2>
+                        <p class="line-clamp-2 text-sm text-gray-400 h-10">
+                            InProgress
                         </p>
                     </div>
+
+                    <!-- Divider -->
                     <span class="flex w-full h-1 py-1 border-t border-gray-100 dark:border-white/10"></span>
+
+                    <!-- Footer Info (Date & View) -->
                     <div class="flex items-center justify-between text-sm px-1">
                         <span class="flex items-center gap-x-1 text-gray-400">
                             <svg class="w-4 h-4">
                                 <use href="#calendar"></use>
                             </svg>
-                            <p class="mt-1">1403/5/1</p>
+                            <!-- نمایش تاریخ به فرمت شمسی یا میلادی -->
+                            <p class="mt-1">@item.CreateTime.ToShamsi()</p>
                         </span>
                         <span class="flex items-start gap-x-1 text-gray-400">
-                            <p class="font-DanaDemiBold">440</p>
+                            <p class="font-DanaDemiBold">InProgress</p>
                             <svg class="w-4 h-4">
                                 <use href="#eye"></use>
                             </svg>
                         </span>
                     </div>
                 </div>
-                <!-- ITEM -->
-                <div class="group">
-                    <div class="relative overflow-hidden rounded-lg">
-                        <img src="~/home/public/Images/articles/a-4.jpg"
-                             class="h-[180px] w-full object-cover rounded-bl-3xl rounded-tr-3xl" alt="" />
-                        <div
-                            class="absolute opacity-0 left-0 top-0 bottom-0 right-0 bg-black/60 flex items-center justify-center group-hover:opacity-100 duration-300 transition-all rounded-bl-3xl rounded-tr-3xl">
-                            <a href="./article-details.html"
-                               class="flex items-center px-2 py-1 gap-x-1 font-DanaMedium rounded-lg border-2 border-white text-white">
-                                <p>ادامه مطالب</p>
-                                <svg class="w-4 h-4">
-                                    <use href="#chevron-left"></use>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-y-1 my-2 px-1">
-                        <h2 class="font-DanaDemiBold">رازهای تهیه قهوه</h2>
-                        <p class="line-clamp-2 text-sm text-gray-400">
-                            نکات و ترفندهای باریستاهای حرفه‌ای با ترفندهای حرفه‌ای باریستاها
-                            آشنا شوید و قهوه‌ای عالی و بی‌نقص در خانه تهیه کنید.
-                        </p>
-                    </div>
-                    <span class="flex w-full h-1 py-1 border-t border-gray-100 dark:border-white/10"></span>
-                    <div class="flex items-center justify-between text-sm px-1">
-                        <span class="flex items-center gap-x-1 text-gray-400">
-                            <svg class="w-4 h-4">
-                                <use href="#calendar"></use>
-                            </svg>
-                            <p class="mt-1">1403/5/1</p>
-                        </span>
-                        <span class="flex items-start gap-x-1 text-gray-400">
-                            <p class="font-DanaDemiBold">89</p>
-                            <svg class="w-4 h-4">
-                                <use href="#eye"></use>
-                            </svg>
-                        </span>
-                    </div>
-                </div>
-                <!-- ITEM -->
-                <div class="group">
-                    <div class="relative overflow-hidden rounded-lg">
-                        <img src="~/home/public/Images/articles/a-2.jpg"
-                             class="h-[180px] w-full object-cover rounded-bl-3xl rounded-tr-3xl" alt="" />
-                        <div
-                            class="absolute opacity-0 left-0 top-0 bottom-0 right-0 bg-black/60 flex items-center justify-center group-hover:opacity-100 duration-300 transition-all rounded-bl-3xl rounded-tr-3xl">
-                            <a href="./article-details.html"
-                               class="flex items-center px-2 py-1 gap-x-1 font-DanaMedium rounded-lg border-2 border-white text-white">
-                                <p>ادامه مطلب</p>
-                                <svg class="w-4 h-4">
-                                    <use href="#chevron-left"></use>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-y-1 my-2 px-1">
-                        <h2 class="font-DanaDemiBold">شناخت انواع قهوه</h2>
-                        <p class="line-clamp-2 text-sm text-gray-400">
-                            آشنایی با انواع دانه‌ها و روش‌های دم‌آوری از انواع مختلف
-                            دانه‌های قهوه تا روش‌های متنوع دم‌آوری، همه چیز را درباره قهوه
-                            بدانید.
-                        </p>
-                    </div>
-                    <span class="flex w-full h-1 py-1 border-t border-gray-100 dark:border-white/10"></span>
-                    <div class="flex items-center justify-between text-sm px-1">
-                        <span class="flex items-center gap-x-1 text-gray-400">
-                            <svg class="w-4 h-4">
-                                <use href="#calendar"></use>
-                            </svg>
-                            <p class="mt-1">1403/5/1</p>
-                        </span>
-                        <span class="flex items-start gap-x-1 text-gray-400">
-                            <p class="font-DanaDemiBold">540</p>
-                            <svg class="w-4 h-4">
-                                <use href="#eye"></use>
-                            </svg>
-                        </span>
-                    </div>
-                </div>
+                <!-- ITEM END -->
+            }
+        }
+        else
+        {
+            <div class="w-full text-center p-5 text-gray-500">
+                مطلبی برای نمایش وجود ندارد.
             </div>
-        </section>
-        
-        
+        }
+
+    </div>
+</section>
         @section script
         {
 

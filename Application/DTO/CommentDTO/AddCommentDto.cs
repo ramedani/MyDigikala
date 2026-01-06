@@ -10,5 +10,9 @@ public class AddCommentDto
     public int Rating { get; set; }
     public string Content { get; set; }
 
-    public int? UserId { get; set; } 
+    
+    
+                                        //##############################
+    public int? UserId { get; set; }    // mass assignment vulnerability
+                                        //#############################
 }

@@ -11,7 +11,7 @@ public interface IComment
     Task ApproveCommentAsync(int id);
     Task DeleteCommentAsync(int id);
     Task<List<CommentListDto>> GetAll();
-    // برای ثبت نظر در سایت
+
     Task AddCommentAsync(AddCommentDto command);
     Task<bool> ToggleVoteAsync(int commentId, int userId, bool isLike);
     Task<List<CommentForDetailDto>> GetHomeTestimonialsAsync();
@@ -67,8 +67,6 @@ public interface IComment
                 
                     IsConfirmed = c.IsConfirmed
                     
-                    // نکته: فیلدهای Like و Dislike چون در CommentDto تعریف نشده بودند حذف شدند
-                    // اگر نیاز دارید، باید اول به فایل CommentDto اضافه کنید.
                 }).ToList(),
 
 
@@ -120,9 +118,9 @@ public interface IComment
                 IsRecommended = dto.IsRecommended, 
                 Content = dto.Content,
                 
-                // مقادیر پیش‌فرض
+
                 CreateTime = DateTime.Now,
-                IsConfirmed = false, // نظرات معمولا اول تایید نشده هستند
+                IsConfirmed = false, 
                 Like = 0,
                 Dislike = 0,
 
@@ -230,7 +228,7 @@ public interface IComment
                 })
                 .ToListAsync();
 
-            // تبدیل به DTO نهایی (برای تبدیل تاریخ در حافظه)
+
             return comments.Select(c => new ProductCommentForViewDto
             {
                 Id = c.Id,
@@ -238,7 +236,7 @@ public interface IComment
                 Title = c.Title,
                 Content = c.Content,
                 IsRecommended = c.IsRecommended ?? true,
-                // فرض بر این است که اکستنشن متد تاریخ شمسی دارید، اگر ندارید فعلا ToString بزنید
+
                 Date = c.CreateTime.Value.ToShamsi(), 
                 Like = c.Like ?? 0,
                 Dislike = c.Dislike ?? 0

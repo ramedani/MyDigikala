@@ -30,6 +30,7 @@ namespace Application.Interface
         Task<List<Category>> GetCategoriesAsync();
         Task <List<ProductListDto>> GetLastProducts(int take);
         Task<List<ProductListDto>> GetAmazingProducts(int Take);
+
     }
 
 
@@ -64,7 +65,7 @@ namespace Application.Interface
                     VisitCount = p.VisitCount,
                     CategoryName = p.cat != null ? p.cat.Name : "-",
                     PrimaryImage = p.images.FirstOrDefault(i => i.IsPrimary).PicUrl ??
-                                   p.images.FirstOrDefault().PicUrl // اگر اصلی نداشت اولی رو نشون بده
+                                   p.images.FirstOrDefault().PicUrl 
                 })
                 .OrderByDescending(p => p.Id)
                 .ToListAsync();
@@ -318,34 +319,32 @@ namespace Application.Interface
      
        public async Task<Application.DTO.ProductDetailViewModelDto> GetProductDetailAsync(int id, string? userId = null)
 {
-    // 1. دریافت خود محصول با تمام مخلفات
     var product = await _mydb.Products
         .Include(p => p.images)
         .Include(p => p.cat)
         .Include(p => p.brand)
         .Include(p => p.Msg4Products.Where(c => c.IsConfirmed)) // فقط نظرات تایید شده
-        // .ThenInclude(m => m.User) // اگر یوزر دارید آنکامنت کنید
+        // .ThenInclude(m => m.User)
         .FirstOrDefaultAsync(p => p.Id == id);
 
     if (product == null) return null;
 
-    // 2. چک کردن ویش‌لیست
+
     bool isLiked = false;
     if (!string.IsNullOrEmpty(userId))
     {
         isLiked = await _iwishlist.IsProductInWishlistAsync(userId, id);
     }
 
-    // 3. محاسبات امتیاز و نظرات
     var approvedComments = product.Msg4Products.ToList();
     var ratedComments = approvedComments.Where(c => c.FiveStar != null && c.FiveStar > 0).ToList();
     double averageRating = ratedComments.Any() ? ratedComments.Average(c => c.FiveStar.Value) : 0;
 
-    // 4. دریافت محصولات مرتبط (هم‌دسته‌بندی)
+
     List<ProductListDto> relatedProductsDto = new List<ProductListDto>();
     if (product.cat != null)
     {
-        // مرحله اول: دریافت موجودیت‌ها بدون درگیری پیچیده با عکس در SQL
+ 
         var relatedEntities = await _mydb.Products
             .Include(p => p.images)
             .Where(p => p.cat.Id == product.cat.Id && p.Id != product.Id) // خودش را نشان ندهد
@@ -353,7 +352,7 @@ namespace Application.Interface
             .Take(10)
             .ToListAsync();
 
-        // مرحله دوم: مپ کردن در حافظه (جلوگیری از ارور ترجمه EF Core)
+        
         relatedProductsDto = relatedEntities.Select(p => new ProductListDto
         {
             Id = p.Id,
@@ -361,9 +360,9 @@ namespace Application.Interface
             Price = p.Price,
             EnTitle = p.EnTitle,
             Invoice = p.Invoice,
-            Discount = p.Discount, // دیسکانت برای محاسبه قیمت در لیست مرتبط لازم است
+            Discount = p.Discount, 
             IsActive = p.IsActive,
-            // منطق انتخاب عکس: اول اصلی، اگه نبود اولی، اگه نبود placeholder
+
             PrimaryImage = p.images.FirstOrDefault(i => i.IsPrimary)?.PicUrl 
                            ?? p.images.FirstOrDefault()?.PicUrl 
                            ?? "placeholder.png"
@@ -440,7 +439,7 @@ namespace Application.Interface
 
             if (existingVote != null)
             {
-                // --- قبلاً رای داده است ---
+
                 if (existingVote.IsLike == isLike)
                 {
 
@@ -451,18 +450,18 @@ namespace Application.Interface
                 }
                 else
                 {
-                    // تغییر رای (از لایک به دیسلایک یا برعکس)
-                    existingVote.IsLike = isLike; // تغییر در دیتابیس
+                    
+                    existingVote.IsLike = isLike; 
 
                     if (isLike)
                     {
-                        // تبدیل دیسلایک به لایک
+
                         comment.Dislike = Math.Max(0, (comment.Dislike ?? 0) - 1);
                         comment.Like = (comment.Like ?? 0) + 1;
                     }
                     else
                     {
-                        // تبدیل لایک به دیسلایک
+
                         comment.Dislike = (comment.Dislike ?? 0) + 1;
                         comment.Like = Math.Max(0, (comment.Like ?? 0) - 1);
                     }
@@ -470,7 +469,7 @@ namespace Application.Interface
             }
             else
             {
-                // --- اولین بار است رای می‌دهد ---
+
                 var newVote = new CommentVote
                 {
                     CommentId = commentId,
@@ -489,15 +488,14 @@ namespace Application.Interface
 
         public async Task<Tuple<List<ProductCardDto>, int>> GetProductsForIndex(int pageId = 1, string sort = "newest")
         {
-            int take = 12; // تعداد محصول در هر صفحه
+            int take = 12; 
             int skip = (pageId - 1) * take;
 
-            // 1. شروع کوئری روی محصولات
+     
             var query = _mydb.Products
-                .AsNoTracking() // برای سرعت بیشتر (چون فقط خواندنی است)
-                .Where(p => p.IsActive); // <--- فیلتر محصولات فعال
-
-            // 2. اعمال مرتب‌سازی (Sorting)
+                .AsNoTracking() 
+                .Where(p => p.IsActive); 
+            
             switch (sort)
             {
                 case "cheap":
@@ -507,14 +505,12 @@ namespace Application.Interface
                     query = query.OrderByDescending(p => p.Price);
                     break;
                 default: // newest
-                    query = query.OrderByDescending(p => p.Id); // یا p.CreateDate
+                    query = query.OrderByDescending(p => p.Id); 
                     break;
             }
-
-            // 3. گرفتن تعداد کل (برای محاسبه تعداد صفحات)
+            
             int totalCount = await query.CountAsync();
-
-            // 4. دریافت داده‌ها و تبدیل به DTO (Projection)
+            
             var products = await query
                 .Skip(skip)
                 .Take(take)
@@ -554,7 +550,6 @@ namespace Application.Interface
         }
         public async Task<List<ProductListDto>> GetLastProducts(int take)
         {
-            // مرحله ۱: دریافت اطلاعات کامل محصولات
             var products = await _mydb.Products
                 .AsNoTracking()
                 .Where(p => p.IsActive)
@@ -564,13 +559,12 @@ namespace Application.Interface
                 {
                     Id = p.Id,
                     Title = p.Title,
-                    Price = p.Price,        // خواندن قیمت اصلی
-                    Discount = p.Discount,  // خواندن قیمت با تخفیف
-                    Invoice = p.Invoice,    // خواندن موجودی
+                    Price = p.Price,
+                    Discount = p.Discount,  
+                    Invoice = p.Invoice,    
                 })
                 .ToListAsync();
-
-            // مرحله ۲: پر کردن عکس‌ها (این بخش بدون تغییر باقی می‌ماند)
+            
             foreach (var item in products)
             {
                 var imgUrl = await _mydb.ProductImages
@@ -579,17 +573,17 @@ namespace Application.Interface
                     .Select(img => img.PicUrl)
                     .FirstOrDefaultAsync();
 
-                item.PrimaryImage = imgUrl ?? "default.png"; // استفاده از عکس پیش‌فرض
+                item.PrimaryImage = imgUrl ?? "default.png";
             }
 
             return products;
         }
         public async Task<List<ProductListDto>> GetAmazingProducts(int Take)
         {
-            // مرحله ۱: دریافت محصولات با فیلتر AmazingOffers == true
+
             var products = await _mydb.Products
                 .AsNoTracking()
-                .Where(p => p.IsActive && p.AmazingOffers == true) // شرط مهم
+                .Where(p => p.IsActive && p.AmazingOffers == true) 
                 .OrderByDescending(p => p.Id)
                 
                 .Select(p => new ProductListDto
@@ -610,11 +604,14 @@ namespace Application.Interface
                     .Select(img => img.PicUrl)
                     .FirstOrDefaultAsync();
 
-                item.PrimaryImage = imgUrl ?? "default.png"; // عکس پیش‌فرض در صورت نبود عکس
+                item.PrimaryImage = imgUrl ?? "default.png"; 
             }
 
             return products;
         }
+        
+        
+
     }
 }
     

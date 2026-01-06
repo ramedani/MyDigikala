@@ -189,30 +189,34 @@ namespace Web.Controllers
         {
 
             ViewBag.Categories = await _icategory.GetAll(); 
-
-
             var products = await _iproduct.GetLastProducts(6);
-    
             ViewBag.LatestProducts = products ?? new List<Application.DTO.ProductListDto>();
             ViewBag.AmazingProducts = await _iproduct.GetAmazingProducts(8); 
+
+
+            var hotNews = await inews.GetHotArticlesForHomePageAsync();
+    
+            // می‌ریزیم داخل ویوبگ (اگر نال بود یک لیست خالی می‌فرستیم که ارور ندهد)
+            ViewBag.HotArticles = hotNews ?? new List<Application.DTO.NewsCardDto>();
+
             return View();
         }
  
    
-        [Route("Home/Product/{id}")] // مسیر URL
+        [Route("Home/Product/{id}")] 
         public async Task<IActionResult> Shop(int id)
         {
-            // 1. افزایش بازدید
+  
             await _iproduct.IncrementProductVisitAsync(id);
 
             string? currentUserId = null;
     
-            // 2. دریافت ID کاربر لاگین شده (اگر لاگین است)
+
             if (User.Identity.IsAuthenticated)
             {
                 currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
         
-                // فال‌بک برای پیدا کردن ID در صورت تفاوت در Claims
+
                 if (string.IsNullOrEmpty(currentUserId))
                 {
                     currentUserId = User.FindFirst("sub")?.Value 

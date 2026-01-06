@@ -267,16 +267,16 @@
                     <ul class="menu-content">
 
                         <li class="@(ViewContext.RouteData.Values["action"]?.ToString() == "PendingComments" ? "active" : "")">
-                            <a href="#">
+                            <a href="~/Admin/PendingComments/">
                                 <i class="feather icon-circle"></i>
                                 <span class="menu-item">نظرات کاربران</span>
                             </a>
                         </li>
                         
                         <li class="@(ViewContext.RouteData.Values["action"]?.ToString() == "UserQuestions" ? "active" : "")">
-                            <a href="#"> 
+                            <a href="~/Admin/ListComment/"> 
                                 <i class="feather icon-circle"></i>
-                                <span class="menu-item">سوالات کاربران</span>
+                                <span class="menu-item">لیست نظرات </span>
                             </a>
                         </li>
         
@@ -287,14 +287,14 @@
                 <li class="nav-item has-sub"><a href="#"><i class="feather icon-shopping-cart"></i><span class="menu-title" data-i18n="Ecommerce">محصولات</span></a>
                     <ul class="menu-content">
                         <li class="@(ViewContext.RouteData.Values["action"].ToString() == "AddProduct" ? "active" : "")">
-                            <a href="~/Product/AddProduct">
+                            <a href="~/Admin/Product/AddProduct">
                                 <i class="feather icon-circle"></i>
                                 <span class="menu-item">اضافه کردن محصول</span>
                             </a>
                         </li>
 
                         <li class="@(ViewContext.RouteData.Values["action"]?.ToString() == "ListProducts" ? "active" : "")">
-                            <a href="~/Product/ListProduct"> 
+                            <a href="~/Admin/Product/ListProduct"> 
                                 <i class="feather icon-circle"></i>
                                 <span class="menu-item" data-i18n="Details">لیست محصولات</span>
                             </a>
