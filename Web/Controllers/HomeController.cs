@@ -136,29 +136,44 @@ namespace Web.Controllers
 
         public async Task<IActionResult> me(int id)
         {
-
-        //    var user = await mydb.User
-        //.Where(u => u.Id == id)
-        //.Select(u => u.Username)
-        //.FirstOrDefaultAsync();
-
-        //    if (user == null)
-        //        return NotFound("کاربر پیدا نشد");
-
-        //    string encryptedText = _protector.Protect(user);
-
-        //    return Ok(new
-        //    {
-        //        OriginalUserName = user,
-        //        EncryptedUserName = encryptedText
-        //    });
-
+            
 
 
             return View(new RegisterUserDto());
         }
 
+        public async Task<IActionResult> createuser(int id)
+        {
+            //-------------------------------------------------
+            //***********for usarname hex********************
+            //-------------------------------------------------
+            var user = await mydb.registers
+        .Where(u => u.Id == id)
+        .Select(u => u.username)
+        .FirstOrDefaultAsync();
 
+            if (user == null)
+                return NotFound("کاربر پیدا نشد");
+
+            string encryptedText = _protector.Protect(user);
+
+            //-------------------------------------------------
+            //***********for email hex********************
+            //-------------------------------------------------
+
+            var email = await mydb.registers
+           .Where(u => u.Id == id)
+           .Select(u => u.Email)
+           .FirstOrDefaultAsync();
+
+            if (user == null)
+                return NotFound("ایمیل پیدا نشد");
+
+            string enText = _protector.Protect(email);
+
+
+            return View(new Create_a_UserDTO());
+        }
 
 
         [OutputCache(Duration = 30)]
