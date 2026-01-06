@@ -1,1 +1,966 @@
-﻿@Html.Partial("_Index")
+﻿@section css{
+    <link rel="stylesheet" href="~/home/public/styles/swiper.css">
+}     
+
+@section UpSlider
+{
+    <div>
+            <div class="swiper mySwiper w-full h-48 md:h-72 lg:h-[450px] mt-4 lg:mt-6">
+                <div class="swiper-wrapper">
+                    <!-- SLIDER ITEM -->
+                    <div class="swiper-slide absolute">
+                        <img class="w-full h-full object-cover" src="~/home/public/Images/slider/slide-1.png" alt="">
+                        <div class="flex items-start  flex-col absolute  right-5 top-5 md:right-10 md:top-10 lg:top-20 lg:right-40 xl:right-48  text-white">
+                            <h2 class="font-MorabbaMedium text-xl lg:text-5xl mb-2 lg:mb-4">
+                                دانه قهوه اسپرسو جیورنو
+                            </h2>
+                            <p
+                                class="text-base lg:text-2xl font-MorabbaLight border-b border-gray-300 pb-2 lg:pb-4 mb-2 lg:mb-4">
+                                یک طعم باورنکردنی !
+                            </p>
+                            <p class="w-[60%] text-sm lg:text-base lg:leading-8 mb-2 lg:mb-4 line-clamp-2">
+                                قطعا نام آشنای جیورنو را شنیده اید، جیورنو یکی از گونه های قهوه است که در نواحی مختلف
+                                کمربند قهوه کشت میشود.
+                            </p>
+                            <a href="shop.html"
+                                class="flex items-center bg-green-500 hover:bg-green-600 transition-all rounded-lg px-1  lg:px-2 py-1 lg:py-1.5 text-sm lg:text-base">
+                                <p class="hidden lg:flex ml-1"> مشاهده </p> فروشگاه
+                                <svg class="w-4 h-4">
+                                    <use href="#chevron-left"></use>
+                                </svg>
+                            </a>
+                        </div>
+
+                    </div>
+                    <!-- SLIDER ITEM -->
+                    <div class="swiper-slide absolute">
+                        <img class="w-full h-full object-cover" src="~/home/public/Images/slider/slide-1.png" alt="">
+                        <div class="flex items-start  flex-col absolute  right-5 top-5 md:right-10 md:top-10 lg:top-20 lg:right-40 xl:right-48  text-white">
+                            <h2 class="font-MorabbaMedium text-xl lg:text-5xl mb-2 lg:mb-4">
+                                دانه قهوه اسپرسو جیورنو
+                            </h2>
+                            <p
+                                class="text-base lg:text-2xl font-MorabbaLight border-b border-gray-300 pb-2 lg:pb-4 mb-2 lg:mb-4">
+                                یک طعم باورنکردنی !
+                            </p>
+                            <p class="w-[60%] text-sm lg:text-base lg:leading-8 mb-2 lg:mb-4 line-clamp-2">
+                                قطعا نام آشنای جیورنو را شنیده اید، جیورنو یکی از گونه های قهوه است که در نواحی مختلف
+                                کمربند قهوه کشت میشود.
+                            </p>
+                            <a href="shop.html"
+                                class="flex items-center bg-green-500 hover:bg-green-600 transition-all rounded-lg px-1  lg:px-2 py-1 lg:py-1.5 text-sm lg:text-base">
+                                <p class="hidden lg:flex ml-1"> مشاهده </p> فروشگاه
+                                <svg class="w-4 h-4">
+                                    <use href="#chevron-left"></use>
+                                </svg>
+                            </a>
+                        </div>
+
+                    </div>
+                
+                </div>
+                <!-- NEXT & PREV BTN -->
+                <div class="container absolute  flex items-center justify-end gap-x-3 left-4 lg:left-0 bottom-5 z-30 child:cursor-pointenr
+                child:bg-white 
+                child:dark:bg-zinc-700 child:shadow child:rounded-full child:p-1 child:lg:p-1.5 ">
+                    <button class="button-prev ">
+                        <svg class="w-5 h-5">
+                            <use href="#arrow-long-right"></use>
+                        </svg>
+                    </button>
+                    <button class="button-next dark:bg-zinc-700 shadow rounded-full p-1 lg:p-1.5">
+                        <svg class="w-5 h-5">
+                            <use href="#arrow-long-left"></use>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+}
+
+
+<!-- CATEGORIES --> 
+      <section class="container">
+    <!-- TITLE -->
+    <a asp-controller="Home" asp-action="Shop" class="flex items-center justify-center">
+        <span class="cursor-pointer transition-colors gap-x-2 flex items-center justify-center">
+            <h2 class="text-xl lg:text-3xl font-MorabbaMedium">
+                محبوب ترین دسته ها
+            </h2>
+            <svg class="w-8 h-8">
+                <use href="#arrow-down-circle"></use>
+            </svg>
+        </span>
+    </a>
+    
+    <!-- ITEMS -->
+    <div class="flex items-center justify-evenly lg:justify-between flex-wrap mt-10 child:mb-8 gap-x-8 child:flex child:items-center child:flex-col child-hover:-translate-y-5 child:duration-300 child:cursor-pointer child:gap-y-2.5">
+
+        @{
+            // دریافت لیست به صورت ایمن
+            var categoriesList = ViewBag.Categories as List<Application.DTO.CategoryListDto>;
+        }
+
+        @if (categoriesList != null && categoriesList.Any())
+        {
+            foreach (var item in categoriesList)
+            {
+
+                <a asp-controller="Product" asp-action="Index" asp-route-categoryId="@item.Id">
+
+                    @{
+
+                        var imgSrc = !string.IsNullOrEmpty(item.ImageName)
+                            ? $"/CategoryImages/{item.ImageName}"
+                            : "/home/public/Images/default-category.png";
+                    }
+
+                    <img src="@imgSrc"
+                         alt="@item.Name"
+                         class="w-[100px] h-[100px] lg:w-[200px] lg:h-[200px] object-cover rounded-full">
+
+                    <p class="font-DanaMedium text-sm lg:text-lg line-clamp-1">
+                        @item.Name
+                    </p>
+                </a>
+            }
+        }
+        else
+        {
+            <div class="w-full text-center text-gray-500">دسته‌بندی یافت نشد.</div>
+        }
+
+    </div>
+</section>
+<script type="text/C#"></script>
+      
+         <!-- Latest Products -->
+<section class="container mt-8 md:mt-12">
+    <!-- TITLE & NAVIGATION -->
+    <div class="flex items-center justify-between mb-8 md:mb-12">
+        <div class="flex flex-col gap-y-2">
+            <h2 class="font-MorabbaMedium text-xl lg:text-3xl text-zinc-700 dark:text-white">
+                جدیدترین محصولات
+            </h2>
+        </div>
+        <div class="flex items-center gap-x-2 child:p-2 child:bg-white child:dark:bg-zinc-700 child:shadow child:rounded-full child:cursor-pointer">
+            <button class="prev-slide hover:bg-green-500 hover:text-white transition-colors">
+                <svg class="w-4 h-4">
+                    <use href="#chevron-right"></use>
+                </svg>
+            </button>
+            <button class="next-slide hover:bg-green-500 hover:text-white transition-colors">
+                <svg class="w-4 h-4">
+                    <use href="#chevron-left"></use>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- SLIDER CONTAINER -->
+    <div class="swiper LatestProducts rounded-lg" dir="rtl">
+        <div class="swiper-wrapper rounded-lg mb-2 child:cursor-pointer child:overflow-hidden child:rounded-lg child:bg-white child:dark:bg-zinc-700 child:shadow child:w-64 child:relative">
+            
+        @if (ViewBag.LatestProducts != null)
+{
+    foreach (var item in ViewBag.LatestProducts)
+    {
+        decimal discountValue = 0;
+        decimal.TryParse(item.Discount, out discountValue);
+
+        
+        int discountPercentage = 0;
+        if (item.Price > 0 && discountValue > 0 && discountValue < item.Price)
+        {
+            // فرمول: ((قیمت اصلی - قیمت با تخفیف) تقسیم بر قیمت اصلی) ضربدر 100
+            discountPercentage = (int)Math.Round(((item.Price - discountValue) / item.Price) * 100);
+        }
+
+        <div class="swiper-slide group">
+            <!-- Product Image Container -->
+            <div class="relative mb-3">
+                
+
+                @if (discountPercentage > 0)
+                {
+                    <span class="absolute top-5 right-5 flex items-center justify-center w-8 h-8 text-xs bg-green-500 rounded-full text-white z-30">
+                        @discountPercentage%
+                    </span>
+                }
+                
+     
+                <img src="@item.PrimaryImage" alt="@item.Title"
+                     class="group-hover:scale-105 duration-300 w-32 h-32 lg:w-48 lg:h-48 mx-auto object-contain mt-4" />
+            </div>
+
+            <!-- Product Info -->
+            <div class="px-2 lg:px-4 mb-3">
+                <a href="/Home/Product/@item.Id"
+                   class="line-clamp-2 font-DanaMedium mb-2 text-sm lg:text-base text-zinc-700 dark:text-white h-10 lg:h-12 block">
+                    @item.Title
+                </a>
+
+                <div class="flex items-center gap-x-1 lg:gap-x-3 mt-2 h-6">
+                    @if (item.Invoice > 0)
+                    {
+         
+                        <p class="font-DanaDemiBold text-green-600 dark:text-green-500">
+                            @discountValue.ToString("N0")
+                            <span class="font-Dana text-xs lg:text-sm">تومان</span>
+                        </p>
+
+   
+                        @if (discountValue < item.Price)
+                        {
+                            <del class="font-Dana text-xs lg:text-sm text-rose-300">
+                                @item.Price.ToString("N0")
+                            </del>
+                        }
+                    }
+                    else
+                    {
+                        <p class="font-Dana text-red-400">فعلا موجود نیست</p>
+                    }
+                </div>
+            </div>
+
+            <!-- Product Footer -->
+            <div class="flex items-center justify-between px-2 lg:px-4 mb-3">
+                <div class="flex items-center gap-x-2 child:transition-all child:duration-300">
+                    @if (item.Invoice > 0)
+                    {
+                        <span class="rounded-full p-2 dark:bg-zinc-800 dark:hover:bg-green-500 bg-gray-100 hover:bg-green-600 hover:text-white cursor-pointer">
+                            <svg class="w-4 h-4"><use href="#shopping-cart"></use></svg>
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="rounded-full p-2 bg-gray-200 dark:bg-zinc-600 text-gray-400 cursor-not-allowed">
+                            <svg class="w-4 h-4"><use href="#shopping-cart"></use></svg>
+                        </span>
+                    }
+                    <span class="hover:text-green-600 cursor-pointer">
+                        <svg class="w-4 h-4"><use href="#heart"></use></svg>
+                    </span>
+                </div>
+                <div class="flex items-center">
+                    <svg class="w-4 h-4 text-yellow-400"><use href="#star"></use></svg>
+                    <span class="text-xs text-gray-400 mr-1">4.5</span>
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="p-4 text-center w-full">محصولی یافت نشد.</div>
+}
+        </div>
+    </div>
+</section>
+
+
+        <!-- Best-selling products -->
+        <section class="container">
+            <!-- TITLE -->
+            <div class="flex items-center justify-between mb-12">
+                <div class="flex flex-col gap-y-2">
+                    <h2 class="font-MorabbaMedium text-xl lg:text-3xl">
+                        محصولات پر فروش
+                    </h2>
+                </div>
+                <div
+                    class="flex items-center gap-x-2 child:p-2 child:bg-white child:dark:bg-zinc-700 child:shadow child:rounded-full">
+                    <button class="prev-slide-best ">
+                        <svg class="w-4 h-4">
+                            <use href="#chevron-right"></use>
+                        </svg>
+                    </button>
+                    <button class="next-slide-best ">
+                        <svg class="w-4 h-4">
+                            <use href="#chevron-left"></use>
+                        </svg>
+                    </button>
+                </div>
+
+            </div>
+            <!-- SLIDER  -->
+            <div class="swiper BestSelling rounded-lg" dir="rtl">
+                <div
+                    class="swiper-wrapper rounded-lg mb-2 child:cursor-pointer child:overflow-hidden child:rounded-lg child:bg-white child:dark:bg-zinc-700 child:shadow child:w-64 child:relative">
+                    <!-- PRODUCT ITEM -->
+                    <div class="swiper-slide group">
+                        <!-- OFF BADGE -->
+                        <span
+                            class="absolute top-5 right-5 flex items-center justify-center w-8 h-8 text-xs bg-green-500  rounded-full text-white z-30">20%</span>
+
+                        <!-- PRODUCT IMGAE -->
+                        <img src="~/home/public/Images/products/p7.png" alt="product-1"
+                            class="group-hover:scale-105 duration-300 w-32 h-32 lg:w-48 lg:h-48 mx-auto mb-3" />
+                        <!-- PRODUCT MAIN -->
+                        <div class="px-2 lg:px-4 mb-3">
+                            <a href="product-details.html"
+                                class="line-clamp-2 font-DanaMedium mb-2 text-sm lg:text-base">
+                                قهوه ترک گرمی مقدار 200 گرم رنگ بنفش خط دوم طولانی
+                            </a>
+                            <div class="flex items-center gap-x-1 lg:gap-x-3">
+                                <p class="font-DanaDemiBold text-green-600 dark:text-green-500">
+                                    200,000
+                                    <span class="font-Dana text-sm">تومان</span>
+                                </p>
+                                <del class="font-Dana text-xs lg:text-sm text-rose-300 hidden lg:inline">
+                                    230,000
+                                    <span class="">تومان</span>
+                                </del>
+                            </div>
+                        </div>
+                        <!-- PRODUCT FOOTER -->
+                        <div class="flex items-center justify-between px-2 lg:px-4 mb-3">
+                            <div class="flex items-center gap-x-2 child:transition-all child:duration-300">
+                                <span
+                                    class="rounded-full p-2 dark:bg-zinc-800 dark:hover:bg-green-500 bg-gray-100 hover:bg-green-600 hover:text-white">
+                                    <svg class="w-4 h-4">
+                                        <use href="#shopping-cart"></use>
+                                    </svg>
+                                </span>
+                                <span class="hover:text-green-600">
+                                    <svg class="w-4 h-4">
+                                        <use href="#heart"></use>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="flex items-center">
+                                <svg class="w-4 h-4 text-gray-300">
+                                    <use href="#star"></use>
+                                </svg>
+                                <svg class="w-4 h-4 text-yellow-400">
+                                    <use href="#star"></use>
+                                </svg>
+                                <svg class="w-4 h-4 text-yellow-400">
+                                    <use href="#star"></use>
+                                </svg>
+                                <svg class="w-4 h-4 text-yellow-400">
+                                    <use href="#star"></use>
+                                </svg>
+                                <svg class="w-4 h-4 text-yellow-400">
+                                    <use href="#star"></use>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- PRODUCT ITEM -->
+                    <div class="swiper-slide group">
+                        <!-- PRODUCT IMGAE -->
+                        <img src="~/home/public/Images/products/p6.png" alt="product-1"
+                            class="group-hover:scale-105 duration-300 w-32 h-32 lg:w-48 lg:h-48 mx-auto mb-3" />
+                        <!-- PRODUCT MAIN -->
+                        <div class="px-2 lg:px-4 mb-3">
+                            <a href="product-details.html"
+                                class="line-clamp-2 font-DanaMedium mb-2 text-sm lg:text-base">
+                                پودر قهوه اسپرسو آرتیمان مقدار 250 گرم خط دوم طولانی
+                            </a>
+                            <div class="flex items-center gap-x-1 lg:gap-x-3">
+                                <p class="font-Dana text-red-400">فعلا موجود نیست</p>
+                            </div>
+                        </div>
+                        <!-- PRODUCT FOOTER -->
+                        <div class="flex items-center justify-between px-2 lg:px-4 mb-3">
+                            <div class="flex items-center gap-x-2 child:transition-all child:duration-300">
+                                <span
+                                    class="rounded-full p-2 dark:bg-zinc-800 dark:hover:bg-green-500 bg-gray-100 hover:bg-green-600 hover:text-white">
+                                    <svg class="w-4 h-4">
+                                        <use href="#shopping-cart"></use>
+                                    </svg>
+                                </span>
+                                <span class="hover:text-green-600">
+                                    <svg class="w-4 h-4">
+                                        <use href="#heart"></use>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="flex items-center">
+                                <svg class="w-4 h-4 text-gray-300">
+                                    <use href="#star"></use>
+                                </svg>
+                                <svg class="w-4 h-4 text-yellow-400">
+                                    <use href="#star"></use>
+                                </svg>
+                                <svg class="w-4 h-4 text-yellow-400">
+                                    <use href="#star"></use>
+                                </svg>
+                                <svg class="w-4 h-4 text-yellow-400">
+                                    <use href="#star"></use>
+                                </svg>
+                                <svg class="w-4 h-4 text-yellow-400">
+                                    <use href="#star"></use>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- PRODUCT ITEM -->
+                    <div class="swiper-slide group">
+                        <!-- OFF BADGE -->
+                        <span
+                            class="absolute top-5 right-5 flex items-center justify-center w-8 h-8 text-xs bg-green-500  rounded-full text-white z-30">20%</span>
+
+                        <!-- PRODUCT IMGAE -->
+                        <img src="~/home/public/Images/products/p5.png" alt="product-1"
+                            class="group-hover:scale-105 duration-300 w-32 h-32 lg:w-48 lg:h-48 mx-auto mb-3" />
+                        <!-- PRODUCT MAIN -->
+                        <div class="px-2 lg:px-4 mb-3">
+                            <a href="product-details.html"
+                                class="line-clamp-2 font-DanaMedium mb-2 text-sm lg:text-base">
+                                قهوه ترک گرمی مقدار 200 گرم رنگ بنفش خط دوم طولانی
+                            </a>
+                            <div class="flex items-center gap-x-1 lg:gap-x-3">
+                                <p class="font-DanaDemiBold text-green-600 dark:text-green-500">
+                                    200,000
+                                    <span class="font-Dana text-sm">تومان</span>
+                                </p>
+                                <del class="font-Dana text-xs lg:text-sm text-rose-300 hidden lg:inline">
+                                    230,000
+                                    <span class="">تومان</span>
+                                </del>
+                            </div>
+                        </div>
+                        <!-- PRODUCT FOOTER -->
+                        <div class="flex items-center justify-between px-2 lg:px-4 mb-3">
+                            <div class="flex items-center gap-x-2 child:transition-all child:duration-300">
+                                <span
+                                    class="rounded-full p-2 dark:bg-zinc-800 dark:hover:bg-green-500 bg-gray-100 hover:bg-green-600 hover:text-white">
+                                    <svg class="w-4 h-4">
+                                        <use href="#shopping-cart"></use>
+                                    </svg>
+                                </span>
+                                <span class="hover:text-green-600">
+                                    <svg class="w-4 h-4">
+                                        <use href="#heart"></use>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="flex items-center">
+                                <svg class="w-4 h-4 text-gray-300">
+                                    <use href="#star"></use>
+                                </svg>
+                                <svg class="w-4 h-4 text-yellow-400">
+                                    <use href="#star"></use>
+                                </svg>
+                                <svg class="w-4 h-4 text-yellow-400">
+                                    <use href="#star"></use>
+                                </svg>
+                                <svg class="w-4 h-4 text-yellow-400">
+                                    <use href="#star"></use>
+                                </svg>
+                                <svg class="w-4 h-4 text-yellow-400">
+                                    <use href="#star"></use>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- PRODUCT ITEM -->
+                    <div class="swiper-slide group">
+                        <!-- OFF BADGE -->
+                        <span
+                            class="absolute top-5 right-5 flex items-center justify-center w-8 h-8 text-xs bg-green-500  rounded-full text-white z-30">20%</span>
+
+                        <!-- PRODUCT IMGAE -->
+                        <img src="~/home/public/Images/products/p4.png" alt="product-1"
+                            class="group-hover:scale-105 duration-300 w-32 h-32 lg:w-48 lg:h-48 mx-auto mb-3" />
+                        <!-- PRODUCT MAIN -->
+                        <div class="px-2 lg:px-4 mb-3">
+                            <a href="product-details.html"
+                                class="line-clamp-2 font-DanaMedium mb-2 text-sm lg:text-base">
+                                قهوه ترک بن مانو مقدار 250 گرم خط دوم اسم طولانی خط دوم طولانی
+                            </a>
+                            <div class="flex items-center gap-x-1 lg:gap-x-3">
+                                <p class="font-DanaDemiBold text-green-600 dark:text-green-500">
+                                    154,000
+                                    <span class="font-Dana text-sm">تومان</span>
+                                </p>
+                                <del class="font-Dana text-xs lg:text-sm text-rose-300 hidden lg:inline">
+                                    230,000
+                                    <span>تومان</span>
+                                </del>
+                            </div>
+                        </div>
+                        <!-- PRODUCT FOOTER -->
+                        <div class="flex items-center justify-between px-2 lg:px-4 mb-3">
+                            <div class="flex items-center gap-x-2 child:transition-all child:duration-300">
+                                <span
+                                    class="rounded-full p-2 dark:bg-zinc-800 dark:hover:bg-green-500 bg-gray-100 hover:bg-green-600 hover:text-white">
+                                    <svg class="w-4 h-4">
+                                        <use href="#shopping-cart"></use>
+                                    </svg>
+                                </span>
+                                <span class="hover:text-green-600">
+                                    <svg class="w-4 h-4">
+                                        <use href="#heart"></use>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="flex items-center">
+                                <svg class="w-4 h-4 text-gray-300">
+                                    <use href="#star"></use>
+                                </svg>
+                                <svg class="w-4 h-4 text-yellow-400">
+                                    <use href="#star"></use>
+                                </svg>
+                                <svg class="w-4 h-4 text-yellow-400">
+                                    <use href="#star"></use>
+                                </svg>
+                                <svg class="w-4 h-4 text-yellow-400">
+                                    <use href="#star"></use>
+                                </svg>
+                                <svg class="w-4 h-4 text-yellow-400">
+                                    <use href="#star"></use>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- PRODUCT ITEM -->
+                    <div class="swiper-slide group">
+                        <!-- PRODUCT IMGAE -->
+                        <img src="~/home/public/Images/products/p3.png" alt="product-1"
+                            class="group-hover:scale-105 duration-300 w-32 h-32 lg:w-48 lg:h-48 mx-auto mb-3" />
+                        <!-- PRODUCT MAIN -->
+                        <div class="px-2 lg:px-4 mb-3">
+                            <a href="product-details.html"
+                                class="line-clamp-2 font-DanaMedium mb-2 text-sm lg:text-base">
+                                دانه قهوه اسپرسو کد 200 مقدار 100 گرم خط دوم طولانی
+                            </a>
+                            <div class="flex items-center gap-x-1 lg:gap-x-3">
+                                <p class="font-DanaDemiBold text-green-600 dark:text-green-500">
+                                    80,000
+                                    <span class="font-Dana text-sm">تومان</span>
+                                </p>
+                            </div>
+                        </div>
+                        <!-- PRODUCT FOOTER -->
+                        <div class="flex items-center justify-between px-2 lg:px-4 mb-3">
+                            <div class="flex items-center gap-x-2 child:transition-all child:duration-300">
+                                <span
+                                    class="rounded-full p-2 dark:bg-zinc-800 dark:hover:bg-green-500 bg-gray-100 hover:bg-green-600 hover:text-white">
+                                    <svg class="w-4 h-4">
+                                        <use href="#shopping-cart"></use>
+                                    </svg>
+                                </span>
+                                <span class="hover:text-green-600">
+                                    <svg class="w-4 h-4">
+                                        <use href="#heart"></use>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="flex items-center">
+                                <svg class="w-4 h-4 text-gray-300">
+                                    <use href="#star"></use>
+                                </svg>
+                                <svg class="w-4 h-4 text-yellow-400">
+                                    <use href="#star"></use>
+                                </svg>
+                                <svg class="w-4 h-4 text-yellow-400">
+                                    <use href="#star"></use>
+                                </svg>
+                                <svg class="w-4 h-4 text-yellow-400">
+                                    <use href="#star"></use>
+                                </svg>
+                                <svg class="w-4 h-4 text-yellow-400">
+                                    <use href="#star"></use>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- PRODUCT ITEM -->
+                    <div class="swiper-slide group">
+                        <!-- PRODUCT IMGAE -->
+                        <img src="~/home/public/Images/products/p2.png" alt="product-1"
+                            class="group-hover:scale-105 duration-300 w-32 h-32 lg:w-48 lg:h-48 mx-auto mb-3" />
+                        <!-- PRODUCT MAIN -->
+                        <div class="px-2 lg:px-4 mb-3">
+                            <a href="product-details.html"
+                                class="line-clamp-2 font-DanaMedium mb-2 text-sm lg:text-base">
+                                قهوه ترک بن مانو مقدار 250 گرم خط دوم اسم طولانی خط دوم طولانی
+                            </a>
+                            <div class="flex items-center gap-x-1 lg:gap-x-3">
+                                <p class="font-Dana text-red-400">فعلا موجود نیست</p>
+                            </div>
+                        </div>
+                        <!-- PRODUCT FOOTER -->
+                        <div class="flex items-center justify-between px-2 lg:px-4 mb-3">
+                            <div class="flex items-center gap-x-2 child:transition-all child:duration-300">
+                                <span
+                                    class="rounded-full p-2 dark:bg-zinc-800 dark:hover:bg-green-500 bg-gray-100 hover:bg-green-600 hover:text-white">
+                                    <svg class="w-4 h-4">
+                                        <use href="#shopping-cart"></use>
+                                    </svg>
+                                </span>
+                                <span class="hover:text-green-600">
+                                    <svg class="w-4 h-4">
+                                        <use href="#heart"></use>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="flex items-center">
+                                <svg class="w-4 h-4 text-gray-300">
+                                    <use href="#star"></use>
+                                </svg>
+                                <svg class="w-4 h-4 text-yellow-400">
+                                    <use href="#star"></use>
+                                </svg>
+                                <svg class="w-4 h-4 text-yellow-400">
+                                    <use href="#star"></use>
+                                </svg>
+                                <svg class="w-4 h-4 text-yellow-400">
+                                    <use href="#star"></use>
+                                </svg>
+                                <svg class="w-4 h-4 text-yellow-400">
+                                    <use href="#star"></use>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BANNERS -->
+        <section class="container">
+            <div
+                class="flex flex-col lg:flex-row gap-y-4 items-center justify-between gap-x-10 child:rounded-lg child:text-white child:w-full child:h-48 child:lg:h-60 child:flex  child:pr-12 child:justify-center child:flex-col child:gap-y-4 child:cursor-pointer ">
+                <a href="shop.html" class="banner banner-1 group child:duration-300">
+                    <h2 class="font-MorabbaMedium text-xl lg:text-3xl group-hover:mr-5">
+                        انواع قهوه
+                    </h2>
+                    <p class="text-base lg:text-lg group-hover:mr-5">
+                        ترکیبی و تک خاستگاه
+                    </p>
+                </a>
+                <a href="shop.html" class="banner banner-2 group child:duration-300">
+                    <h2 class="font-MorabbaMedium text-xl lg:text-3xl group-hover:mr-5">
+                        پودر های فوری
+                    </h2>
+                    <p class="text-base lg:text-lg group-hover:mr-5">
+                        نسکافه ، هات چاکلت ، ماسالا
+                    </p>
+                </a>
+            </div>
+        </section>
+
+        <!--  Offer Box -->
+        <section class="container">
+            <!-- ITEMS SLIDER -->
+        <div class="flex flex-col overflow-hidden lg:flex-row items-center lg:gap-x-10 bg-white dark:bg-zinc-700 rounded-lg shadow p-5">
+    
+    <!-- TIMER & TITLE (بدون تغییر) -->
+    <div class="lg:h-full flex flex-col justify-evenly gap-y-2 mb-3 lg:mb-0">
+        <div class="flex justify-between flex-col gap-y-3 font-MorabbaMedium">
+            <p class="text-base lg:text-lg">پیشنهاد های</p>
+            <h2 class="text-2xl lg:text-4xl text-green-500">شگفت انگیز</h2>
+            <a href="/Home/Shop" class="hidden lg:flex items-center justify-center gap-x-1 w-32 rounded-lg px-2 py-1 text-white bg-green-500 dark:bg-green-600 hover:bg-green-600 transition-colors">
+                مشاهده همه
+                <svg class="w-4 h-4"><use href="#chevron-left"></use></svg>
+            </a>
+        </div>
+        <!-- TIMER -->
+        <div class="flex flex-col justify-center">
+            <h2 class="font-DanaMedium text-lg mr-2 hidden lg:flex">فقط تا :</h2>
+            <div class="mt-2 flex items-center gap-x-2 child:flex child:flex-col child:items-center child:justify-evenly child:shadow child:rounded-lg">
+                <div class="w-16 h-[70px] px-2 bg-white dark:bg-zinc-500">
+                    <h2 class="font-MorabbaMedium dark:text-white text-rose-400">ثانیه</h2>
+                    <p class="font-DanaDemiBold seconds"></p>
+                </div>
+                <div class="w-16 h-[70px] px-2 bg-white dark:bg-zinc-500">
+                    <h2 class="font-MorabbaMedium dark:text-white text-rose-400">دقیقه</h2>
+                    <p class="font-DanaDemiBold minutes"></p>
+                </div>
+                <div class="w-16 h-[70px] px-2 bg-white dark:bg-zinc-500">
+                    <h2 class="font-MorabbaMedium dark:text-white text-rose-400">ساعت</h2>
+                    <p class="font-DanaDemiBold hours"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDER -->
+    <div class="swiper offerSlider w-full mt-2 rounded-lg" dir="rtl">
+        <div class="swiper-wrapper rounded-lg mb-2 child:cursor-pointer child:overflow-hidden child:rounded-lg child:bg-white child:dark:bg-zinc-600 child:shadow child:w-64 child:relative">
+
+            @{
+                var amazingList = ViewBag.AmazingProducts as List<Application.DTO.ProductListDto>;
+            }
+
+            @if (amazingList != null && amazingList.Any())
+            {
+                foreach (var item in amazingList)
+                {
+                    <!-- Start Dynamic Product Item -->
+                    <div class="swiper-slide group">
+                        
+                        <!-- OFF BADGE -->
+                        <span class="absolute top-5 right-5 flex items-center justify-center w-8 h-8 text-xs bg-green-500 rounded-full text-white z-30">%</span>
+
+                        <!-- PRODUCT IMAGE -->
+                        <img src="@item.PrimaryImage" alt="@item.Title"
+                             class="group-hover:scale-105 duration-300 w-32 h-32 lg:w-48 lg:h-48 mx-auto mb-3" />
+                        
+                        <!-- PRODUCT MAIN -->
+                        <div class="px-2 lg:px-4 mb-3">
+                            <a href="/Home/Product/@item.Id" class="line-clamp-2 font-DanaMedium mb-2 text-sm lg:text-base">
+                                @item.Title
+                            </a>
+                            <div class="flex items-center gap-x-1 lg:gap-x-3">
+                                <p class="font-DanaDemiBold text-green-600 dark:text-green-500">
+                                    @item.Price.ToString("N0")
+                                    <span class="font-Dana text-sm">تومان</span>
+                                </p>
+                               
+                                <del class="font-Dana text-xs lg:text-sm text-rose-300 hidden lg:inline">
+                                    @item.Discount
+                                    <span>تومان</span>
+                                </del> 
+                               
+                            </div>
+                        </div>
+
+                        <!-- PRODUCT FOOTER -->
+                        <div class="flex items-center justify-between px-2 lg:px-4 mb-3">
+                            <div class="flex items-center gap-x-2 child:transition-all child:duration-300">
+                                <span class="rounded-full p-2 dark:bg-zinc-800 dark:hover:bg-green-500 bg-gray-100 hover:bg-green-600 hover:text-white">
+                                    <svg class="w-4 h-4"><use href="#shopping-cart"></use></svg>
+                                </span>
+                                <span class="hover:text-green-600">
+                                    <svg class="w-4 h-4"><use href="#heart"></use></svg>
+                                </span>
+                            </div>
+                            <div class="flex items-center">
+                                <svg class="w-4 h-4 text-yellow-400"><use href="#star"></use></svg>
+                                <svg class="w-4 h-4 text-yellow-400"><use href="#star"></use></svg>
+                                <svg class="w-4 h-4 text-yellow-400"><use href="#star"></use></svg>
+                                <svg class="w-4 h-4 text-yellow-400"><use href="#star"></use></svg>
+                                <svg class="w-4 h-4 text-yellow-400"><use href="#star"></use></svg>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Dynamic Product Item -->
+                }
+            }
+            else
+            {
+                <div class="swiper-slide">
+                    <p class="text-center p-5">محصول شگفت‌انگیزی موجود نیست</p>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+        </section>
+
+        <!-- ARTICLES -->
+        <section class="container">
+            <!-- TITLE -->
+            <div class="flex items-center justify-between mb-12">
+                <div class="flex flex-col gap-y-2">
+                    <h2 class="font-MorabbaMedium text-xl lg:text-3xl">
+                        مطالب خواندنی
+                    </h2>
+                </div>
+                <a href="articles.html"
+                   class="flex items-center px-2 py-1 rounded-lg gap-x-2 text-green-500 hover:ml-2 duration-300 transition-all">
+                    مشاهده همه
+                    <svg class="w-4 h-4">
+                        <use href="#chevron-left"></use>
+                    </svg>
+                </a>
+            </div>
+            <div class="flex items-center justify-center lg:justify-between flex-wrap gap-4 child-hover:-translate-y-2 child:duration-300
+                child:bg-white child:dark:bg-zinc-700  child:w-[90%] child:sm:w-56 child:lg:w-72 child:rounded-lg child:p-2 child:cursor-pointer child:shadow
+                ">
+                <!-- ITEM -->
+                <div class="group">
+                    <div class="relative overflow-hidden rounded-lg">
+                        <img src="~/home/public/Images/articles/a-1.jpg"
+                             class="h-[180px] w-full object-cover rounded-bl-3xl rounded-tr-3xl" alt="" />
+                        <div
+                            class="absolute opacity-0 left-0 top-0 bottom-0 right-0 bg-black/60 flex items-center justify-center group-hover:opacity-100 duration-300 transition-all rounded-bl-3xl rounded-tr-3xl">
+                            <a href="./article-details.html"
+                               class="flex items-center px-2 py-1 gap-x-1 font-DanaMedium rounded-lg border-2 border-white text-white">
+                                <p>ادامه مطالب</p>
+                                <svg class="w-4 h-4">
+                                    <use href="#chevron-left"></use>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-y-1 my-2 px-1">
+                        <h2 class="font-DanaDemiBold">کشف دنیای قهوه</h2>
+                        <p class="line-clamp-2 text-sm text-gray-400">
+                            از دانه تا فنجان: فرآیند تولید قهوه از کاشت دانه‌های قهوه تا
+                            دم‌آوری نهایی، تمام مراحل تولید قهوه را بشناسید و لذت ببرید.
+                        </p>
+                    </div>
+                    <span class="flex w-full h-1 py-1 border-t border-gray-100 dark:border-white/10"></span>
+                    <div class="flex items-center justify-between text-sm px-1">
+                        <span class="flex items-center gap-x-1 text-gray-400">
+                            <svg class="w-4 h-4">
+                                <use href="#calendar"></use>
+                            </svg>
+                            <p class="mt-1">1403/5/1</p>
+                        </span>
+                        <span class="flex items-start gap-x-1 text-gray-400">
+                            <p class="font-DanaDemiBold">120</p>
+                            <svg class="w-4 h-4">
+                                <use href="#eye"></use>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <!-- ITEM -->
+                <div class="group">
+                    <div class="relative overflow-hidden rounded-lg">
+                        <img src="~/home/public/Images/articles/a-3.jpg"
+                             class="h-[180px] w-full object-cover rounded-bl-3xl rounded-tr-3xl" alt="" />
+                        <div
+                            class="absolute opacity-0 left-0 top-0 bottom-0 right-0 bg-black/60 flex items-center justify-center group-hover:opacity-100 duration-300 transition-all rounded-bl-3xl rounded-tr-3xl">
+                            <a href="./article-details.html"
+                               class="flex items-center px-2 py-1 gap-x-1 font-DanaMedium rounded-lg border-2 border-white text-white">
+                                <p>ادامه مطلب</p>
+                                <svg class="w-4 h-4">
+                                    <use href="#chevron-left"></use>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-y-1 my-2 px-1">
+                        <h2 class="font-DanaDemiBold">سفر به مزارع قهوه</h2>
+                        <p class="line-clamp-2 text-sm text-gray-400">
+                            گزارش‌هایی از بهترین مزارع قهوه جهان به دنیای مزارع قهوه سفر
+                            کنید و با داستان‌های جالب و جذاب از بهترین مزارع آشنا شوید
+                        </p>
+                    </div>
+                    <span class="flex w-full h-1 py-1 border-t border-gray-100 dark:border-white/10"></span>
+                    <div class="flex items-center justify-between text-sm px-1">
+                        <span class="flex items-center gap-x-1 text-gray-400">
+                            <svg class="w-4 h-4">
+                                <use href="#calendar"></use>
+                            </svg>
+                            <p class="mt-1">1403/5/1</p>
+                        </span>
+                        <span class="flex items-start gap-x-1 text-gray-400">
+                            <p class="font-DanaDemiBold">440</p>
+                            <svg class="w-4 h-4">
+                                <use href="#eye"></use>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <!-- ITEM -->
+                <div class="group">
+                    <div class="relative overflow-hidden rounded-lg">
+                        <img src="~/home/public/Images/articles/a-4.jpg"
+                             class="h-[180px] w-full object-cover rounded-bl-3xl rounded-tr-3xl" alt="" />
+                        <div
+                            class="absolute opacity-0 left-0 top-0 bottom-0 right-0 bg-black/60 flex items-center justify-center group-hover:opacity-100 duration-300 transition-all rounded-bl-3xl rounded-tr-3xl">
+                            <a href="./article-details.html"
+                               class="flex items-center px-2 py-1 gap-x-1 font-DanaMedium rounded-lg border-2 border-white text-white">
+                                <p>ادامه مطالب</p>
+                                <svg class="w-4 h-4">
+                                    <use href="#chevron-left"></use>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-y-1 my-2 px-1">
+                        <h2 class="font-DanaDemiBold">رازهای تهیه قهوه</h2>
+                        <p class="line-clamp-2 text-sm text-gray-400">
+                            نکات و ترفندهای باریستاهای حرفه‌ای با ترفندهای حرفه‌ای باریستاها
+                            آشنا شوید و قهوه‌ای عالی و بی‌نقص در خانه تهیه کنید.
+                        </p>
+                    </div>
+                    <span class="flex w-full h-1 py-1 border-t border-gray-100 dark:border-white/10"></span>
+                    <div class="flex items-center justify-between text-sm px-1">
+                        <span class="flex items-center gap-x-1 text-gray-400">
+                            <svg class="w-4 h-4">
+                                <use href="#calendar"></use>
+                            </svg>
+                            <p class="mt-1">1403/5/1</p>
+                        </span>
+                        <span class="flex items-start gap-x-1 text-gray-400">
+                            <p class="font-DanaDemiBold">89</p>
+                            <svg class="w-4 h-4">
+                                <use href="#eye"></use>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <!-- ITEM -->
+                <div class="group">
+                    <div class="relative overflow-hidden rounded-lg">
+                        <img src="~/home/public/Images/articles/a-2.jpg"
+                             class="h-[180px] w-full object-cover rounded-bl-3xl rounded-tr-3xl" alt="" />
+                        <div
+                            class="absolute opacity-0 left-0 top-0 bottom-0 right-0 bg-black/60 flex items-center justify-center group-hover:opacity-100 duration-300 transition-all rounded-bl-3xl rounded-tr-3xl">
+                            <a href="./article-details.html"
+                               class="flex items-center px-2 py-1 gap-x-1 font-DanaMedium rounded-lg border-2 border-white text-white">
+                                <p>ادامه مطلب</p>
+                                <svg class="w-4 h-4">
+                                    <use href="#chevron-left"></use>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-y-1 my-2 px-1">
+                        <h2 class="font-DanaDemiBold">شناخت انواع قهوه</h2>
+                        <p class="line-clamp-2 text-sm text-gray-400">
+                            آشنایی با انواع دانه‌ها و روش‌های دم‌آوری از انواع مختلف
+                            دانه‌های قهوه تا روش‌های متنوع دم‌آوری، همه چیز را درباره قهوه
+                            بدانید.
+                        </p>
+                    </div>
+                    <span class="flex w-full h-1 py-1 border-t border-gray-100 dark:border-white/10"></span>
+                    <div class="flex items-center justify-between text-sm px-1">
+                        <span class="flex items-center gap-x-1 text-gray-400">
+                            <svg class="w-4 h-4">
+                                <use href="#calendar"></use>
+                            </svg>
+                            <p class="mt-1">1403/5/1</p>
+                        </span>
+                        <span class="flex items-start gap-x-1 text-gray-400">
+                            <p class="font-DanaDemiBold">540</p>
+                            <svg class="w-4 h-4">
+                                <use href="#eye"></use>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        
+        @section script
+        {
+
+            <script src="~/home/public/scripts/Timer.js"></script>
+            <!-- ==========================  SLIDER APP ============================= -->
+            <script src="~/home/public/scripts/swiper.js"></script>
+            <!-- ==========================  SLIDER APP ============================= -->
+            <script src="~/home/public/scripts/Slider.js"></script>
+            
+            
+            <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        new Swiper(".LatestProducts", {
+            slidesPerView: 2,
+            spaceBetween: 14,
+            navigation: {
+                nextEl: ".latest-next-slide",
+                prevEl: ".latest-prev-slide",
+            },
+            breakpoints: {
+                640: { slidesPerView: 3, spaceBetween: 20 },
+                1024: { slidesPerView: 4, spaceBetween: 20 },
+                1280: { slidesPerView: 5, spaceBetween: 20 } 
+            },
+        });
+    });
+</script>
+        }

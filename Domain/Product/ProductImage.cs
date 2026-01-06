@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    public class ProductImage
+    public class ProductImage : BaseTabel
     {
-        public int Id { get; set; }
         public string PicUrl { get; set; }
-
+        public bool IsPrimary { get; set; }
         [ForeignKey("prd")]
         public int ProductId { get; set; }
         public Product prd { get; set; }

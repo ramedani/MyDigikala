@@ -1,0 +1,36 @@
+@model Application.DTO.CreateCategoryDto
+@{
+    ViewData["Title"] = "افزودن دسته‌بندی";
+    Layout = "_admin";
+}
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title mb-0">افزودن دسته‌بندی جدید</h3>
+            </div>
+            <div class="card-body">
+
+                <form asp-action="AddCategory" asp-controller="Product" method="post" enctype="multipart/form-data">
+                    
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label">نام دسته‌بندی</label>
+                        <input asp-for="Name" class="form-control" placeholder="مثلا: لوازم دیجیتال" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Image" class="form-label">تصویر دسته‌بندی</label>
+                        <input asp-for="Image" type="file" class="form-control" accept="image/*" />
+                        <span asp-validation-for="Image" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100">
+                        <i class="fas fa-save"></i> ذخیره دسته‌بندی
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

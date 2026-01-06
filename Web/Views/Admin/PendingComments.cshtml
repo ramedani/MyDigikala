@@ -1,0 +1,275 @@
+@model Application.DTO.AdminCommentsViewModel
+
+@{
+ViewData["Title"] = "مدیریت دیدگاه‌ها";
+Layout = "~/Views/Shared/_admin.cshtml";
+}
+
+@section css {
+<style>
+
+    .admin-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+        border: 1px solid #f0f0f0;
+        margin-bottom: 30px;
+        overflow: hidden;
+    }
+
+    .admin-card-header {
+        padding: 20px;
+        background: #fff;
+        border-bottom: 1px solid #f0f0f0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .admin-card-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #333;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .modern-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .modern-table thead th {
+        background: #f8f9fb;
+        color: #6c757d;
+        font-weight: 600;
+        font-size: 0.85rem;
+        padding: 15px;
+        border-bottom: 2px solid #eee;
+        text-align: right;
+    }
+
+    .modern-table tbody td {
+        padding: 15px;
+        vertical-align: middle;
+        border-bottom: 1px solid #f9f9f9;
+        color: #495057;
+    }
+
+    .modern-table tbody tr:hover {
+        background-color: #fcfcfc;
+    }
+
+    .product-info {
+        display: flex;
+        flex-direction: column;
+    }
+    .product-name {
+        font-weight: 700;
+        color: #2c3e50;
+        font-size: 0.95rem;
+    }
+    .product-id {
+        font-size: 0.75rem;
+        color: #adb5bd;
+        font-family: sans-serif;
+    }
+    
+    .comment-bubble {
+        background-color: #f8faff;
+        border-right: 3px solid #6c5ce7;
+        padding: 12px 15px;
+        border-radius: 4px 10px 10px 4px;
+        font-size: 0.9rem;
+        line-height: 1.7;
+        color: #444;
+        max-width: 600px;
+        position: relative;
+    }
+
+
+    .comment-title-badge {
+        background: #fff3cd;
+        color: #856404;
+        padding: 4px 10px;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 8px;
+    }
+
+
+    .action-btn {
+        width: 35px;
+        height: 35px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        transition: all 0.2s;
+        border: none;
+        margin: 0 2px;
+    }
+
+    .btn-approve {
+        background-color: #d1e7dd;
+        color: #0f5132;
+    }
+    .btn-approve:hover {
+        background-color: #198754;
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .btn-delete {
+        background-color: #f8d7da;
+        color: #842029;
+    }
+    .btn-delete:hover {
+        background-color: #dc3545;
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .empty-state {
+        padding: 40px;
+        text-align: center;
+        color: #adb5bd;
+    }
+    .empty-state i {
+        font-size: 3rem;
+        margin-bottom: 10px;
+        display: block;
+    }
+</style>
+}
+
+<div class="admin-card">
+    <div class="admin-card-header">
+        <h3 class="admin-card-title text-primary">
+            <i class="fa fa-clock-o"></i> نظرات در انتظار بررسی
+            <span class="badge bg-primary rounded-pill ms-2" style="font-size: 0.7em;">@Model.Pending.Count()</span>
+        </h3>
+    </div>
+
+    @if (Model.Pending.Any())
+    {
+    <div class="table-responsive">
+        <table class="modern-table">
+            <thead>
+            <tr>
+                <th style="width: 50px;">#</th>
+                <th style="width: 20%;">محصول</th>
+                <th>متن و جزئیات نظر</th>
+                <th class="text-center" style="width: 120px;">عملیات</th>
+            </tr>
+            </thead>
+            <tbody>
+            @{ int rowCounter = 1; }
+            @foreach (var item in Model.Pending)
+            {
+            <tr>
+                <td class="text-center text-muted">@(rowCounter++)</td>
+
+                <td>
+                    <div class="product-info">
+                        <span class="product-name">@item.ProductName</span>
+                        <span class="product-id">ID: @item.ProductId</span>
+                    </div>
+                </td>
+
+                <td>
+                    <div>
+                        @if(!string.IsNullOrEmpty(item.Title))
+                        {
+                        <div class="comment-title-badge">
+                            <i class="fa fa-star"></i> @item.Title
+                        </div>
+                        }
+                        <div class="comment-bubble">
+                            @item.Content
+                        </div>
+                    </div>
+                </td>
+
+                <td class="text-center">
+                    <div class="d-flex justify-content-center">
+                        <a asp-action="ApproveComment" asp-route-id="@item.Id" class="action-btn btn-approve" title="تایید و انتشار">
+                            <i class="fa fa-check"></i>
+                        </a>
+                        <a asp-action="DeleteComment" asp-route-id="@item.Id" class="action-btn btn-delete" title="حذف نظر" onclick="return confirm('آیا مطمئن هستید؟')">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+    }
+    else
+    {
+    <div class="empty-state">
+        <i class="fa fa-check-circle-o text-success"></i>
+        <p>هیچ نظر جدیدی برای بررسی وجود ندارد. همه چیز مرتب است!</p>
+    </div>
+    }
+</div>
+
+
+<div class="admin-card" style="border-top: 4px solid #198754;">
+    <div class="admin-card-header">
+        <h3 class="admin-card-title text-success">
+            <i class="fa fa-history"></i> آخرین نظرات منتشر شده
+        </h3>
+    </div>
+
+    <div class="table-responsive">
+        <table class="modern-table table-hover">
+            <thead>
+            <tr>
+                <th style="width: 50px;">#</th>
+                <th style="width: 20%;">محصول</th>
+                <th>خلاصه نظر</th>
+                <th class="text-center" style="width: 100px;">وضعیت</th>
+                <th class="text-center" style="width: 80px;">حذف</th>
+            </tr>
+            </thead>
+            <tbody>
+            @{ int approvedCounter = 1; }
+            @foreach (var item in Model.Approved)
+            {
+            <tr>
+                <td class="text-center text-muted">@(approvedCounter++)</td>
+                <td>
+                    <strong class="text-dark">@item.ProductName</strong>
+                </td>
+                <td>
+                    <span class="text-muted small">@item.Title</span>
+                    <p class="mb-0 text-truncate" style="max-width: 400px; color: #666;">@item.Content</p>
+                </td>
+                <td class="text-center">
+                    <span class="badge bg-light text-success border border-success">منتشر شده</span>
+                </td>
+                <td class="text-center">
+                    <a asp-action="DeleteComment" asp-route-id="@item.Id" class="text-danger opacity-50 hover-opacity-100" title="حذف دائم" onclick="return confirm('این نظر الان در سایت است. حذف شود؟')">
+                        <i class="fa fa-times-circle fa-lg"></i>
+                    </a>
+                </td>
+            </tr>
+            }
+            </tbody>
+        </table>
+        @if (!Model.Approved.Any())
+        {
+        <div class="p-3 text-center text-muted">هنوز نظری تایید نکرده‌اید.</div>
+        }
+    </div>
+</div>

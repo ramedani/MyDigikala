@@ -36,6 +36,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\NewsImages\" />
+    <Folder Include="wwwroot\ProductImage\" />
   </ItemGroup>
 
 </Project>

@@ -9,9 +9,8 @@ namespace Domain
     public class Category:BaseTabel
     {
         public string Name { get; set; }
-        public string Picture { get; set; }
-
-        public List<Product> Prd { get; set; }
+        public string? PicUrl { get; set; }
+        public List<Product>? Products { get; set; }
         
     }
 }

@@ -1,0 +1,50 @@
+@model Application.DTO.DeleteBlockedCategoryDto
+@{
+    ViewData["Title"] = "listBlockedCategory";
+    Layout = "~/Views/Shared/_admin.cshtml";
+}
+
+<div class="container mt-4">
+    <h4 class="text-danger">حذف دسته‌بندی غیرممکن است</h4>
+    <p>دسته <strong>@Model.Name</strong> دارای محصولات زیر است:</p>
+
+    <table class="table table-bordered table-dark table-hover">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>نام محصول</th>
+            <th>عکس محصول</th>
+            <th>عملیات</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var p in Model.Products)
+        {
+            <tr>
+                <td>@p.Id</td>
+                <td>@p.Title</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(p.PrimaryImage))
+                    {
+                        <img src="@p.PrimaryImage" 
+                             width="60" height="60" 
+                             style="object-fit:cover;border-radius:8px;" />
+                    }
+                    else
+                    {
+                        <span>-</span>
+                    }
+                </td>
+                <td>
+                    <a href="/Admin/product/AddProduct?id=@p.Id" class="btn btn-sm btn-primary">ویرایش</a>
+                    <a href="/Admin/product/DeleteProduct?id=@p.Id" class="btn btn-sm btn-danger">حذف</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <div class="mt-3">
+        <a href="/Admin/CategoryList" class="btn btn-secondary">بازگشت</a>
+    </div>
+</div>

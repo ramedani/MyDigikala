@@ -10,7 +10,7 @@ using System;
 using System.Globalization;
 using System.Reflection;
 using Application.Resource;
-
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -43,8 +43,7 @@ if (useSqlServer)
 }
 else
 {
-// اگر پستگرس است، فعلا الماه را روی حافظه یا فایل تنظیم کنید تا ارور ندهد
-// یا می‌توانید کلا این بخش else را خالی بگذارید تا الماه غیرفعال شود
+
     builder.Services.AddElmah<ElmahCore.MemoryErrorLog>(options =>
     {
         options.Path = "elmah";
@@ -52,7 +51,7 @@ else
 }
 
 builder.Services.AddMemoryCache();//
-builder.Services.AddOutputCache();///
+builder.Services.AddOutputCache();//
 builder.Services.AddResponseCaching();
 
 builder.Services.AddDataProtection();
@@ -83,23 +82,27 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<ICategory , CategoryService>();
 builder.Services.AddScoped<ISiteSetting, SiteSettingService>();
-builder.Services.AddScoped<IProducts, ProductService>();
+builder.Services.AddScoped<IProduct, ProductService>();
 builder.Services.AddScoped<INews, NewsService>();
 builder.Services.AddScoped<INewsCategory, NewsCategoryService>();
 builder.Services.AddScoped<IFileSecurityHelper, FileSecurityHelper>(); 
+builder.Services.AddScoped<IWishlist, WishlistService>();
+builder.Services.AddScoped<IBrand, BrandService>();
+builder.Services.AddScoped<IComment, CommentService>();
+
 var app = builder.Build();
 
-
+app.UseDeveloperExceptionPage();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+/*if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
-}
+}*/
 
-app.UseStatusCodePagesWithReExecute("/Home/Error/{0}");
+//app.UseStatusCodePagesWithReExecute("/Home/Error/{0}");
 
 
 

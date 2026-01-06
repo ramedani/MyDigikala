@@ -1,0 +1,109 @@
+@model IEnumerable<Application.DTO.CommentListDto>
+
+
+@{
+    ViewData["Title"] = "listnews";
+    Layout = "~/Views/Shared/_admin.cshtml";
+}
+
+
+InProgress
+@*
+
+<table class="table table-bordered table-hover">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>کاربر</th>
+        <th>محصول</th>
+        <th>متن نظر</th>
+        <!-- ستون جدید -->
+        <th class="text-center">نمایش در خانه</th> 
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.UserName</td>
+            <td>@item.ProductName</td>
+            <td>
+                <!-- محدود کردن طول متن برای زیبایی جدول -->
+                @if(item.Content.Length > 50) 
+                {
+                    @item.Content.Substring(0, 50) <text>...</text> 
+                }
+                else 
+                { 
+                    @item.Content 
+                }
+            </td>
+                
+            <!-- دکمه سوئیچ -->
+            <td class="text-center">
+                <div class="form-check form-switch d-flex justify-content-center">
+                    <input class="form-check-input" type="checkbox" 
+                           style="cursor: pointer; width: 40px; height: 20px;"
+                           id="switch-@item.Id"
+                           onchange="toggleHomeStatus(@item.Id)"
+                           @(item.IsSelectedForHome ? "checked" : "")>
+                </div>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@section script {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        function toggleHomeStatus(id) {
+            // اصلاح آدرس: متد شما در AdminController است، نه CommentController
+            // این خط به صورت خودکار آدرس درست را می‌سازد: /Admin/ChangeHomeStatus
+            var url = '@Url.Action("ChangeHomeStatus", "Admin")' + '?id=' + id;
+
+            fetch(url, {
+                method: 'POST'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    });
+                    Toast.fire({
+                        icon: 'success',
+                        title: data.message
+                    });
+                } else {
+                    // اگر عملیات در دیتابیس خطا داد، تیک را برگردان
+                    revertCheckbox(id);
+                    alert(data.message || "خطایی رخ داد");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // اگر آدرس اشتباه باشد (404) یا سرور قطع باشد، اینجا اجرا می‌شود و تیک برمی‌گردد
+                revertCheckbox(id);
+                alert("خطا در برقراری ارتباط با سرور.");
+            });
+        }
+
+        function revertCheckbox(id) {
+            var checkbox = document.getElementById('switch-' + id);
+            checkbox.checked = !checkbox.checked;
+        }
+    </script>
+}
+*@

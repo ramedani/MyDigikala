@@ -1,79 +1,154 @@
 ﻿@model Application.DTO.EditProductDto
 
 @{
-    ViewData["Title"] = Model.Id == 0 ? "افزودن محصول جدید" : $"ویرایش محصول: {Model.Title}";
-    Layout = "~/Views/Shared/_Admin.cshtml";
+ViewData["Title"] = Model.Id == 0 ? "افزودن محصول جدید" : $"ویرایش محصول: {Model.Title}";
+Layout = "~/Views/Shared/_admin.cshtml";
 }
 
 @section css {
     <style>
-        #colorDropdown {
-            position: relative;
-            display: inline-block;
-            width: 100%;
-        }
+    #colorDropdown {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+    }
 
-        #colorMenu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background-color: #1d1d1d;
-            border: 1px solid #3b3b3b;
-            border-radius: 8px;
-            width: 100%;
-            max-height: 280px;
-            overflow-y: auto;
-            z-index: 99999 !important;
-        }
+    #colorMenu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: #1d1d1d;
+        border: 1px solid #3b3b3b;
+        border-radius: 8px;
+        width: 100%;
+        max-height: 280px;
+        overflow-y: auto;
+        z-index: 99999 !important;
+    }
 
-        .color-item {
-            padding: 10px 12px;
-            color: #fff;
-            border-radius: 6px;
-            margin: 4px 0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
+    .color-item {
+        padding: 10px 12px;
+        color: #fff;
+        border-radius: 6px;
+        margin: 4px 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
 
-        .color-item span {
-            font-weight: 600;
-        }
+    .color-item span {
+        font-weight: 600;
+    }
 
-        .color-item:hover {
-            filter: brightness(1.3);
-        }
+    .color-item:hover {
+        filter: brightness(1.3);
+    }
 
-        .color-item.selected {
-            outline: 2px solid #7b3ef3;
-        }
-        .category-action {
-            width: 40px;
-            height: 40px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            cursor: pointer;
-            color: #7b61ff;
-            font-size: 30px;
-        }
+    .color-item.selected {
+        outline: 2px solid #7b3ef3;
+    }
+    .category-action {
+        width: 40px;
+        height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        cursor: pointer;
+        color: #7b61ff;
+        font-size: 30px;
+    }
 
-        .category-action i {
-            font-size: 30px;
-        }
-    </style>
+    .category-action i {
+        font-size: 30px;
+    }
+</style>
+    <style>
+    .setting-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #fff;
+        padding: 12px 10px;
+        border-radius: 8px;
+        border: 1px solid #e6e6e6;
+        margin-bottom: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .setting-item:hover {
+        border-color: #7b61ff;
+        background-color: #fcfbff;
+    }
+
+    .setting-label {
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+        cursor: pointer;
+    }
+    
+    .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 46px;
+        height: 24px;
+        margin: 0;
+    }
+
+    .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 34px;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+    
+    input:checked + .slider {
+        background-color: #28c76f;
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(22px);
+    }
+    
+    input:focus + .slider {
+        box-shadow: 0 0 1px #28c76f;
+    }
+</style>
+
 }
 
-<!-- تگ form باید کل محتوا را در بر بگیرد -->
-<form asp-action="AddProduct" asp-controller="Admin" method="post" enctype="multipart/form-data">
 
-    <!-- ارسال AntiForgeryToken برای امنیت -->
+<form asp-action="AddProduct" asp-controller="Product" method="post" enctype="multipart/form-data">
+    
     @Html.AntiForgeryToken()
-    <!-- ID محصول برای حالت ویرایش به صورت مخفی ارسال می‌شود -->
     <input type="hidden" asp-for="Id" />
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -81,32 +156,51 @@
         <div class="content-body">
             <div class="row">
                 <div class="col-12">
-
-                    <!-- فیلدهای اصلی محصول -->
+                    
                     <div class="form-group">
                         <label asp-for="Title" class="control-label"></label>
                         <input asp-for="Title" class="form-control" />
                         <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
+                    <div class="form-group">
+                        <label asp-for="EnTitle" class="control-label"></label>
+                        <input asp-for="EnTitle" class="form-control" placeholder="مثلا: Samsung Galaxy S24" />
+                        <span asp-validation-for="EnTitle" class="text-danger"></span>
+                    </div>
 
-                    <!-- FIX: تگ divSlogan به div class="form-group" اصلاح شد -->
-                 
+                    <div class="form-group">
+                        <label asp-for="Slogan" class="control-label"></label>
+                        <input asp-for="Slogan" class="form-control form-control-lg" />
+                        <span asp-validation-for="Slogan" class="text-danger"></span>
+                    </div>
 
                     <div class="form-group">
                         <label asp-for="Description" class="control-label"></label>
-                        <!-- FIX: استفاده از asp-for برای اتصال صحیح به مدل -->
                         <textarea id="Content" asp-for="Description" class="form-control"></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
 
                     <div class="row">
-                  
-          
+                        <div class="col-md-4 form-group">
+                            <label asp-for="Country" class="control-label"></label>
+                            <input asp-for="Country" class="form-control" />
+                            <span asp-validation-for="Country" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label asp-for="Weight" class="control-label"></label>
+                            <input asp-for="Weight" class="form-control" />
+                            <span asp-validation-for="Weight" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label asp-for="Invoice" class="control-label"></label>
+                            <input asp-for="Invoice" class="form-control" />
+                            <span asp-validation-for="Invoice" class="text-danger"></span>
+                        </div>
                     </div>
 
                     <hr />
 
-                    <!-- بخش مدیریت تصاویر -->
+
                     <div class="form-group">
                         <label>آپلود عکس‌های جدید</label>
                         <input type="file" name="NewImages" accept="image/*" multiple class="form-control-file" />
@@ -114,47 +208,48 @@
 
                     @if (Model.Id == 0)
                     {
-                        <div class="alert alert-info mt-2">
-                            ابتدا محصول را با فشردن دکمه ثبت، ذخیره کنید تا بتوانید عکس‌ها را مشاهده و مدیریت کنید.
-                        </div>
+                    <div class="alert alert-info mt-2">
+                        ابتدا محصول را با فشردن دکمه ثبت، ذخیره کنید تا بتوانید عکس‌ها را مشاهده و مدیریت کنید.
+                    </div>
                     }
 
                     @if (Model.Id > 0 && Model.ExistingImages != null && Model.ExistingImages.Any())
                     {
-                        <h5 class="mt-4">تصاویر فعلی محصول</h5>
-                        <div class="row border p-2 rounded bg-light">
-                            @foreach (var img in Model.ExistingImages)
-                            {
-                                <div class="col-md-3 text-center mb-3" id="img-box-@img.Id">
-                                    <div class="card">
-                                        <img src="~/upload/@img.PicUrl" alt="Product Image" class="card-img-top" style="height: 120px; object-fit: cover;" />
-                                        <div class="card-body p-2">
-                                           
-                                            <button type="button" class="btn btn-danger btn-sm mt-2 btn-block" onclick="deleteImage(@img.Id)">
-                                                <i class="fa fa-trash"></i> حذف
-                                            </button>
-                                        </div>
+                    <h5 class="mt-4">تصاویر فعلی محصول</h5>
+                    <div class="row border p-2 rounded bg-light">
+                        @foreach (var img in Model.ExistingImages)
+                        {
+                        <div class="col-md-3 text-center mb-3" id="img-box-@img.Id">
+                            <div class="card">
+                                <img src="@img.PicUrl" alt="Product Image" class="card-img-top" style="height: 120px; object-fit: cover;" />
+                                <div class="card-body p-2">
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" id="primary_@img.Id" name="PrimaryImageId" value="@img.Id" class="custom-control-input" @(img.IsPrimary ? "checked" : "")>
+                                        <label class="custom-control-label" for="primary_@img.Id">اصلی</label>
                                     </div>
+                                    <button type="button" class="btn btn-danger btn-sm mt-2 btn-block" onclick="deleteImage(@img.Id)">
+                                        <i class="fa fa-trash"></i> حذف
+                                    </button>
                                 </div>
-                            }
+                            </div>
                         </div>
+                        }
+                    </div>
                     }
 
                     <hr />
-
-                    <!-- دکمه‌های نهایی -->
+                    
                     <div class="form-group">
-                        <input type="submit" value="ذخیره تغییرات" class="btn btn-primary" />
-                        <a asp-action="ProductList" asp-controller="Admin" class="btn btn-secondary">بازگشت به لیست</a>
+                        <input type="submit" value="ذخیره تغییرات" class="btn btn-primary"/>
+                        <a asp-action="ProductList" asp-controller="Product" class="btn btn-secondary">بازگشت به لیست</a>
 
-                        <!-- FIX: لینک حذف خطرناک با یک فرم امن جایگزین شد -->
                         @if (Model.Id > 0)
                         {
-                            <button type="submit" asp-action="DeleteProduct" asp-route-id="@Model.Id"
-                                    class="btn btn-danger float-right"
-                                    onclick="return confirm('آیا از حذف کامل این محصول مطمئن هستید؟ این عمل غیرقابل بازگشت است.');">
-                                حذف محصول
-                            </button>
+                        <button type="submit" asp-action="DeleteProduct" asp-route-id="@Model.Id"
+                                class="btn btn-danger float-right"
+                                onclick="return confirm('آیا از حذف کامل این محصول مطمئن هستید؟ این عمل غیرقابل بازگشت است.');">
+                            حذف محصول
+                        </button>
                         }
                     </div>
 
@@ -168,62 +263,121 @@
             <div class="sidebar-shop show" id="ecommerce-sidebar-toggler">
                 <div class="card">
                     <div class="card-body">
+                        <h6 class="filter-title mb-2" style="font-weight: bold; color: #555;">تنظیمات انتشار</h6>
+
+                        <!-- دکمه ۱: نمایش در سایت -->
+                        <div class="setting-item">
+                            <label class="setting-label" for="switchIsActive">نمایش در سایت</label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" asp-for="IsActive" id="switchIsActive">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <!-- دکمه ۲: فروش ویژه -->
+                        <div class="setting-item">
+                            <label class="setting-label" for="switchAmazing">فروش ویژه (شگفت‌انگیز)</label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" asp-for="AmazingOffers" id="switchAmazing">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <hr/>
                         <!-- قیمت‌ها -->
                         <h6 class="filter-title mb-0">قیمت‌گذاری</h6>
-                 
+                        <div class="form-group">
+                            <label asp-for="PurchasePrice"></label>
+                            <input asp-for="PurchasePrice" class="form-control"/>
+                        </div>
                         <div class="form-group">
                             <label asp-for="Price"></label>
-                            <input asp-for="Price" id="Price" class="form-control" />
+                            <input asp-for="Price" id="Price" class="form-control"/>
                         </div>
-                     
-                       
-                        <hr />
                         <div class="form-group">
-                            <label asp-for="Invoice"></label>
-                            <input asp-for="Invoice" id="Invoice" class="form-control" />
+                            <label asp-for="DiscountPercentage"></label>
+                            <input asp-for="DiscountPercentage" id="DiscountPercentage" class="form-control"/>
                         </div>
+                        <div class="form-group">
+                            <label asp-for="Discount"></label>
+                            <input asp-for="Discount" id="Discount" class="form-control"/>
+                        </div>
+                        <hr/>
 
                         <!-- دسته‌بندی‌ها -->
                         <div id="product-categories">
                             <h6 class="filter-title mb-1">دسته‌بندی</h6>
-                      
+                            <ul class="list-unstyled categories-list">
+                                @if (ViewBag.CategoryList != null)
+                                {
+                                    foreach (var item in (IEnumerable<SelectListItem>)ViewBag.CategoryList)
+                                    {
+    
+                                        var isChecked = Model.CategoryId.ToString() == item.Value;
+                                        <li>
+                                            <span class="vs-radio-con vs-radio-primary py-25">
+                                                <input type="radio" name="CategoryId" value="@item.Value" @(isChecked ? "checked" : "")>
+                                                <span class="vs-radio"><span class="vs-radio--border"></span><span class="vs-radio--circle"></span></span>
+                                                <span class="ml-50">@item.Text</span>
+                                            </span>
+                                        </li>
+                                    }
+                                }
+                            </ul>
                         </div>
                         <div class="form-group mt-2">
                             <label class="d-block">مدیریت دسته بندی ‌ها:</label>
-                            <a href="/admin/AddCategory" title="افزودن برند جدید">
+                            <a href="/admin/product/AddCategory" title="افزودن برند جدید">
                                 <div class="category-action">
                                     <i class="feather icon-plus"></i>
                                 </div>
                             </a>
-                            <a href="/admin/CategoryList" title="ویرایش دسته بندی ها" class="ml-1">
+                            <a href="/admin/product/CategoryList" title="ویرایش دسته بندی ها" class="ml-1">
                                 <div class="category-action">
                                     <i class="feather icon-edit-2" style="width: 45px;"></i>
                                 </div>
                             </a>
                         </div>
 
-                        <hr />
+                        <hr/>
+
+                        <!-- برندها -->
+                        <div id="product-brands">
+                            <h6 class="filter-title mb-1">برند</h6>
+                            <ul class="list-unstyled categories-list">
+                                @if (ViewBag.BrandList != null)
+                                {
+                                    foreach (var item in (IEnumerable<SelectListItem>)ViewBag.BrandList)
+                                    {
+                                        var isChecked = Model.BrandId.ToString() == item.Value;
+                                        <li>
+                                            <span class="vs-radio-con vs-radio-primary py-25">
+                                                <input type="radio" name="BrandId" value="@item.Value" @(isChecked ? "checked" : "")>
+                                                <span class="vs-radio"><span class="vs-radio--border"></span><span class="vs-radio--circle"></span></span>
+                                                <span class="ml-50">@item.Text</span>
+                                            </span>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                            <div class="form-group mt-2">
+                                <label class="d-block">مدیریت برند ‌ها:</label>
+                                <a href="/admin/product/AddBrand" title="افزودن برند جدید">
+                                    <div class="category-action">
+                                        <i class="feather icon-plus"></i>
+                                    </div>
+                                </a>
+                                <a href="/admin/product/BrandList" title="ویرایش برند ها" class="ml-1">
+                                    <div class="category-action">
+                                        <i class="feather icon-edit-2" style="width: 45px;"></i>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
 
                         <hr>
 
-                        <!-- رنگ‌ها -->
-                        <div class="brands">
-                            <h6 class="filter-title mb-0">رنگ</h6>
-                     
-                        </div>
-                        <div class="form-group mt-2">
-                            <label class="d-block">مدیریت رنگ ‌ها:</label>
-                            <a href="/admin/AddColor" title="افزودن برند جدید">
-                                <div class="category-action">
-                                    <i class="feather icon-plus"></i>
-                                </div>
-                            </a>
-                            <a href="/admin/ListColor" title="ویرایش رنگ ها" class="ml-1">
-                                <div class="category-action">
-                                    <i class="feather icon-edit-2" style="width: 45px;"></i>
-                                </div>
-                            </a>
-                        </div>
+
 
                     </div>
                 </div>
@@ -232,107 +386,91 @@
     </div>
 </form>
 
-@section script {
-    <script src="~/tinymce/tinymce.js"></script>
-    <script>
-        tinymce.init({
-            selector: '#Content',
-            license_key: 'gpl'
-        });
+@section Script {
+<script src="~/tinymce/tinymce.js"></script>
+<script>
+    tinymce.init({
+        selector: '#Content',
+        license_key: 'gpl'
+    });
 
-        // FIX: فقط یک تابع برای حذف عکس با استفاده از jQuery (که در صفحه موجود است)
-        function deleteImage(imageId) {
-            if (!confirm('آیا از حذف این عکس مطمئن هستید؟')) return;
 
-            $.ajax({
-                url: '/Admin/DeleteImage', // نام اکشن صحیح
-                type: 'POST',
-                // ارسال توکن امنیتی برای جلوگیری از حملات CSRF
-                headers: {
-                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
-                },
-                data: { imageId: imageId },
-                success: function(response) {
-                    if (response.success) {
-                        $('#img-box-' + imageId).fadeOut(500, function() { $(this).remove(); });
-                    } else {
-                        alert(response.message || 'خطا در حذف تصویر. لطفا دوباره تلاش کنید.');
-                    }
-                },
-                error: function() {
-                    alert('خطای سرور. لطفا با پشتیبانی تماس بگیرید.');
+    function deleteImage(imageId) {
+        if (!confirm('آیا از حذف این عکس مطمئن هستید؟')) return;
+
+        $.ajax({
+            url: '/Admin/product/DeleteImage',
+            type: 'POST',
+
+            headers: {
+                'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+            },
+            data: { imageId: imageId },
+            success: function(response) {
+                if (response.success) {
+                    $('#img-box-' + imageId).fadeOut(500, function() { $(this).remove(); });
+                } else {
+                    alert(response.message || 'خطا در حذف تصویر. لطفا دوباره تلاش کنید.');
                 }
-            });
-        }
+            },
+            error: function() {
+                alert('خطای سرور. لطفا با پشتیبانی تماس بگیرید.');
+            }
+        });
+    }
 
 
-    </script>
+</script>
 
-    <!-- اگر از Layout پیش‌فرض استفاده می‌کنید، اسکریپت‌های اعتبارسنجی را نگه دارید -->
     <partial name="_ValidationScriptsPartial" />
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // 1. دریافت المان‌های ورودی بر اساس ID
-            // نکته: مطمئن شوید که id های داخل پرانتز دقیقاً با id های input های شما یکی باشد
-            const priceInput = document.getElementById("Price");
-            const percentInput = document.getElementById("DiscountPercentage");
-            const finalPriceInput = document.getElementById("Discount"); // در تصویر شما لیبل Discount دارد
 
-            // تابع کمکی برای تبدیل مقدار ورودی به عدد
+            const priceInput = document.getElementById("Price"); 
+            const percentInput = document.getElementById("DiscountPercentage");
+            const finalPriceInput = document.getElementById("Discount");
+            
             function getNumber(input) {
-                if (!input || !input.value) return 0;
-                // حذف کاما یا کاراکترهای غیر عددی اگر وجود دارد
+                if (!input || !input.value) return 0
                 return parseFloat(input.value.replace(/,/g, '')) || 0;
             }
-
-            // 2. محاسبه قیمت نهایی (وقتی درصد یا قیمت اصلی تغییر می‌کند)
+            
             function calculateFinalPrice() {
                 const price = getNumber(priceInput);
                 const percent = getNumber(percentInput);
 
                 if (price > 0) {
-                    // فرمول: قیمت نهایی = قیمت اصلی * (1 - درصد/100)
                     const finalPrice = price * (1 - (percent / 100));
 
-                    // رند کردن عدد به نزدیکترین مقدار صحیح
                     finalPriceInput.value = Math.round(finalPrice);
                 }
             }
-
-            // 3. محاسبه درصد تخفیف (وقتی قیمت نهایی تغییر می‌کند)
+            
             function calculatePercent() {
                 const price = getNumber(priceInput);
                 const finalPrice = getNumber(finalPriceInput);
 
                 if (price > 0 && finalPrice <= price) {
-                    // فرمول: درصد = ((قیمت اصلی - قیمت نهایی) / قیمت اصلی) * 100
                     let percent = ((price - finalPrice) / price) * 100;
+                    
 
-                    // محدود کردن اعشار به 2 رقم (مثلاً 12.50)
-                    // اگر عدد صحیح بود، اعشار حذف می‌شود
                     percentInput.value = parseFloat(percent.toFixed(2));
                 } else if (finalPrice > price) {
-                    // اگر قیمت نهایی از قیمت اصلی بیشتر شد، درصد را صفر کن (حالت غیرمنطقی)
                     percentInput.value = 0;
                 }
             }
-
-            // 4. اختصاص دادن رویدادها (Events)
-
-            // وقتی "درصد" تغییر کرد -> قیمت نهایی محاسبه شود
+            
             if (percentInput) {
                 percentInput.addEventListener("input", calculateFinalPrice);
                 percentInput.addEventListener("change", calculateFinalPrice);
             }
-
-            // وقتی "قیمت نهایی" تغییر کرد -> درصد محاسبه شود
+            
             if (finalPriceInput) {
                 finalPriceInput.addEventListener("input", calculatePercent);
                 finalPriceInput.addEventListener("change", calculatePercent);
             }
-
-            // وقتی "قیمت اصلی" تغییر کرد -> معمولاً قیمت نهایی را مجدداً بر اساس درصد فعلی حساب می‌کنیم
+            
             if (priceInput) {
                 priceInput.addEventListener("input", calculateFinalPrice);
             }

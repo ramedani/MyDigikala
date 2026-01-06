@@ -27,7 +27,10 @@ namespace Web.Controllers
         private readonly IMemoryCache _cache;
         private readonly IStringLocalizer<ValidationMessages> _localizer;
         private readonly IDataProtector _protector;
-        public HomeController(IDataProtectionProvider provider, IStringLocalizer<ValidationMessages> localizer,ILogger<HomeController> logger , ICategory _icat,AppDbContext _mydb, INews _inews, IMemoryCache cache)
+        private readonly ICategory _icategory;
+        private readonly IProduct _iproduct;
+        private readonly IComment _icomment;
+        public HomeController(IDataProtectionProvider provider, IStringLocalizer<ValidationMessages> localizer,ILogger<HomeController> logger , ICategory _icat,AppDbContext _mydb, INews _inews, IMemoryCache cache,ICategory icategory,IProduct iproduct,IComment icomment)
         {
             _logger = logger;
             _localizer = localizer;
@@ -35,7 +38,10 @@ namespace Web.Controllers
             mydb = _mydb;
             inews = _inews;
             _cache = cache;
-            _protector =  provider.CreateProtector("hamid"); 
+            _protector =  provider.CreateProtector("hamid");
+            _icategory = icategory;
+            _iproduct = iproduct;
+            _icomment = icomment;   
         }
 
 
@@ -179,26 +185,110 @@ namespace Web.Controllers
         }
 
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            //throw new Exception("Test ELMAH Error");
+
+            ViewBag.Categories = await _icategory.GetAll(); 
+
+
+            var products = await _iproduct.GetLastProducts(6);
+    
+            ViewBag.LatestProducts = products ?? new List<Application.DTO.ProductListDto>();
+            ViewBag.AmazingProducts = await _iproduct.GetAmazingProducts(8); 
             return View();
         }
  
-        public IActionResult Shop()
+   
+        [Route("Home/Product/{id}")] // مسیر URL
+        public async Task<IActionResult> Shop(int id)
         {
-            return View();
+            // 1. افزایش بازدید
+            await _iproduct.IncrementProductVisitAsync(id);
+
+            string? currentUserId = null;
+    
+            // 2. دریافت ID کاربر لاگین شده (اگر لاگین است)
+            if (User.Identity.IsAuthenticated)
+            {
+                currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        
+                // فال‌بک برای پیدا کردن ID در صورت تفاوت در Claims
+                if (string.IsNullOrEmpty(currentUserId))
+                {
+                    currentUserId = User.FindFirst("sub")?.Value 
+                                    ?? User.FindFirst("Id")?.Value
+                                    ?? User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value; 
+                }
+            }
+
+
+            var model = await _iproduct.GetProductDetailAsync(id, currentUserId);
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            return View(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddReview([FromBody] AddCommentDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                // جمع‌آوری تمام خطاهای اعتبارسنجی
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var errorMessage = string.Join(" - ", errors);
+
+                // بازگشت خطای دقیق به کاربر
+                return Json(new { success = false, message = errorMessage });
+            }
+
+            dto.UserId = null; 
+            await _icomment.AddCommentAsync(dto);
+
+            return Json(new { success = true });
+        }
+
+        /*
+        [HttpPost]
+        public async Task<IActionResult> VoteComment(int commentId, bool isLike)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Json(new { success = false, requireLogin = true });
+            }
+
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!int.TryParse(userIdString, out int userId))
+            {
+                return Json(new { success = false, message = "User ID invalid" });
+            }
+
+
+            await _iproduct.ToggleVoteAsync(commentId, userId, isLike);
+
+            var counts = await _iproduct.GetCommentCountsAsync(commentId);
+
+            return Json(new {
+                success = true,
+                likes = counts.likes,
+                dislikes = counts.dislikes
+            });
+        }
+        */
+
         public ActionResult aboutus()
         {
             var setting=mydb.SiteSettings.FirstOrDefault();
             return View(setting);
         }
-        public ActionResult CrCt()
-        {
-            CreateCategoryDTO obj = new CreateCategoryDTO();
-            return View(obj);
-        }
+
         
         
         public async Task<IActionResult> Article(
@@ -251,12 +341,7 @@ namespace Web.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> CrCt(CreateCategoryDTO obj)
-        {
-            await icat.Creat(obj);
-            return View(obj);
-        }
+
 
         public IActionResult Privacy()
         {
