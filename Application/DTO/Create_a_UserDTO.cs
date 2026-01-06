@@ -17,7 +17,7 @@ namespace Application.DTO
         @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).+$",
         ErrorMessage = "رمز عبور باید شامل حروف بزرگ، کوچک، عدد و کاراکتر خاص باشد"
     )]
-        public int Password { get; set; }
+        public string Password { get; set; }
 
 
         [Required(ErrorMessage = "کد ملی الزامی است")]
