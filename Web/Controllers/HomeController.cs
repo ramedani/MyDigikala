@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
 using System.Diagnostics;
@@ -133,9 +134,27 @@ namespace Web.Controllers
             return Content($"Current Culture: {CultureInfo.CurrentCulture.Name} | Value: {text}");
         }
 
-        public IActionResult me()
+        public async Task<IActionResult> me(int id)
         {
-           
+
+        //    var user = await mydb.User
+        //.Where(u => u.Id == id)
+        //.Select(u => u.Username)
+        //.FirstOrDefaultAsync();
+
+        //    if (user == null)
+        //        return NotFound("کاربر پیدا نشد");
+
+        //    string encryptedText = _protector.Protect(user);
+
+        //    return Ok(new
+        //    {
+        //        OriginalUserName = user,
+        //        EncryptedUserName = encryptedText
+        //    });
+
+
+
             return View(new RegisterUserDto());
         }
 
