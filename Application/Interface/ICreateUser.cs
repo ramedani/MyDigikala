@@ -27,11 +27,8 @@ namespace Application.Interface
 
         public async Task<int> Creat(Create_a_UserDTO dto)
         {
-            var result = mydb.registers.ToList();
-            if (result == null)
-            {
-
-                var user = new register
+            
+                var user = new register()
                 {
                     Password = dto.Password,
                     Email = dto.Email,
@@ -39,15 +36,22 @@ namespace Application.Interface
                     MeliCode = dto.MeliCode,
                     Address = dto.Address
                 };
-                mydb.Add(user);
-                await mydb.SaveChangesAsync();
+
+            mydb.registers.Add(user);
+            await mydb.SaveChangesAsync();
                 return user.Id;
-                
-            }
-         
-        }
 
+           
       
-    }
 
+
+
+
+            //Password = dto.Password,
+            //            Email = dto.Email,
+            //            Phone = dto.Phone,
+            //            MeliCode = dto.MeliCode,
+            //            Address = dto.Address
+        }
+    }
 }

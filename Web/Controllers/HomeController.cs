@@ -2,6 +2,7 @@
 using Application.Interface;
 using Application.Resource;
 using Domain;
+using Humanizer;
 using Infra;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
@@ -23,17 +24,19 @@ namespace Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private ICategory icat;
+        private ICreateUser icrus;
         private AppDbContext mydb;
         private readonly INews inews;
         private readonly IMemoryCache _cache;
         private readonly IStringLocalizer<ValidationMessages> _localizer;
         private readonly IDataProtector _protector;
-        public HomeController(IDataProtectionProvider provider, IStringLocalizer<ValidationMessages> localizer,ILogger<HomeController> logger , ICategory _icat,AppDbContext _mydb, INews _inews, IMemoryCache cache)
+        public HomeController(ICreateUser _icrus, IDataProtectionProvider provider, IStringLocalizer<ValidationMessages> localizer,ILogger<HomeController> logger , ICategory _icat,AppDbContext _mydb, INews _inews, IMemoryCache cache)
         {
             _logger = logger;
             _localizer = localizer;
             icat = _icat;
             mydb = _mydb;
+            icrus = _icrus;
             inews = _inews;
             _cache = cache;
             _protector =  provider.CreateProtector("hamid"); 
@@ -147,32 +150,42 @@ namespace Web.Controllers
             //-------------------------------------------------
             //***********for usarname hex********************
             //-------------------------------------------------
-            var user = await mydb.registers
-        .Where(u => u.Id == id)
-        .Select(u => u.username)
-        .FirstOrDefaultAsync();
+        //    var user = await mydb.registers
+        //.Where(u => u.Id == id)
+        //.Select(u => u.username)
+        //.FirstOrDefaultAsync();
 
-            if (user == null)
-                return NotFound("کاربر پیدا نشد");
+        //    if (user == null)
+        //        return NotFound("کاربر پیدا نشد");
 
-            string encryptedText = _protector.Protect(user);
+        //    string encryptedText = _protector.Protect(user);
 
-            //-------------------------------------------------
-            //***********for email hex********************
-            //-------------------------------------------------
+        //    //-------------------------------------------------
+        //    //***********for email hex********************
+        //    //-------------------------------------------------
 
-            var email = await mydb.registers
-           .Where(u => u.Id == id)
-           .Select(u => u.Email)
-           .FirstOrDefaultAsync();
+        //    var email = await mydb.registers
+        //   .Where(u => u.Id == id)
+        //   .Select(u => u.Email)
+        //   .FirstOrDefaultAsync();
 
-            if (user == null)
-                return NotFound("ایمیل پیدا نشد");
+        //    if (user == null)
+        //        return NotFound("ایمیل پیدا نشد");
 
-            string enText = _protector.Protect(email);
+        //    string enText = _protector.Protect(email);
 
 
             return View(new Create_a_UserDTO());
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> createuser(Create_a_UserDTO dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await icrus.Creat(dto);
+            return Ok(result);
         }
 
 
